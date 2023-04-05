@@ -10,7 +10,7 @@ export default class Game extends Component {
     this.i = 0;
     this.id = null;
     this.questionNr = 1;
-    this.questionCount = 0;
+    this.questionCount = this.props.questions.data.length;
     this.score = 0;
     this.buttonsActive = true;
     this.correctCount = 0;
@@ -23,38 +23,14 @@ export default class Game extends Component {
       timeisup_visible: false,
       question_visible: true,
       selectedAnswer: null,
-      questions: [''],
-      answers: [''],
-      correctAnswers: [''],
+      questions: this.props.questions.data,
+      answers: this.props.answers.data,
+      correctAnswers: this.props.correct.data,
     };
   }
-
     componentDidMount() {
       this.move();
       music.playMusic();
-    /*
-      fetch('http://localhost:3001/questions')
-        .then(response => response.json())
-        .then(data => {
-          this.questionCount = data.length;
-          this.setState({ questions: data });
-        })
-        .catch(error => console.error(error));
-  
-      fetch('http://localhost:3001/answers')
-        .then(response => response.json())
-        .then(data => {
-          this.setState({ answers: data });
-        })
-        .catch(error => console.error(error));
-  
-      fetch('http://localhost:3001/correct_answers')
-        .then(response => response.json())
-        .then(data => {
-          this.setState({ correctAnswers: data });
-        })
-        .catch(error => console.error(error));
-        */
     }
 
   move() {
