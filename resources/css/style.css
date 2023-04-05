@@ -1,0 +1,1366 @@
+
+
+.bg{ 
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: #584EA7;/* linear-gradient(90deg, rgba(0,212,255,1) 45%, rgba(30,64,196,1) 77%); */
+    position: relative;
+    padding-top: 10vh;
+    min-height: 100vh;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    border-radius: 999px;
+    height: 120px;
+    width: 80%;
+    margin: auto;
+    background-color: #16076E;
+    color: #000;
+    margin-bottom: 2vw;
+    margin-top: 2vw;
+    /* border: solid 0.2vw #CCAAF0; */
+  }
+  
+  .item {
+    margin: auto;
+    background-color: #fff;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1vw;
+    width: 20%;
+  }
+
+  .title1 {
+    color: #999;
+    margin: 0;
+    font-size: 1.5vw;
+  }
+
+  .title {
+    margin: 0;
+    font-size: 1.5vw;
+  }
+
+  .item img{
+    width: 4vw;
+  }
+
+  .logo img{
+    position: absolute;
+    margin: auto;
+    top: 3%;
+    width: 7%;
+    border-radius: 100%;
+    border: solid 0.3vw #16076E;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .twoButtons{
+    margin-bottom: 1.5vw;
+    width: 70%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .button { 
+    font-size: 1.5vw;
+    border-radius: 25px;
+    width: 30%;
+    cursor:pointer;
+    margin: 1vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1vw;
+    margin-bottom: 2vw;
+  }
+
+  .button svg {
+    width: 4vw;
+    height: 2.5vw;
+  }
+
+  .friends {
+    width: 30%;
+    margin: auto;
+    border-radius: 25px;
+    background-color: #5096F8;
+    margin-bottom: 2vw;  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .friendsButton{
+    border-radius: 999px;
+    width: 100%;
+    height: 4vw;
+    color: #fff;
+    background-color: #5096F8;
+    font-size: 1.5vw;
+    cursor:pointer;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .friendsButton svg {
+    width: 4.5vw;
+    height: 3vw;
+  }
+
+  .text{
+    border-radius: 25px;
+    height: 100px;
+    width: 65%;
+    margin: auto;
+    background-color: #fff;
+    color: #000;
+    font-size: 1.2vw;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1vw;
+  }
+
+  .playButtonDiv {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .playButton {
+     width: 15%;
+     border-radius: 20px;
+     background-color: #59BB64;
+     border: solid 0.3vw #207D48;
+     cursor:pointer;
+    }
+    
+  .playInside {
+    display: flex;
+  }
+
+  .playArrow{
+    width: 50%;
+    height: 100%;
+    margin: auto;
+    position: relative;
+    top: 0;
+    animation-name: arrowRightLeft;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+
+  .playArrow img {
+    width: 60%;
+  }
+
+  @keyframes arrowRightLeft {
+    0% { left: 0; }
+    50% { left: -15px; } 
+    100% { left: 0; }
+  }
+  
+  .playSub {
+    width: 50%;
+    height: 100%;
+  }
+
+  .playSub p {
+    font-size: 1.6vw;
+    font-weight: bold;
+    margin: 0.5vw;
+    color: #fff;
+  }
+  
+
+  .playSub img {
+    width: 50%;
+    margin: auto;
+    margin-top: 0.5vw;
+  }
+
+  .alert {
+      display: none;
+      border: solid 1px #000;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);  
+      background-color: #fff;
+      border-radius: 25px;
+      padding: 2vw;
+      z-index: 999;
+  }
+
+  .blackCover{
+    display: none;
+    top: 0;
+    left: 0;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0 , 0.5);
+    border: none;
+  }
+
+  .show {
+    display:block;
+  }
+  
+  .alert h2 {
+    font-size: 2vw;
+    text-align: right;
+    font-weight: bold;
+  }
+
+  .alert p {
+    font-size: 1.2vw;
+    text-align: right;
+    margin-bottom: 5vw;
+  }
+
+  .alertSubButton {
+    height: 3vw;
+    width: 8vw;
+    border-radius: 10px;
+    font-size: 1.5vw;
+    position: absolute;
+    right: 20px;
+    bottom: 1vw;
+    cursor:pointer;
+    color: #fff;
+    background-color: #1C8ADB;
+    border: solid 0.2vw #fff;
+  }
+
+  .shareDiv {
+    position: relative;
+    border-radius: 10px;
+    width: 80%;
+    margin: auto;
+    margin-bottom: 12%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 45px;
+    border: none;
+  }
+  
+  .shareDiv input {
+    width: 100%;
+    height: 100%;
+    text-align: left;
+    display: flex;
+    border-radius: 10px;
+    color: #000;
+    background-color: #F3F4F6;
+    padding-left: 20%;
+    font-size: 1vw;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border: none;
+  }
+
+  .shareDiv input:focus {
+    border: solid 0.2vw #0DCAF0;
+    outline: none;
+  }
+
+  .shareDiv svg {
+    width: 10%;
+    height: 100%;
+    display: inline-block;
+    position: absolute;
+    left: -0.2vw;
+    background-color: #0d00c0;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    z-index: 999;
+  }
+
+  .rowTop {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2%;
+  }
+
+  .questionNr {
+    color: #fff;
+    background-color: rgba(0, 0, 0 , 0.5);   
+    border-radius: 5%;
+    padding: 1vw 2vw;
+  }
+
+  .exitButton {
+    border: none;
+    color: #fff;
+    background-color: rgba(0, 0, 0 , 0.5);   
+    border-radius: 5%;
+    padding: 0.5vw 0.7vw;
+    cursor:pointer;
+    font-size: 1vw;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .question {
+    width: 70%;
+    color: #fff;
+    background-color: #212373;
+    border: solid 0.2vw #CCAAF0;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding: 1vw 1vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8vw;
+    margin: auto;
+    margin-bottom: 20px;
+  }
+
+  .timer {
+    height: 8vh;
+    width: 80%;
+    margin: auto;
+    border-radius: 999px;
+    color: #fff;
+    background-color: #212373;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2%;
+  }
+  
+  .timer p {
+    width: 1%;
+    font-size: 1.5vw;
+    color: #E6BE43;
+    margin-left: 2%;
+    margin-right: 1.5%;
+  }
+
+  .timer svg{
+    width: 4%;
+    border-radius: 100%;
+    margin-right: 1.2%;
+  }
+
+  .myProgress {
+    height: 60%;
+    width: 100%;
+    background-color: #999;
+    border-radius: 5px;
+    margin: 0 1%;
+  }
+  
+  .myBar {
+    width: 1%;
+    height: 100%;
+    background-color: #E6BE43;
+    border-radius: 5px;
+  }
+
+  .answer_row {
+    display: flex;
+    justify-content: center;
+  }
+
+  .answer {
+    color: #fff;
+    background-color: #212373;
+    border: solid 0.2vw #CCAAF0;
+    width: 30%;
+    border-radius: 10px;
+    padding: 2% 1%;
+    margin: 2%;
+    cursor: pointer;
+    font-size: 1.5vw;
+  }
+
+  .answer:hover {
+    transform: scale(1.01);
+    border: solid 0.2vw #00FF7F;
+  }
+
+  .no-hover {
+    pointer-events: none;
+  }
+
+  .answer.selected {
+    color: #fff;
+    border: solid 0.2vw #CCAAF0;
+  }
+
+  .score {
+    margin: auto;
+    width: 10vw;
+    height: 10vw;
+    border-radius: 50%;
+    margin-bottom: 3%;
+    background-color: #212373;
+    border: solid 0.2vw #CCAAF0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .score h1 {
+    color: #fff;
+    font-size: 2vw;
+  }
+
+  .score p {
+    color: #fff;
+    font-size: 2vw;
+    margin: 0;
+  }
+
+  .answer_results {
+    width: 60%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 4%;
+    gap: 2vw;
+  }
+
+    .no_answer {
+      width: 18%;
+      padding: 1%;
+      border-radius: 0.2vw;
+      margin:auto;
+      font-size: 1vw;
+      color: #FFFFFF ;
+      background-color: #808080;
+      margin-bottom: 4%;
+    }
+
+  .goMenuButtonDiv{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .goMenuButton {
+    font-size: 1.8vw;
+    color: #FFFFFF ;
+    border:none;
+    background-color: #1C8ADB;
+    box-shadow: 0.2vw  0.2vw 0.2vw rgba(0, 0, 0, 0.3);
+    border-radius: 999px;
+    cursor:pointer;
+    padding: 0.7vw 1.5vw;
+  }
+  .goMenuButton:hover{
+    transform: scale(1.01);
+  }
+  
+  .buttonResultCorrect{
+    background-color: rgba(0, 255, 0, 0.5); 
+    color: #fff;
+    width: 20%;
+    padding: 1.5%;
+    border-radius: 0.2vw;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    font-size: 1vw;
+  }
+  .buttonResultWrong{
+    background-color: rgba(255, 0, 0, 0.5);
+    color: #fff;
+    width: 20%;
+    padding: 1.5%;
+    border-radius: 0.2vw;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    font-size: 1vw;
+  }
+
+  .answeredCart {
+    margin: 0 20%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+  }
+
+  .answeredCart img {
+    max-width: 8vw;
+  }
+
+  .alert-message {
+    border: solid 0.2vw #1C8ADB;
+    background-color: #fff;
+    color: #000;
+    padding: 10px;
+    font-size: 1vw;
+    font-weight: bold;
+    border-radius: 5px;
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    padding: 0.8vw 2vw;
+  }
+
+  .login-container {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #f1f1f1;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .login-form {
+    position: relative;
+    text-align: left;
+    width: 20%;
+    margin: auto;
+    background-color: white;
+    border-radius: 10px;
+    padding: 5vw;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .login-form h2 {
+    text-align: center;
+  }
+  
+  .form-group {
+    margin-bottom: 2vw;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-button {
+    background-color: #C6554F;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+  }
+  .form-button:hover{
+    transform: scale(1.05);
+  }
+  .form-button2{
+    background-color: #3A3C62;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+  }
+  .form-button2:hover{
+    transform: scale(1.05);
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .purpleStyle {
+    color: #fff;
+    background-color: #212373;
+   /*  border: solid 0.2vw #CCAAF0; */
+   border: none;
+  }
+
+  .loginButtonDiv {
+    position: absolute;
+    right: 0.5vw;
+    top: 1vh;
+  }
+
+  .loginButton {
+    font-size: 1.1vw;
+    color: #fff;
+    padding: 0.4vw 1vw;
+    background-color: none;
+    background-color: #584EA7;
+    border: solid 0.1vw #fff;
+    cursor: pointer;
+  }
+
+  .loginButton:hover {
+    transform: scale(1.01);
+    border: solid 0.1vw #00FF7F;
+  }
+ 
+  .loginButtonDiv a {
+    color: #fff;
+  }
+
+  .goBack {
+    margin-top: 3vh;
+    position: absolute;
+    right: 1vw;
+    top: 1vh;
+  }
+
+  .goBackButton{
+    background-color: #fff;
+    border: solid 0.1vw #000;
+    font-size: 1.1vw;
+    font-weight: bold;
+    padding: 0.2vw 0.5vw;
+    cursor:pointer;
+  }
+
+  .admin_bg {
+    padding: 2vw;
+    background-color: #a0a0a0;
+  }
+
+  .admin_bg h3 {
+    color: #fff;
+  }
+
+  .form-group-admin{
+    width: 30%;
+    margin:auto;
+    display: flex;
+    margin-top: 2vh;
+  }
+  .form-group-admin input {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+  .form-group-admin input:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+
+  .form-admin-submit-button{
+    margin-top: 2vh;
+  }
+
+  .form-admin-submit-button input {
+    background-color: #80bdff;
+    border: none;
+    font-size: 0.8vw;
+    font-weight: bold;
+    padding: 0.5vw 1vw;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  .form-admin-submit-button input:hover {
+    transform: scale(1.02);
+  }
+
+  .adminPanel{
+    position: absolute;
+    top: 1vh;
+    left: 1vw;
+    border: solid 0.1vw #fff;
+  }
+
+  .adminPanel a{
+    display: inline-block;
+    color: #fff;
+    font-size: 1vw;
+    font-weight: bold;
+    padding: 0.4vw 1vw;
+    cursor: pointer;
+  }
+
+  .questionList {
+    width: 95%;
+    margin: auto;
+    margin-top: 5vw;
+  }
+
+  .questionList h3{
+    color: #fff;
+  }
+
+  .table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    border-collapse: collapse;
+  }
+  
+  .table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    background-color: #fff;
+    border-spacing: 0;
+    border-collapse: collapse;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+  }
+  
+  .table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+    text-align: center;
+  }
+  
+  .table tbody + tbody {
+    border-top: 2px solid #dee2e6;
+  }
+  
+  .table td:first-child,
+  .table th:first-child {
+    border-left: none;
+  }
+  
+  .table td:last-child,
+  .table th:last-child {
+    border-right: none;
+  }
+
+  .deleteQestionButton {
+    margin: 0.5vw;
+    padding: 0.3vw 0.6vw;
+    background-color: #FF0000;
+    cursor: pointer;
+  }
+
+  .rewardCoinDiv{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media screen and (max-width: 600px) {
+    
+    .row {
+      height: auto;
+      width: 90%;
+      margin-bottom: 3vh;
+      padding: 1.5vh 0;
+      margin-bottom: 4vh;
+    }
+
+    .logo img{
+      position: absolute;
+      top: 8%;
+      width: 10vw;
+      border-radius: 100%;
+      border: solid 0.3vw #16076E;
+    }
+
+    .item {
+      gap: 0;
+      height: auto;
+      width: auto;
+      padding: 0 4vw;
+    }
+
+    .item img{
+      height: 5vh;
+      width: auto;
+    }
+
+    .title1 {
+      font-size: 12px;
+    }
+  
+    .title {
+      font-size: 16px;
+    }
+
+    .text {
+      height: auto;
+      width: 80%;
+      font-size: 16px;
+      padding: 4vw;
+      margin-bottom: 3vh;
+    }
+
+    .twoButtons {
+      width: 100%;
+      margin-bottom: 3vh;
+    }
+
+    .button {
+      font-size: 14px;
+      padding: 1vw 2vh;
+      gap: 4px;
+      width: 35%;
+    }
+
+    .button svg {
+      width: auto;
+      height: 6vh;
+      min-width: 3vh;
+    }
+    
+    .friends {
+      width: 60%;
+      height: auto;
+      padding: 1.5vh;
+      margin-bottom: 4vh;
+    }
+
+    .friendsButton {
+      height: auto;
+      font-size: 16px;
+    }
+
+    .friendsButton svg {
+      width: auto;
+      height: 40px;
+    }
+
+    .playButton {
+      width: 50%;
+      padding: 1vh;
+    }
+
+    .playSub {
+      width: 60%;
+    }
+
+    .playSub p {
+      font-size: 18px;
+    }
+
+    .playArrow img {
+      width: 80%;
+      margin-left: 10px;
+    }
+
+    @keyframes arrowRightLeft {
+      0% { left: 0; }
+      50% { left: -10px; } 
+      100% { left: 0; }
+    }
+
+    .alert {
+      width: 80%;
+      height: auto;
+      border-radius: 10px;
+      padding: 4vw;
+    }
+
+    .alert h2{
+      font-size: 18px;
+    }
+
+    .alert p{
+      font-size: 16px;
+      margin-bottom: 10vw;
+    }
+
+    .alertSubButton {
+      font-size: 16px;
+      width: auto;
+      height: auto;
+      border-radius: 5px;
+      bottom: 2vw;
+    }
+
+
+    .shareDiv input {
+      font-size: 10px;
+    }
+
+    .shareDiv svg {
+      width: 18%;
+    }
+
+    .alert-message{
+      font-size: 16px;
+      padding: 1vw 2vw;
+    }
+
+    .rowTop {
+      width: 90%;
+      margin-bottom: 7%;
+    }
+
+    .exitButton {
+      font-size: 16px;
+      padding: 0.6vw 1.6vw;
+    }
+
+    .timer {
+      height: 4vh;
+      width: 90%;
+      margin-bottom: 7%;
+    }
+
+    .timer p{
+      width: auto;
+      font-size: 14px;
+      margin: 0.5vw 1.2vw;
+    }
+
+    .timer svg {
+      width: 8%;
+      height: auto;
+      margin: 0.5vw 1.2vw;
+    }
+
+    .question {
+      margin-bottom: 5%;
+      font-size: 16px;
+      height: auto;
+      padding: 2vh 2vw;
+    }
+
+    .answer_row {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .answer {
+      width: 75%;
+      height: auto;
+      font-size: 12px;
+      padding: 1.5vh 1.5vw;
+      margin: 4%;
+    }
+
+    .answeredCart {
+      top: 2.5vh;
+      right: 0;
+      left: 0;
+    }
+  
+    .answeredCart img {
+      width: 20vw
+    }
+
+    .score {
+        width: 30vw;
+        height: 30vw;
+        margin-bottom: 15%;
+    }
+
+    .score h1{
+      margin: 0;
+      font-size: 8vw;
+    }
+
+    .score p {
+      font-size: 8vw;
+    }
+
+    .answer_results {
+      width: 100%;
+      gap: 4vw;
+      margin-bottom: 15%;
+    }
+
+
+
+    .buttonResultCorrect {
+      width: 30%;
+      font-size: 6vw;
+      padding: 2% 5%;
+    }
+
+    .buttonResultWrong {
+      width: 30%;
+      font-size: 6vw;
+      padding: 2% 5%;
+    }
+
+    .goMenuButton {
+      font-size: 6vw;
+      padding: 1vh 5vw;
+    }
+  }
+
+  @media screen and (min-width: 600px) and (max-width: 1000px) {
+    .row{
+      height: 8vw;
+      margin-bottom: 4vh;
+    }
+
+    .logo img {
+      top: 7.5%;
+    }
+
+    .item {
+      width: 30%;
+      height: 80%;
+    }      
+
+    .title1 {
+      font-size: 2vw;
+    }
+
+    .title {
+      font-size: 2vw;
+    }
+
+    .item img{
+      height: 80%;
+      width: auto;
+    }
+
+    .text {
+      font-size: 17px;
+      width: 70%;
+      height: auto;
+      padding: 0 2vw;
+      margin-bottom: 2vh;
+    }
+
+    .twoButtons {
+      width: 100%;
+      margin-bottom: 2vh;
+    }
+
+    .button {
+      font-size: 16px;
+      gap: 2vw;
+    }
+
+    .button svg {
+      height: 5vh;
+      width: auto;
+    }
+
+    .friends {
+      width: 45%;
+      margin-bottom: 4vh;
+    }
+    
+    .friendsButton {
+      height: 6vw;
+      font-size: 18px;
+    }
+
+    .friendsButton svg {
+      width: 4.5vw;
+      height: auto;
+    }
+
+    .playButton {
+      width: 25%;
+    }
+
+    .playSub p {
+      font-size: 22px;
+    }
+
+    .playSub img {
+      width: 60%;
+    }
+
+    .alert {
+      width: 80%;
+      height: auto;
+      border-radius: 10px;
+      padding: 4vw;
+    }
+
+    .alert h2{
+      font-size: 3.5vw;
+    }
+
+    .alert p{
+      font-size: 3vw;
+      margin-bottom: 5vw;
+    }
+
+    .alertSubButton {
+      font-size: 4vw;
+      width: auto;
+      height: auto;
+      bottom: 3vw;
+    }
+
+    .shareDiv input {
+      font-size: 16px;
+    }
+
+    .shareDiv svg {
+      width: 15%;
+    }
+
+    .alert-message{
+      font-size: 24px;
+      padding: 1vw 2vw;
+    }
+
+    .rowTop {
+      width: 90%;
+      margin-bottom: 5%;
+    }
+
+    .exitButton {
+      font-size: 16px;
+      padding: 0.6vw 1.6vw;
+    }
+
+    .timer {
+      height: 6vh;
+      width: 90%;
+      margin-bottom: 5%;
+    }
+
+    .timer p{
+      width: auto;
+      font-size: 14px;
+      margin: 0.5vw 1.2vw;
+    }
+
+    .timer svg {
+      width: 8%;
+      height: auto;
+      margin: 0.5vw 1.2vw;
+    }
+
+    .question {
+      margin-bottom: 3%;
+      font-size: 20px;
+      height: auto;
+      padding: 2vh 2vw;
+    }
+
+    .answer_row {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .answer {
+      width: 75%;
+      height: auto;
+      font-size: 16px;
+      padding: 1.5vh 1.5vw;
+      margin: 2%;
+    }
+    
+    .answeredCart {
+      top: 2.5vh;
+      right: 0;
+      left: 0;
+    }
+  
+    .answeredCart img {
+      width: 18vw;
+    }
+  }
+
+  @media screen and (min-width: 1000px) and (max-width: 1600px) {
+    .row {
+      height: 8vw;
+      margin-bottom: 4vh;
+    }
+
+    .logo img {
+      top: 7%;
+    }
+
+    .timer{
+      height: 8vh;
+    }
+
+    .item {
+      width: 30%;
+    }
+    
+    .title1{
+      font-size: 22px;
+    }
+
+    .title {
+      font-size: 22px;
+    }
+
+    .item img {
+      width: 6vw;
+    }
+
+    .text {
+      height: auto;
+      font-size: 18px;
+      padding: 0 3vw;
+      margin-bottom: 2vh;
+    }
+
+    .twoButtons {
+      width: 80%;
+      height: auto;
+      margin-bottom: 2vh;
+    }
+
+    .button {
+      width: 35%;
+      font-size: 20px;
+    }
+
+    .button svg {
+      height: 3vw;
+      width: 6vw;
+    }
+
+    .friends {
+      margin-bottom: 3vw;
+    }
+
+    .friendsButton {
+      font-size: 22px;
+    }
+    
+    .playSub p { 
+      font-size: 20px;
+    }
+    
+
+    .playButton img {
+      width: 80%;
+    }
+
+    @keyframes arrowRightLeft {
+      0% { left: 0; }
+      50% { left: 10px; } 
+      100% { left: 0; }
+    }
+
+    .alert {
+      width: 70%;
+      height: auto;
+      border-radius: 10px;
+      padding: 4vw;
+    }
+
+    .alert h2{
+      font-size: 2.5vw;
+    }
+
+    .alert p{
+      font-size: 2vw;
+      margin-bottom: 3vw;
+    }
+
+    .shareDiv {
+      width: 60%;
+      margin-bottom:6%;
+    }
+
+    .alertSubButton {
+      font-size: 3vw;
+      width: auto;
+      height: auto;
+      bottom: 2vw;
+    }
+
+    .shareDiv input {
+      font-size: 20px;
+    }
+
+    .shareDiv svg {
+      width: 10%;
+    }
+
+    .alert-message{
+      font-size: 28px;
+      padding: 1vw 2vw;
+    }
+
+    .answeredCart {
+      top: 1.5vh;
+      right: 0;
+      left: 0;
+    }
+  
+    .answeredCart img {
+      width: 10vw;
+    }
+  }
+
+  @media screen and (min-width: 1600px) and (max-width: 2200px) {
+    .logo img {
+      top: 6%;
+    }
+
+    .title1{
+     font-size: 2vw; 
+    }
+
+    .answeredCart {
+      top: 1.5vh;
+      right: 0;
+      left: 0;
+    }
+  
+    .answeredCart img {
+      width: 10vw;
+    }
+  }
+
+  @media screen and (min-width: 2200px) and (max-width: 3600px) {
+
+    .row {
+      padding: 0.5vw 0;
+    }
+
+    .title1{
+     font-size: 30px; 
+    }
+
+    .item img {
+      height: 100px;
+      width: auto;
+    }
+  }
