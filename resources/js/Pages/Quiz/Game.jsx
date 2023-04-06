@@ -2,6 +2,7 @@ import '../../../css/style.css'
 import React, { Component } from "react";
 import { Link, Head } from '@inertiajs/react';
 import music from './Music';
+import Addvertisement from './Addvertisement';
 
 export default class Game extends Component {
 
@@ -16,6 +17,8 @@ export default class Game extends Component {
     this.correctCount = 0;
     this.wrongCount = 0;
     this.noAnswerCount = 0;
+    this.advertisement = props.advertisement;
+    console.log(this.advertisement.data[0]);
 
     this.state = {
       correctCartVisible: false,
@@ -148,6 +151,10 @@ export default class Game extends Component {
     return (
       <>
         <Head title="Quiz" />
+        <div style={{ display:this.advertisement.data[0] }}>
+          <Addvertisement/>
+        </div>
+
         <div className="bg">
 
           <div className='rowTop'>

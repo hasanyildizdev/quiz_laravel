@@ -73,7 +73,7 @@
     justify-content: center;
   }
 
-  .button { 
+  .buttonTwo { 
     font-size: 1.5vw;
     border-radius: 25px;
     width: 30%;
@@ -86,7 +86,7 @@
     margin-bottom: 2vw;
   }
 
-  .button svg {
+  .buttonTwo svg {
     width: 4vw;
     height: 2.5vw;
   }
@@ -668,6 +668,11 @@
 
   .admin_bg h3 {
     color: #fff;
+    width: 10%;
+    margin: auto;
+    text-align: center;
+    font-size: 1vw;
+    font-weight: bold;
   }
 
   .form-group-admin{
@@ -697,6 +702,8 @@
 
   .form-admin-submit-button{
     margin-top: 2vh;
+    display: flex;
+    justify-content: center;
   }
 
   .form-admin-submit-button input {
@@ -730,8 +737,6 @@
   }
 
   .questionList {
-    width: 95%;
-    margin: auto;
     margin-top: 5vw;
   }
 
@@ -739,12 +744,12 @@
     color: #fff;
   }
 
-  .table {
-    width: 100%;
-    max-width: 100%;
-    margin-bottom: 1rem;
-    background-color: transparent;
-    border-collapse: collapse;
+  .adminAdvertisement {
+    margin-top: 5vw;
+  }
+
+  .userList{
+    margin-top: 5vw;
   }
   
   .table {
@@ -758,29 +763,21 @@
   
   .table th,
   .table td {
+    display:ruby;
     padding: 0.75rem;
-    vertical-align: top;
+    text-align: center;
+    vertical-align: center;
     border-top: 1px solid #dee2e6;
   }
   
   .table thead th {
-    vertical-align: bottom;
+    vertical-align: center;
     border-bottom: 2px solid #dee2e6;
     text-align: center;
   }
   
-  .table tbody + tbody {
+  .table tbody {
     border-top: 2px solid #dee2e6;
-  }
-  
-  .table td:first-child,
-  .table th:first-child {
-    border-left: none;
-  }
-  
-  .table td:last-child,
-  .table th:last-child {
-    border-right: none;
   }
 
   .deleteQestionButton {
@@ -796,6 +793,37 @@
     align-items: center;
     justify-content: center;
   }
+
+  .advertisement {
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    text-align: center;
+      margin: 0;
+      padding: 0;
+  }
+  
+  .advertisement h1 {
+    font-size: 36px;
+    color: #333;
+  }
+  
+  .addcta {
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .advertisement a {
+    display: inline-block;
+    background-color: #333;
+    color: #fff;
+    font-size: 24px;
+    padding: 5px;
+    text-decoration: none;
+    border-radius: 999px;
+    padding:  10px 50px;
+    margin: 10px;
+  } 
+
 
   @media screen and (max-width: 600px) {
     
@@ -848,14 +876,14 @@
       margin-bottom: 3vh;
     }
 
-    .button {
+    .buttonTwo {
       font-size: 14px;
       padding: 1vw 2vh;
       gap: 4px;
       width: 35%;
     }
 
-    .button svg {
+    .buttonTwo svg {
       width: auto;
       height: 6vh;
       min-width: 3vh;

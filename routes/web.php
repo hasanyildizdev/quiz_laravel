@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\Result;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -17,7 +18,11 @@ Route::get('/', function () {
 });
 
 Route::get('/quiz', [GameController::class, 'index'])->name('quiz.index');
+Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.store');
+Route::post('/admin/delete', [AdminController::class, 'delete'])->name('admin.delete');
+Route::post('/admin/delete_user', [AdminController::class, 'delete_user'])->name('admin.delete_user');
 Route::get('/result', [Result::class, 'index'])->name('result.index');
+Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
