@@ -11,6 +11,9 @@ use App\Models\CorrectModel;
 use App\Http\Resources\CorrectResource;
 use App\Models\User;
 use App\Http\Resources\UsersResource;
+use App\Models\AdvertisementModel;
+use App\Http\Resources\AdvertisementResource;
+
 class AdminController extends Controller
 
 {
@@ -19,10 +22,12 @@ class AdminController extends Controller
         $questions = QuestionsResource::collection(QuestionsModel::all());
         $answers = AnswersResource::collection(AnswersModel::all());
         $users = UsersResource::collection(User::all());
+        $advertisement = AdvertisementResource::collection(AdvertisementModel::all());
         return Inertia::render('Quiz/Admin', [
             'questions' => $questions,
             'answers' => $answers,
             'users' => $users,
+            'advertisement' => $advertisement
         ]);
     }
 
@@ -86,6 +91,26 @@ class AdminController extends Controller
         User::where('id', $request->userID)->delete();
         return to_route('admin.index');
     }
+
+    public function store_ad(Request $request){
+        
+        //dd($request->active);
+
+        $request->validate([ 
+            'question_id' => ['required', 'integer'],
+            'active' => ['required', 'boolean'],
+        ]); 
+
+        $data = [
+            'question_id' => $request->question_id,
+            'active' => (int)$request->active
+        ];
+        
+        AdvertisementModel::where('id', 1)->first()->update($data);
+        
+        return to_route('admin.index');
+    }
+
 
     
 }

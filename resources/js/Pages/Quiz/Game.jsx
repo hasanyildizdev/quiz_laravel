@@ -18,7 +18,6 @@ export default class Game extends Component {
     this.wrongCount = 0;
     this.noAnswerCount = 0;
     this.advertisement = props.advertisement;
-    console.log(this.advertisement.data[0]);
 
     this.state = {
       correctCartVisible: false,
@@ -145,15 +144,23 @@ export default class Game extends Component {
     this.i = 0;
   }
 
+  advertisementDiv = null;
 
   render() {
+
+
+    if(this.advertisement.data[0].active && this.questionNr === this.advertisement.data[0].question_id){
+      this.advertisementDiv = <Addvertisement/>;
+    }
+    else {
+      this.advertisementDiv = null;
+    }
 
     return (
       <>
         <Head title="Quiz" />
-        <div style={{ display:this.advertisement.data[0] }}>
-          <Addvertisement/>
-        </div>
+
+        {this.advertisementDiv}
 
         <div className="bg">
 
