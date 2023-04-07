@@ -1,3 +1,3 @@
 # Phoneix Academy
 
-Laravel Quiz Project
+Laravel Quiz Template
