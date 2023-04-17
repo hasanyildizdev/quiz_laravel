@@ -1,6 +1,7 @@
 import '../../../css/style.css'
 import React, { Component } from "react";
 import { Link, Head } from '@inertiajs/react';
+import { Inertia } from '@inertiajs/inertia';
 
 export default class Result extends Component {
 
@@ -13,7 +14,7 @@ export default class Result extends Component {
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         const urlParams = new URLSearchParams(window.location.search);
 
         this.setState({
@@ -22,6 +23,15 @@ export default class Result extends Component {
             wrongCount: urlParams.get('wrong'),
             noAnswerCount: urlParams.get('noanswer'),
         });
+
+
+        try {
+            await Inertia.post(route('result.store'), {
+                score: urlParams.get('score'),
+            });
+        } catch (error) {
+            window.alert("Something went wrong! Error: " + error);
+        }
     }
 
     render() {

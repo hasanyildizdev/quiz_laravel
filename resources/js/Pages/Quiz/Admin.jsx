@@ -1,6 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import '../../../css/style.css'
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Inertia } from '@inertiajs/inertia';
 
 export default function Admin(props) {
@@ -20,6 +20,18 @@ export default function Admin(props) {
     let [correct, setCorrect] = useState('');
     let [adNr, setAdNr] = useState('');
     let [isAdOn, setIsAdOn] = useState(advertisementActive);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [usersPerPage, setUsersPerPage] = useState(10);
+
+    const indexOfLastUser = currentPage * usersPerPage;
+    const indexOfFirstUser = indexOfLastUser - usersPerPage;
+    const currentUsers = props.users.data.slice(indexOfFirstUser, indexOfLastUser);
+
+    const handlePageClick = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
 
     function handleToggle() {
         setIsAdOn(!isAdOn);
@@ -115,7 +127,9 @@ export default function Admin(props) {
     return (
         <>
             <Head title="Admin" />
+            
             <div className='admin_bg'>
+
                 <div className='adminPanel'>
                     <Link href={'/'} style={{ textDecoration: 'none' }}>
                         Quiz
@@ -194,6 +208,42 @@ export default function Admin(props) {
                     </form>
                 </div>
 
+                <div className='flex justify-center mt-10'>
+                        <div className=' bg-orange-400 w-1/3 py-4 rounded-lg'>
+                            <h3 className='pb-4 flex justify-center'>Advertisement</h3>
+
+                            <form className='flex flex-row justify-center items-center' onSubmit={onSubmitAd}>
+                                <div className='flex flex-col  ml-4'>
+                                   <h4 className='pr-4'>QuestionID: {advertisementID} </h4>
+                                    <h4 className='pr-4'>Active: {advertisementActive} </h4>
+                                </div>
+                                <div className="mx-auto pl-6">
+                                    <input
+                                        placeholder='Question ID'
+                                        type="number"
+                                        required
+                                        value={adNr}
+                                        onChange={onChangeAdNR}
+                                    />
+                                </div>
+                                <div className='ml-auto mr-4'>
+                                    <input type="submit" value="Update" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer"/>
+                                </div>
+                            </form>
+                            
+                            <div className='flex justify-center mt-5'>
+                                <button className={`text-white font-bold mx-4 py-2 px-4 rounded-full inline-flex items-center ${isAdOn ? 'bg-green-500' : 'bg-red-500'} hover:scale-105`} onClick={handleToggle}>
+                                    <span className="mr-2">{isAdOn ? 'On' : 'Off'}</span>
+                                    <div className="relative">
+                                        <input type="checkbox" id="toggle" className="sr-only" checked={isAdOn} onChange={handleToggle} />
+                                        <label htmlFor="toggle" className="block w-10 h-6 rounded-full bg-white border-4"></label>
+                                        <div className={`dot absolute w-4 h-4 rounded-full bg-gray-300 shadow-md left-1 top-1 transition ${isAdOn ? 'transform translate-x-5' : ''}`}></div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                 <div className="questionList">
                     <h3>Question List</h3>
                     <table className='table'>
@@ -238,58 +288,27 @@ export default function Admin(props) {
                             </tr>
                         </thead>
                         <tbody style={{ display: questionsList.length > 0 ? 'ruby' : 'none' }}>
-                            {userList.map((id, index) => (
-                                <tr key={index}>
-                                    <td>{userList[index].id}</td>
-                                    <td>{userList[index].name}</td>
-                                    <td>{userList[index].email}</td>
-                                    <td>{userList[index].remember_token}</td>
+                            {currentUsers.map((user) => (
+                                <tr key={user.id}>
+                                    <td>{user.id}</td>
+                                    <td>{user.name}</td>
+                                    <td>{user.email}</td>
+                                    <td>{user.remember_token}</td>
                                     <td><button className='deleteQestionButton' onClick={() => onDeleteUser(userList[index].id)}> Delete </button></td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
+
+                        <div className='flex justify-center'>
+                            <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
+                            <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2' disabled={currentUsers.length < usersPerPage} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
+                        </div>
+                    
                     <h3 className='' style={{ display: userList.length > 0 ? 'none' : 'block' }}>
                         No any user !
                     </h3>
                 </div>
-
-                    <div className='flex justify-center'>
-                        <div className=' bg-orange-400 w-1/3 py-4 rounded-lg'>
-                            <h3 className='pb-4 flex justify-center'>Advertisement</h3>
-
-                            <form className='flex flex-row justify-center items-center' onSubmit={onSubmitAd}>
-                                <div className='flex flex-col  ml-4'>
-                                   <h4 className='pr-4'>QuestionID: {advertisementID} </h4>
-                                    <h4 className='pr-4'>Active: {advertisementActive} </h4>
-                                </div>
-                                <div className="mx-auto pl-6">
-                                    <input
-                                        placeholder='Question ID'
-                                        type="number"
-                                        required
-                                        value={adNr}
-                                        onChange={onChangeAdNR}
-                                    />
-                                </div>
-                                <div className='ml-auto mr-4'>
-                                    <input type="submit" value="Update" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer"/>
-                                </div>
-                            </form>
-                            
-                            <div className='flex justify-center mt-5'>
-                                <button className={`text-white font-bold mx-4 py-2 px-4 rounded-full inline-flex items-center ${isAdOn ? 'bg-green-500' : 'bg-red-500'} hover:scale-105`} onClick={handleToggle}>
-                                    <span className="mr-2">{isAdOn ? 'On' : 'Off'}</span>
-                                    <div className="relative">
-                                        <input type="checkbox" id="toggle" className="sr-only" checked={isAdOn} onChange={handleToggle} />
-                                        <label htmlFor="toggle" className="block w-10 h-6 rounded-full bg-white border-4"></label>
-                                        <div className={`dot absolute w-4 h-4 rounded-full bg-gray-300 shadow-md left-1 top-1 transition ${isAdOn ? 'transform translate-x-5' : ''}`}></div>
-                                    </div>
-                                </button>
-                            </div>
-
-                        </div>
-                    </div>
 
             </div>
         </>

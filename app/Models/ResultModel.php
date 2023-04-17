@@ -5,7 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Result extends Model 
+class ResultModel extends Model
 {
     use HasFactory;
+    protected $table = 'scores';
+    protected $primaryKey = 'id';
+    protected $fillable = ['user_id', 'score'];
 }
