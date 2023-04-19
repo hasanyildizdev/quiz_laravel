@@ -6,8 +6,11 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\ResultController;
+use App\Http\Controllers\ResultsController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AdController;
+use App\Http\Controllers\UsersController;
+use App\Http\Controllers\QuestionsController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -16,22 +19,32 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-})->middleware(['auth', 'verified'])->name('dashboard');
+});
 
 Route::get('/quiz', [GameController::class, 'index'])->name('quiz.index');
-Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
-Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.store');
-Route::post('/admin/store_ad', [AdminController::class, 'store_ad'])->name('admin.store_ad');
-Route::post('/admin/delete', [AdminController::class, 'delete'])->name('admin.delete');
-Route::post('/admin/delete_user', [AdminController::class, 'delete_user'])->name('admin.delete_user');
-Route::get('/result', [ResultController::class, 'index'])->name('result.index');
-Route::post('/result/store', [ResultController::class, 'store'])->name('result.store');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
-Route::post('/dashboard/store', [DashboardController::class, 'store'])->name('dashboard.store');
-Route::post('/dashboard/store_ad', [DashboardController::class, 'store_ad'])->name('dashboard.store_ad');
-Route::post('/dashboard/delete', [DashboardController::class, 'delete'])->name('dashboard.delete');
-Route::post('/dashboard/delete_user', [DashboardController::class, 'delete_user'])->name('dashboard.delete_user');
+
+Route::get('/result', [ResultController::class, 'index'])->name('result.index');
+Route::get('/results', [ResultsController::class, 'index'])->name('results.index');
+Route::post('/results/store', [ResultsController::class, 'store'])->name('results.store');
+Route::post('/results/delete_score', [ResultsController::class, 'delete_score'])->name('results.delete_score'); 
+
+Route::get('/ad', [AdController::class, 'index'])->name('ad.index');
+Route::post('/ad/update', [AdController::class, 'update'])->name('ad.update');
+
+Route::get('/users', [UsersController::class, 'index'])->name('users.index');
+Route::post('/users/delete_user', [UsersController::class, 'delete_user'])->name('users.delete_user'); 
+
+Route::get('/questions', [QuestionsController::class, 'index'])->name('questions.index');
+Route::post('/questions/store', [QuestionsController::class, 'store'])->name('questions.store');
+Route::post('/questions/delete', [QuestionsController::class, 'delete'])->name('questions.delete');
+
+
+Route::middleware(['auth', 'verified'])->group(function () { 
+    Route::get('/dashboard', function () { 
+        return Inertia::render('Dashboard'); 
+    })->name('dashboard');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -9,24 +9,17 @@ use App\Models\AnswersModel;
 use App\Http\Resources\AnswersResource;
 use App\Models\CorrectModel;
 use App\Http\Resources\CorrectResource;
-use App\Models\User;
-use App\Http\Resources\UsersResource;
-use App\Models\AdvertisementModel;
-use App\Http\Resources\AdvertisementResource;
+use Illuminate\Support\Facades\Redirect;
 
-class DashboardController extends Controller
+class QuestionsController extends Controller
 {
     public function index()
     {
         $questions = QuestionsResource::collection(QuestionsModel::all());
         $answers = AnswersResource::collection(AnswersModel::all());
-        $users = UsersResource::collection(User::all());
-        $advertisement = AdvertisementResource::collection(AdvertisementModel::all());
-        return Inertia::render('Dashboard', [
+        return Inertia::render('Admin/Questions', [
             'questions' => $questions,
             'answers' => $answers,
-            'users' => $users,
-            'advertisement' => $advertisement
         ]);
     }
 
@@ -72,10 +65,9 @@ class DashboardController extends Controller
                 'question_id' => $request->questionID, 
                 'correct_answer_id' => $request->correct,
             ]);  
-
-            return to_route('admin.index');
+            return Redirect::back();
     }
-
+    
     public function delete(Request $request) {
         $questionID = $request->questionID;
 
@@ -83,30 +75,6 @@ class DashboardController extends Controller
         CorrectModel::where('question_id', $questionID)->delete();
         QuestionsModel::where('question_id', $questionID)->delete();
     
-        return to_route('admin.index');
-    }
-
-    public function delete_user(Request $request) {
-        User::where('id', $request->userID)->delete();
-        return to_route('admin.index');
-    }
-
-    public function store_ad(Request $request){
-        
-        //dd($request->active);
-
-        $request->validate([ 
-            'question_id' => ['required', 'integer'],
-            'active' => ['required', 'boolean'],
-        ]); 
-
-        $data = [
-            'question_id' => $request->question_id,
-            'active' => (int)$request->active
-        ];
-        
-        AdvertisementModel::where('id', 1)->first()->update($data);
-        
-        return to_route('admin.index');
+        return Redirect::back();
     }
 }

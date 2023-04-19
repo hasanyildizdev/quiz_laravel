@@ -24,14 +24,14 @@ export default class Result extends Component {
             noAnswerCount: urlParams.get('noanswer'),
         });
 
-
+ 
         try {
-            await Inertia.post(route('result.store'), {
-                score: urlParams.get('score'),
+            await Inertia.post(route('results.store'), {
+                  score: urlParams.get('score'),
             });
         } catch (error) {
             window.alert("Something went wrong! Error: " + error);
-        }
+        } 
     }
 
     render() {

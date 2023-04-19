@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import '../../css/style.css';
 import music from './Quiz/Music';
 
-export default function Welcome(props) {
+export default function Welcome(props, {auth}) {
 
     const [showGuideAlert, setShowGuideAlert] = useState(false);
     const [showScoreAlert, setShowScoreAlert] = useState(false);
@@ -47,9 +47,10 @@ export default function Welcome(props) {
 
             <div className="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
 
+
                 <div className="bg">
                     <div className='adminPanel'>
-                        <Link href={'/admin'} style={{ textDecoration: 'none' }}>
+                        <Link href={'/dashboard'} style={{ textDecoration: 'none' }}>
                             Admin
                         </Link>
                     </div>
@@ -58,7 +59,6 @@ export default function Welcome(props) {
                             <button className='loginButton'>Sign In</button>
                         </Link>
                     </div>
-
                     <div className="row">
                         <div className='logo'>
                             <img src="img/logo.png" alt="Logo" />

@@ -115,8 +115,6 @@ export default class Game extends Component {
       correctAnswerStyle.backgroundColor = "rgba(0, 255, 0, 0.5)";
     }
 
-    //console.log(this.score);
-
     setTimeout(() => {
       this.questionNr++;
       if (this.questionNr === this.questionCount + 1) {

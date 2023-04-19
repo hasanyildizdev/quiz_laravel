@@ -755,7 +755,6 @@
   .table {
     width: 100%;
     max-width: 100%;
-    margin-bottom: 1rem;
     background-color: #fff;
     border-spacing: 0;
     border-collapse: collapse;
@@ -764,7 +763,6 @@
   .table th,
   .table td {
     display:ruby;
-    padding: 0.75rem;
     text-align: center;
     vertical-align: center;
     border-top: 1px solid #dee2e6;
@@ -781,7 +779,6 @@
   }
 
   .deleteQestionButton {
-    margin: 0.5vw;
     padding: 0.3vw 0.6vw;
     background-color: #FF0000;
     cursor: pointer;
