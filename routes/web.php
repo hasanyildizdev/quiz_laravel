@@ -23,10 +23,9 @@ Route::get('/', function () {
 
 Route::get('/quiz', [GameController::class, 'index'])->name('quiz.index');
 
-
 Route::get('/result', [ResultController::class, 'index'])->name('result.index');
+Route::post('/result/store', [ResultController::class, 'store'])->name('result.store');
 Route::get('/results', [ResultsController::class, 'index'])->name('results.index');
-Route::post('/results/store', [ResultsController::class, 'store'])->name('results.store');
 Route::post('/results/delete_score', [ResultsController::class, 'delete_score'])->name('results.delete_score'); 
 
 Route::get('/ad', [AdController::class, 'index'])->name('ad.index');

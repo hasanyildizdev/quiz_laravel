@@ -373,7 +373,7 @@
 
   .timer svg{
     width: 4%;
-    height: 90%;
+    height: 80%;
     border-radius: 100%;
     margin-right: 1.2%;
   }
@@ -685,7 +685,6 @@
     display: block;
     width: 100%;
     padding: 0.375rem 0.75rem;
-    font-size: 1rem;
     line-height: 1.5;
     color: #495057;
     background-color: #fff;
@@ -834,7 +833,7 @@
     .logo img{
       position: absolute;
       top: 8%;
-      width: 10vw;
+      width: 12%;
       border-radius: 100%;
       border: solid 0.3vw #16076E;
     }
@@ -884,7 +883,13 @@
       height: 6vh;
       min-width: 3vh;
     }
-    
+
+    .loginButton {
+      margin-top: 1vw;
+      margin-right: 1vw;
+      font-size: 4vw;
+    }
+
     .friends {
       width: 60%;
       height: auto;
@@ -993,6 +998,7 @@
     }
 
     .question {
+      width: 80%;
       margin-bottom: 5%;
       font-size: 16px;
       height: auto;
@@ -1061,6 +1067,10 @@
       font-size: 6vw;
       padding: 1vh 5vw;
     }
+
+    .timer svg{
+      height: 80%;
+    }
   }
 
   @media screen and (min-width: 600px) and (max-width: 1000px) {
@@ -1112,6 +1122,12 @@
     .button svg {
       height: 5vh;
       width: auto;
+    }
+
+    .loginButton {
+      margin-top: 1vw;
+      margin-right: 1vw;
+      font-size: 2.2vw;
     }
 
     .friends {
@@ -1206,6 +1222,7 @@
     }
 
     .question {
+      width: 80%;
       margin-bottom: 3%;
       font-size: 20px;
       height: auto;
@@ -1233,6 +1250,10 @@
   
     .answeredCart img {
       width: 18vw;
+    }
+
+    .timer svg{
+      height: 80%;
     }
   }
 
@@ -1287,6 +1308,10 @@
     .button svg {
       height: 3vw;
       width: 6vw;
+    }
+
+    .loginButton {
+      font-size: 1.8vw;
     }
 
     .friends {

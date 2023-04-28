@@ -2,6 +2,7 @@ import '../../../css/style.css'
 import React, { Component } from "react";
 import { Link, Head } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
+import music from '../Quiz/Music';
 
 export default class Result extends Component {
 
@@ -15,7 +16,7 @@ export default class Result extends Component {
     }
 
     async componentDidMount() {
-        const urlParams = new URLSearchParams(window.location.search);
+/*         const urlParams = new URLSearchParams(window.location.search);
 
         this.setState({
             score: urlParams.get('score'),
@@ -31,10 +32,12 @@ export default class Result extends Component {
             });
         } catch (error) {
             window.alert("Something went wrong! Error: " + error);
-        } 
+        }  */
     }
 
+    
     render() {
+
         return (
             <>
                 <Head title="Result" />

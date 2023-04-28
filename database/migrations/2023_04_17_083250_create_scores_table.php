@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('scores', function (Blueprint $table) {
             $table->id();
             $table->integer('score');
+            $table->integer('total_score');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });

@@ -89,7 +89,7 @@ export default function Questions(props) {
                     </Link>
                 </div>
                 <div className='admin_div'>
-                    <h3>Add New Question</h3>
+                    <h3 className=''>Add New Question</h3>
                     <form onSubmit={onSubmit}>
                         <div className="form-group-admin">
                             <input
@@ -156,7 +156,7 @@ export default function Questions(props) {
                         </div>
 
                         <div className="form-admin-submit-button">
-                            <input type="submit" value="Add Question" />
+                            <input type="submit" value="Add Question"/>
                         </div>
                     </form>
                 </div>

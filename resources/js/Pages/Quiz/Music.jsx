@@ -3,22 +3,40 @@ const correct = new Audio('http://localhost:8000/media/true.mp3');
 const wrong = new Audio('http://localhost:8000/media/wrong.mp3'); 
 const time_up = new Audio('http://localhost:8000/media/time_up.mp3'); 
 
+let soundStatus = true;
+
  const music = {
   playMusic: () => {
-    audio.play();
+    if(soundStatus){
+      audio.play();
+    }
   },
   stopMusic: () => {
-    audio.pause();
-    audio.currentTime = 0;
+    if(soundStatus){
+      audio.pause();
+      audio.currentTime = 0;
+    }
   },
   playCorrect: () => {
-     correct.play();
+    if(soundStatus){
+      correct.play();
+    }
   },
   playWrong: () => {
-     wrong.play();
+    if(soundStatus){
+      wrong.play();
+    }
   },
   playTimeUp: () => {
-   time_up.play();
+    if(soundStatus){
+      time_up.play();
+    }
+  },
+  closeSound:() => {
+    soundStatus = false;
+  },
+  openSound: () => {
+    soundStatus = true;
   }
 };
 
