@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ResultsResource extends JsonResource
+class AttemptResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,7 +17,7 @@ class ResultsResource extends JsonResource
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,
-            'score' => $this->score,
+            'point' => $this->point,
         ];
     }
 }

@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ResultModel extends Model
+class AttemptModel extends Model
 {
     use HasFactory;
-    protected $table = 'scores';
+    protected $table = 'attempts';
     protected $primaryKey = 'id';
-    protected $fillable = ['user_id', 'score', 'total_score'];
+    protected $fillable = ['user_id', 'question_id', 'point'];
 }

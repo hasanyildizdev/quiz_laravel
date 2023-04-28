@@ -22,6 +22,7 @@ Route::get('/', function () {
 });
 
 Route::get('/quiz', [GameController::class, 'index'])->name('quiz.index');
+Route::post('/quiz/attempt', [GameController::class, 'attempt'])->name('quiz.attempt');
 
 Route::get('/result', [ResultController::class, 'index'])->name('result.index');
 Route::post('/result/store', [ResultController::class, 'store'])->name('result.store');

@@ -8,8 +8,9 @@ export default function Welcome(props, {auth}) {
     const [showGuideAlert, setShowGuideAlert] = useState(false);
     const [showScoreAlert, setShowScoreAlert] = useState(false);
     const [showShareAlert, setShowShareAlert] = useState(false);
-
+    
     useEffect(() => {
+        music.openSound();
         music.stopMusic();
     });
 
