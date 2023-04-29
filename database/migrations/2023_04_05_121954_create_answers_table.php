@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('question_id');
             $table->string('text');
             $table->integer('option');
+            $table->binary('image')->nullable();
             $table->timestamps();
         });
     }

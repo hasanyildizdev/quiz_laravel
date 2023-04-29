@@ -19,7 +19,7 @@ class AnswersResource extends JsonResource
             'question_id' => $this->question_id,
             'text' => $this->text,
             'option' => $this->option,
-            'text' => $this->text
+            'image' => $this->image
         ];
     }
 }

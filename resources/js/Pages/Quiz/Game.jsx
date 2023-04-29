@@ -185,6 +185,8 @@ export default class Game extends Component {
       }
     }
 
+    console.log(this.props.questions.data[this.questionNr-1].image);
+
     return (
       <>
         <Head title="Quiz" />
@@ -252,6 +254,8 @@ export default class Game extends Component {
             <div className='question'>
               {this.state.questions.find((a) => a.question_id === this.props.questions.data[this.questionNr-1].question_id)?.text}
             </div>
+
+            <img src={`data:image/png;base64,${this.props.questions.data[this.questionNr-1].image}`} alt="Image description" />
 
             <div>
               <div className='answer_row'>

@@ -32,40 +32,51 @@ class QuestionsController extends Controller
             'answer2' => ['required', 'string', 'max:255'],
             'answer3' => ['required', 'string', 'max:255'],
             'answer4' => ['required', 'string', 'max:255'],
-            'correct' => ['required', 'integer', 'between:1,4']
+            'correct' => ['required', 'integer', 'between:1,4'],
+            'imageQuestion' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif','max:2048'],
+            'imageA' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif','max:2048'],
+            'imageB' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif','max:2048'],
+            'imageC' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif','max:2048'],
+            'imageD' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif','max:2048'],
         ]); 
+
 
             QuestionsModel::create([ 
                 'question_id' => $request->questionID, 
                 'text' => $request->question,
+                'image' => $request->file('imageQuestion')
             ]); 
 
             AnswersModel::create([ 
                 'question_id' => $request->questionID, 
                 'text' => $request->answer1,
-                'option' => 1
+                'option' => 1,
+                'image' => $request->imageA
             ]);
             AnswersModel::create([ 
                 'question_id' => $request->questionID, 
                 'text' => $request->answer2,
-                'option' => 2
+                'option' => 2,
+                'image' => $request->imageB
             ]);
             AnswersModel::create([ 
                 'question_id' => $request->questionID, 
                 'text' => $request->answer3,
-                'option' => 3
+                'option' => 3,
+                'image' => $request->imageC
             ]);
             AnswersModel::create([ 
                 'question_id' => $request->questionID, 
                 'text' => $request->answer4,
-                'option' => 4
+                'option' => 4,
+                'image' => $request->imageD
             ]);
             
             CorrectModel::create([ 
                 'question_id' => $request->questionID, 
                 'correct_answer_id' => $request->correct,
             ]);  
-            return Redirect::back();
+          // return Redirect::back();
     }
     
     public function delete(Request $request) {

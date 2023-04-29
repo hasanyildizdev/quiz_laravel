@@ -10,5 +10,5 @@ class AnswersModel extends Model
     use HasFactory;
     protected $table = 'answers';
     protected $primaryKey = 'id';
-    protected $fillable = ['question_id', 'text', 'option'];
+    protected $fillable = ['question_id', 'text', 'option', 'image'];
 }

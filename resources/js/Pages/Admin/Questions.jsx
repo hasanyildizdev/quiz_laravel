@@ -1,6 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import '../../../css/style.css'
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Inertia } from '@inertiajs/inertia';
 import { Link } from '@inertiajs/react';
 
@@ -13,6 +13,11 @@ export default function Questions(props) {
     let [answer3, setAnswer3] = useState('');
     let [answer4, setAnswer4] = useState('');
     let [correct, setCorrect] = useState('');
+    let [imageQuestion,setImageQuestion] = useState(null);
+    let [imageA,setImageA] = useState(null);
+    let [imageB,setImageB] = useState(null);
+    let [imageC,setImageC] = useState(null);
+    let [imageD,setImageD] = useState(null);
 
     let questionsList = props.questions.data;
     let answerList = props.answers.data;
@@ -39,18 +44,40 @@ export default function Questions(props) {
         setCorrect(e.target.value);
     }
 
+    let onChangeImageQuestion = (e) => {
+        setImageQuestion(e.target.files[0]);
+    }
+    let onChangeImageA = (e) => {
+        setImageA(e.target.files[0]);
+    }
+    let onChangeImageB = (e) => {
+        setImageB(e.target.files[0]);
+    }
+    let onChangeImageC = (e) => {
+        setImageC(e.target.files[0]);
+    }
+    let onChangeImageD = (e) => {
+        setImageD(e.target.files[0]);
+    }
+
     let onSubmit = async (e) => {
         e.preventDefault();
         try {
-            await Inertia.post(route('questions.store'), {
+            await Inertia.post('/questions/store', { 
                 questionID: questionID,
-                question: question,
-                answer1: answer1,
-                answer2: answer2,
-                answer3: answer3,
-                answer4: answer4,
-                correct: correct
+                question : question,
+                answer1 : answer1, 
+                answer2 : answer2, 
+                answer3 : answer3, 
+                answer4 : answer4,
+                correct : correct, 
+                imageQuestion : imageQuestion,
+                imageA : imageA,
+                imageB : imageB,
+                imageC : imageC,
+                imageD : imageD
             });
+
             window.alert('Question created successfully.');
         } catch (error) {
             alert("Something went wrong! Error: " + error);
@@ -108,6 +135,9 @@ export default function Questions(props) {
                                 value={question}
                                 onChange={onChangeQuestion}
                             />
+                            <label htmlFor="imageQuestion" className='ml-2'>
+                                <input id="imageQuestion" name="imageQuestion" type="file" onChange={onChangeImageQuestion} className="hidden" />
+                            </label>                            
                         </div>
                         <div className="form-group-admin">
                             <input
@@ -117,6 +147,9 @@ export default function Questions(props) {
                                 value={answer1}
                                 onChange={onChangeA}
                             />
+                            <label htmlFor="imageA" className='ml-2'>
+                                <input id="imageA" name="imageA" type="file" onChange={onChangeImageA} className="hidden" />
+                            </label>                            
                         </div>
                         <div className="form-group-admin">
                             <input
@@ -126,6 +159,9 @@ export default function Questions(props) {
                                 value={answer2}
                                 onChange={onChangeB}
                             />
+                            <label htmlFor="imageB" className='ml-2'>
+                                <input id="imageB" name="imageB" type="file" onChange={onChangeImageB} className="hidden" />
+                            </label>                                 
                         </div>
                         <div className="form-group-admin">
                             <input
@@ -135,6 +171,9 @@ export default function Questions(props) {
                                 value={answer3}
                                 onChange={onChangeC}
                             />
+                            <label htmlFor="imageC" className='ml-2'>
+                                <input id="imageC" name="imageC" type="file" onChange={onChangeImageC} className="hidden" />
+                            </label>     
                         </div>
                         <div className="form-group-admin">
                             <input
@@ -144,6 +183,9 @@ export default function Questions(props) {
                                 value={answer4}
                                 onChange={onChangeD}
                             />
+                            <label htmlFor="imageD" className='ml-2'>
+                                <input id="imageD" name="imageD" type="file" onChange={onChangeImageD} className="hidden" />
+                            </label>                                 
                         </div>
                         <div className="form-group-admin">
                             <input
