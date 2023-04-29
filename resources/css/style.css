@@ -11,8 +11,6 @@
   }
 
   .row {
-    display: flex;
-    justify-content: space-between;
     border-radius: 999px;
     height: 120px;
     width: 80%;
@@ -21,46 +19,19 @@
     color: #000;
     margin-bottom: 2vw;
     margin-top: 2vw;
-    /* border: solid 0.2vw #CCAAF0; */
   }
-  
-  .item {
-    height: 80%;
-    margin: auto;
-    background-color: #fff;
-    border-radius: 999px;
+
+  .logo{
+    width: 100%;
     display: flex;
-    align-items: center;
     justify-content: center;
-    gap: 1vw;
-    width: 20%;
-  }
-
-  .title1 {
-    color: #999;
-    margin: 0;
-    font-size: 1.5vw;
-  }
-
-  .title {
-    margin: 0;
-    font-size: 1.5vw;
-  }
-
-  .item img{
-    height: 80%;
-    width: auto;
+    align-items: center;
   }
 
   .logo img{
-    position: absolute;
-    margin: auto;
-    top: 3%;
     width: 7%;
     border-radius: 100%;
     border: solid 0.3vw #16076E;
-    left: 50%;
-    transform: translateX(-50%);
   }
 
   .twoButtons{
@@ -782,13 +753,6 @@
     cursor: pointer;
   }
 
-  .rewardCoinDiv{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
   .advertisement {
     background-color: #f2f2f2;
     border: 1px solid #ddd;
@@ -830,32 +794,11 @@
     }
 
     .logo img{
-      position: absolute;
-      top: 8%;
       width: 12%;
       border-radius: 100%;
       border: solid 0.3vw #16076E;
     }
 
-    .item {
-      gap: 0;
-      height: auto;
-      width: auto;
-      padding: 0 4vw;
-    }
-
-    .item img{
-      height: 5vh;
-      width: auto;
-    }
-
-    .title1 {
-      font-size: 12px;
-    }
-  
-    .title {
-      font-size: 16px;
-    }
 
     .text {
       height: auto;
@@ -1082,24 +1025,6 @@
       top: 7.5%;
     }
 
-    .item {
-      width: 30%;
-      height: 80%;
-    }      
-
-    .title1 {
-      font-size: 2vw;
-    }
-
-    .title {
-      font-size: 2vw;
-    }
-
-    .item img{
-      height: 80%;
-      width: auto;
-    }
-
     .text {
       font-size: 17px;
       width: 70%;
@@ -1270,22 +1195,6 @@
       height: 8vh;
     }
 
-    .item {
-      width: 30%;
-    }
-    
-    .title1{
-      font-size: 22px;
-    }
-
-    .title {
-      font-size: 22px;
-    }
-
-    .item img {
-      width: 6vw;
-    }
-
     .text {
       height: auto;
       font-size: 18px;
@@ -1393,10 +1302,6 @@
       top: 6%;
     }
 
-    .title1{
-     font-size: 2vw; 
-    }
-
     .answeredCart {
       top: 1.5vh;
       right: 0;
@@ -1414,12 +1319,4 @@
       padding: 0.5vw 0;
     }
 
-    .title1{
-     font-size: 30px; 
-    }
-
-    .item img {
-      height: 100px;
-      width: auto;
-    }
   }

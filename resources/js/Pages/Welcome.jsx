@@ -64,20 +64,6 @@ export default function Welcome(props, {auth}) {
                         <div className='logo'>
                             <img src="img/logo.png" alt="Logo" />
                         </div>
-                        <div className="item">
-                            <img src="img/reward.webp" alt="Reward" />
-                            <div className='rewardCoinDiv'>
-                                <h2 className='title1'>Reward</h2>
-                                <h2 className='title'>0</h2>
-                            </div>
-                        </div>
-                        <div className="item">
-                            <div className='rewardCoinDiv'>
-                                <h2 className='title1'>Coin</h2>
-                                <h2 className='title'>0</h2>
-                            </div>
-                            <img src="img/coin.webp" alt="Coin" />
-                        </div>
                     </div>
 
                     <div className='text purpleStyle'>

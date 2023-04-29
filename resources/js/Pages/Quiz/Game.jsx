@@ -89,7 +89,7 @@ export default class Game extends Component {
 
   answered(answer) {
     let time = document.getElementById("timer").innerText;
-    let correctAnswer = this.state.correctAnswers.find((a) => a.question_id === this.questionNr)['correct_answer_id'];
+    let correctAnswer = this.state.correctAnswers.find((a) => a.question_id === this.props.questions.data[this.questionNr-1].question_id)['correct_answer_id'];
 
     this.buttonsActive = false;
     music.stopMusic();
