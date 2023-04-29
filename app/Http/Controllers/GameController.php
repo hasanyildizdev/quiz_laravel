@@ -27,7 +27,7 @@ class GameController extends Controller
             $attempted_question_ids = array_map('intval', $attempted_question_ids);
             $questions = QuestionsResource::collection(QuestionsModel::whereNotIn('question_id', $attempted_question_ids)->inRandomOrder()->limit(7)->get());
         }else{
-            $questions = QuestionsResource::collection(QuestionsModel::all());
+            $questions = QuestionsResource::collection(QuestionsModel::inRandomOrder()->limit(7)->get());
         } 
         $answers = AnswersResource::collection(AnswersModel::all());
         $correct = CorrectResource::collection(CorrectModel::all());

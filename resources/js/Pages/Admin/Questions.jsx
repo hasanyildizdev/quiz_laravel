@@ -85,10 +85,15 @@ export default function Questions(props) {
     }
 
     onChangeQuestion = onChangeQuestion.bind(this);
+    onChangeImageQuestion = onChangeImageQuestion.bind(this);
     onChangeA = onChangeA.bind(this);
     onChangeB = onChangeB.bind(this);
     onChangeC = onChangeC.bind(this);
     onChangeD = onChangeD.bind(this);
+    onChangeImageA= onChangeImageA.bind(this);
+    onChangeImageB= onChangeImageB.bind(this);
+    onChangeImageC = onChangeImageC.bind(this);
+    onChangeImageD = onChangeImageD.bind(this);
     onChangeCorrectAnswer = onChangeCorrectAnswer.bind(this);
     onSubmit = onSubmit.bind(this);
 
@@ -131,11 +136,10 @@ export default function Questions(props) {
                             <input
                                 placeholder='Question'
                                 type="text"
-                                required
                                 value={question}
                                 onChange={onChangeQuestion}
                             />
-                            <label htmlFor="imageQuestion" className='ml-2'>
+                            <label htmlFor="imageQuestion" className='mr-2'>
                                 <input id="imageQuestion" name="imageQuestion" type="file" onChange={onChangeImageQuestion} className="hidden" />
                             </label>                            
                         </div>
@@ -143,11 +147,10 @@ export default function Questions(props) {
                             <input
                                 placeholder='Answer 1'
                                 type="text"
-                                required
                                 value={answer1}
                                 onChange={onChangeA}
                             />
-                            <label htmlFor="imageA" className='ml-2'>
+                            <label htmlFor="imageA" className='mr-2'>
                                 <input id="imageA" name="imageA" type="file" onChange={onChangeImageA} className="hidden" />
                             </label>                            
                         </div>
@@ -155,11 +158,10 @@ export default function Questions(props) {
                             <input
                                 placeholder='Answer 2'
                                 type="text"
-                                required
                                 value={answer2}
                                 onChange={onChangeB}
                             />
-                            <label htmlFor="imageB" className='ml-2'>
+                            <label htmlFor="imageB" className='mr-2'>
                                 <input id="imageB" name="imageB" type="file" onChange={onChangeImageB} className="hidden" />
                             </label>                                 
                         </div>
@@ -167,11 +169,10 @@ export default function Questions(props) {
                             <input
                                 placeholder='Answer 3'
                                 type="text"
-                                required
                                 value={answer3}
                                 onChange={onChangeC}
                             />
-                            <label htmlFor="imageC" className='ml-2'>
+                            <label htmlFor="imageC" className='mr-2'>
                                 <input id="imageC" name="imageC" type="file" onChange={onChangeImageC} className="hidden" />
                             </label>     
                         </div>
@@ -179,11 +180,10 @@ export default function Questions(props) {
                             <input
                                 placeholder='Answer 4'
                                 type="text"
-                                required
                                 value={answer4}
                                 onChange={onChangeD}
                             />
-                            <label htmlFor="imageD" className='ml-2'>
+                            <label htmlFor="imageD" className='mr-2'>
                                 <input id="imageD" name="imageD" type="file" onChange={onChangeImageD} className="hidden" />
                             </label>                                 
                         </div>
