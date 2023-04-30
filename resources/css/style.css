@@ -30,17 +30,20 @@
     color: #000;
     margin-bottom: 2vw;
     margin-top: 2vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .logo{
-    width: 100%;
+    width: 60%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
   }
 
   .logo img{
-    width: 7%;
+    width: 18%;
     border-radius: 100%;
     border: solid 0.3vw #16076E;
   }
@@ -805,7 +808,7 @@
     }
 
     .logo img{
-      width: 12%;
+      width: 25%;
       border-radius: 100%;
       border: solid 0.3vw #16076E;
     }
@@ -1033,7 +1036,7 @@
     }
 
     .logo img {
-      top: 7.5%;
+      top: 20%;
     }
 
     .text {
@@ -1199,7 +1202,7 @@
     }
 
     .logo img {
-      top: 7%;
+      top: 20%;
     }
 
     .timer{
@@ -1310,7 +1313,7 @@
 
   @media screen and (min-width: 1600px) and (max-width: 2200px) {
     .logo img {
-      top: 6%;
+      top: 20%;
     }
 
     .answeredCart {
