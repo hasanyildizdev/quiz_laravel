@@ -15,6 +15,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\AttemptModel;
 use App\Http\Resources\AttemptResource;
+use App\Models\ScoresModel;
+use App\Http\Resources\ScoresResource;
 use Illuminate\Support\Facades\Auth;
 
 class GameController extends Controller
@@ -55,6 +57,11 @@ class GameController extends Controller
                 'point' => $request->point
             ]);
         }
+
+        $userAttemptCount = AttemptModel::where('user_id', Auth::id())->count();
+        $questionsCount = QuestionModel::count();
+        var_dump( $questionsCount ); exit;
+
 
         return response()->json(['success' => true]);
     }

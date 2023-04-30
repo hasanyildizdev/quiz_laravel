@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import { Link, Head } from '@inertiajs/react';
 import music from './Music';
 import Addvertisement from './Addvertisement';
-import { Inertia } from '@inertiajs/inertia';
 
 export default class Game extends Component {
 
@@ -52,8 +51,6 @@ export default class Game extends Component {
           this.buttonsActive = false;
           clearInterval(id);
           elem.style.width = "100%";
-          let correctAnswer = this.state.correctAnswers.find((a) => a.question_id === this.questionNr)['correct_answer_id'];
-          document.getElementById(correctAnswer).style.backgroundColor = "rgba(0, 255, 0, 0.5)";
 
           music.stopMusic();
           music.playTimeUp();
@@ -67,7 +64,6 @@ export default class Game extends Component {
             else {
               this.i = 0;
               this.setState({ timeisup_visible: false });
-              document.getElementById(correctAnswer).style.backgroundColor = "#212373";
               this.setState({ selectedAnswer: null });
               this.move();
               music.playMusic();
@@ -119,8 +115,7 @@ export default class Game extends Component {
       this.questionNr++;
       if (this.questionNr === this.questionCount + 1) {
           this.goResult();
-      }
-      else {
+      }else {
         this.i = 0;
         answerStyle.backgroundColor = "#212373";
         correctAnswerStyle.backgroundColor = "#212373";
@@ -183,9 +178,6 @@ export default class Game extends Component {
         music.playMusic();
       }
     }
-
-   /*  console.log(this.props.questions.data.find(q => q.question_id === 10).image); */
-   /*  <img src={this.props.questions.data.find(q => q.question_id === 10).image} alt='img' /> */
 
     return (
       <>

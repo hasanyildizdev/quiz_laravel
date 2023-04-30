@@ -82,14 +82,14 @@ export default function Login({ status, canResetPassword }) {
                 <div className="block mt-4">
                     <label className="flex items-center">
                         <Checkbox name="remember" value={data.remember} onChange={handleOnChange} />
-                        <span className="ml-2 text-sm text-gray-600">Remember me</span>
+                        <span className="mr-2 text-sm text-gray-600">Remember me</span>
                     </label>
                 </div>
 
                 <div className="flex items-center justify-end mt-4">
                     <Link
                         href={route('register')}
-                        className="mr-auto text-sm text-white hover:bg-gray-600 bg-gray-900 py-2 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="ml-auto text-sm text-white hover:bg-gray-600 bg-gray-900 py-2 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                         Register
                     </Link>
@@ -103,7 +103,7 @@ export default function Login({ status, canResetPassword }) {
                         </Link>
                     )}
 
-                    <PrimaryButton className="ml-4" disabled={processing}>
+                    <PrimaryButton className="mr-4" disabled={processing}>
                         Log in
                     </PrimaryButton>
                 </div>
