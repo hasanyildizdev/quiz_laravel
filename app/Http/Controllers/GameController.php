@@ -18,11 +18,22 @@ use App\Http\Resources\AttemptResource;
 use App\Models\ScoresModel;
 use App\Http\Resources\ScoresResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class GameController extends Controller
 {
     public function index()
     {
+        if (Auth::check()) {
+            AttemptModel::where('user_id', session('user_session_id'))->update(['user_id' => Auth::id()]);
+        }
+
+
+        $record = ScoresModel::where('user_id', Auth::id())->first();
+        if ($record) {
+            return redirect()->route('congratulations.index')->with('success', 'You completed all quiz!');
+        } 
 
         if( AttemptModel::where('user_id', Auth::id())->get()->count() > 0 ){
             $attempted_question_ids = AttemptModel::where('user_id', Auth::id())->get()->pluck('question_id')->toArray();
@@ -39,31 +50,64 @@ class GameController extends Controller
             'questions' => $questions,
             'answers' => $answers,
             'correct' => $correct,
-            'advertisement' => $advertisement
+            'advertisement' => $advertisement,
         ]);
     }
     
     public function attempt(Request $request)
     {
-        $request->validate([ 
+
+         $request->validate([ 
             'question_id' => ['required', 'integer'],
             'point' => ['required', 'integer'],
         ]); 
 
-        if(AttemptModel::where('user_id', Auth::id())->where('question_id', $request->question_id)->count() == 0){
+        
+        if (Auth::check()) {
+            $result_key = Auth::id();
+        } else {
+            $result_key = session()->get('user_session_id');
+            if (!$result_key) {
+                $result_key = Str::random(40);                
+                session()->put('user_session_id', $result_key);
+            }
+        } 
+
+        $exists = AttemptModel::where('user_id', $result_key)->where('question_id', $request->question_id)->exists();
+
+        if (!$exists) {
             AttemptModel::create([
-                'user_id' => Auth::id(),
+                'user_id' => $result_key,
                 'question_id' => $request->question_id,
                 'point' => $request->point
             ]);
         }
 
-        $userAttemptCount = AttemptModel::where('user_id', Auth::id())->count();
-        $questionsCount = QuestionModel::count();
-        var_dump( $questionsCount ); exit;
 
-
-        return response()->json(['success' => true]);
+        /* Kullanici tum sorulari cozmusse total score olarak kaydet */
+/*         $userAttemptCount = AttemptModel::where('user_id', $result_key)->count();
+        $questionsCount = QuestionsModel::count();
+        if($userAttemptCount === $questionsCount){
+            $totalScore = 0;
+            for($i = 1; $i <=  $questionsCount; $i++){
+                $attempt = AttemptModel::where('user_id', $result_key)->where('question_id', $i)->first();
+                if($attempt){
+                    $totalScore += $attempt->point;
+                }
+            }
+            $record = ScoresModel::where('user_id', $result_key)->first();
+            if ($record) {
+                $record->score =$totalScore;
+                $record->save();
+            } else {
+                ScoresModel::create([
+                    'user_id' => $result_key,
+                    'score' => $totalScore
+                ]);
+            }
+        } 
+  */
+        return response()->json(['message' => 'Attempt saved successfully']); 
     }
 }
 

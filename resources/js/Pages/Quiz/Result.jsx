@@ -22,14 +22,6 @@ export default class Result extends Component {
             wrongCount: urlParams.get('wrong'),
             noAnswerCount: urlParams.get('noanswer'),
         });
-
-/*      try {
-            await Inertia.post(route('results.store'), {
-                  score: urlParams.get('score'),
-            });
-        } catch (error) {
-            window.alert("Something went wrong! Error: " + error);
-        }   */
     }
 
     

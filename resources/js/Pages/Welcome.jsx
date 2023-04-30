@@ -5,6 +5,8 @@ import music from './Quiz/Music';
 
 export default function Welcome(props, {auth}) {
 
+    let scoreList = props.scores.data;
+
     const [showGuideAlert, setShowGuideAlert] = useState(false);
     const [showScoreAlert, setShowScoreAlert] = useState(false);
     const [showShareAlert, setShowShareAlert] = useState(false);
@@ -59,6 +61,7 @@ export default function Welcome(props, {auth}) {
                             <button className='loginButton'>Sign In</button>
                         </Link>
                     </div>
+
                     <div className="row">
                         <div className='logo'>
                             <h1 className=' text-white text-xl lg:text-4xl'>QUIZ</h1>
@@ -122,10 +125,25 @@ export default function Welcome(props, {auth}) {
 
                     <div className={`purpleStyle alert ${showScoreAlert ? 'show' : ''}`}>
                         <h2>تارریخچه امتیازات</h2>
-                        <p>
-                            3	0	شرکت در بازی	1401/10/5 13:37 <br />
-                            4	20	شرکت در بازی	1401/10/5 13:37 <br />
-                        </p>
+
+                        <table className="w-full mb-12 mb-12 md:mb-16 lg:mb-18">
+                            <thead>
+                                <tr className="text-white text-center">
+                                    <th className="px-2 py-3">#</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">USER ID</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">SCORE</th>
+                                </tr>
+                            </thead>
+                            <tbody style={{ display: scoreList.length > 0 ? 'ruby' : 'none' }}>
+                                {scoreList.map((user,index) => (
+                                <tr key={user.user_id} className="text-white text-center">
+                                    <td className="px-2 py-4 whitespace-nowrap text-sm font-medium">{index+1}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{scoreList[index].user_id}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{scoreList[index].score}</td>
+                                </tr>
+                                ))}
+                            </tbody>
+                        </table>
                         <button className='alertSubButton' onClick={handleScoreAlertClick}>فهمیدم!</button>
                     </div>
 

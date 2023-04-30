@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\ResultController;
@@ -11,15 +9,10 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\QuestionsController;
+use App\Http\Controllers\CongratulationsController;
+use App\Http\Controllers\WelcomeController;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::get('/', [WelcomeController::class, 'index']);
 
 Route::get('/quiz', [GameController::class, 'index'])->name('quiz.index');
 Route::post('/quiz/attempt', [GameController::class, 'attempt'])->name('quiz.attempt');
@@ -39,6 +32,7 @@ Route::get('/questions', [QuestionsController::class, 'index'])->name('questions
 Route::post('/questions/store', [QuestionsController::class, 'store'])->name('questions.store');
 Route::post('/questions/delete', [QuestionsController::class, 'delete'])->name('questions.delete');
 
+Route::get('/congratulations', [CongratulationsController::class, 'index'])->name('congratulations.index');
 
 Route::middleware(['auth', 'verified'])->group(function () { 
     Route::get('/dashboard', function () { 
