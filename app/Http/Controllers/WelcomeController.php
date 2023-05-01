@@ -21,12 +21,23 @@ class WelcomeController extends Controller
 
         $scores = ScoresResource::collection(ScoresModel::orderByDesc('score')->take(10)->get());
 
-        return Inertia::render('Welcome', [
-            'canLogin' => Route::has('login'),
-            'canRegister' => Route::has('register'),
-            'laravelVersion' => Application::VERSION,
-            'phpVersion' => PHP_VERSION,
-            'scores' => $scores
-        ]);
+        if(Auth::check()){
+            return Inertia::render('Welcome', [
+                'canLogin' => Route::has('login'),
+                'canRegister' => Route::has('register'),
+                'laravelVersion' => Application::VERSION,
+                'phpVersion' => PHP_VERSION,
+                'scores' => $scores,
+                'user' => Auth::user()
+            ]);
+        }else{
+            return Inertia::render('Welcome', [
+                'canLogin' => Route::has('login'),
+                'canRegister' => Route::has('register'),
+                'laravelVersion' => Application::VERSION,
+                'phpVersion' => PHP_VERSION,
+                'scores' => $scores,
+            ]);
+        }
     }
 }

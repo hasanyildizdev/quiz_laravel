@@ -11,6 +11,8 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\QuestionsController;
 use App\Http\Controllers\CongratulationsController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MyProfileController;
 
 Route::get('/', [WelcomeController::class, 'index']);
 
@@ -33,11 +35,10 @@ Route::post('/questions/store', [QuestionsController::class, 'store'])->name('qu
 Route::post('/questions/delete', [QuestionsController::class, 'delete'])->name('questions.delete');
 
 Route::get('/congratulations', [CongratulationsController::class, 'index'])->name('congratulations.index');
+Route::get('/myprofile', [MyProfileController::class, 'index'])->name('myprofile.index');
 
-Route::middleware(['auth', 'verified'])->group(function () { 
-    Route::get('/dashboard', function () { 
-        return Inertia::render('Dashboard'); 
-    })->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
 });
 
 Route::middleware('auth')->group(function () {

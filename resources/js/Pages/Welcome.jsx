@@ -2,8 +2,9 @@ import { Link, Head } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 import '../../css/style.css';
 import music from './Quiz/Music';
+import Dropdown from '@/Components/Dropdown';
 
-export default function Welcome(props, {auth}) {
+export default function Welcome(props, { auth }) {
 
     let scoreList = props.scores.data;
 
@@ -14,7 +15,7 @@ export default function Welcome(props, {auth}) {
     useEffect(() => {
         music.openSound();
         music.stopMusic();
-    },[]);
+    }, []);
 
     const handleGuideAlertClick = () => {
         setShowGuideAlert(!showGuideAlert);
@@ -43,7 +44,7 @@ export default function Welcome(props, {auth}) {
             alertMessage.remove();
         }, 3000);
     }
-    
+
     return (
         <>
             <Head title="Welcome" />
@@ -51,10 +52,20 @@ export default function Welcome(props, {auth}) {
             <div className="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
 
                 <div className="bg">
+
                     <div className='loginButtonDiv'>
-                        <Link href={route('login')} style={{ textDecoration: 'none' }}>
-                            <button className='loginButton'>Sign In</button>
-                        </Link>
+
+                        {props.user ? (
+                            <div className='loginButton text-center'>
+                                <Link href={route('logout')} method="post" style={{ textDecoration: 'none' }}>
+                                    Sign Out {props.user.name}
+                                </Link>
+                            </div>
+                        ) : (
+                            <Link href={route('login')} style={{ textDecoration: 'none' }}>
+                                <button className='loginButton'>Sign In</button>
+                            </Link>
+                        )}
                     </div>
 
                     <div className="row">
@@ -130,12 +141,12 @@ export default function Welcome(props, {auth}) {
                                 </tr>
                             </thead>
                             <tbody style={{ display: scoreList.length > 0 ? 'ruby' : 'none' }}>
-                                {scoreList.map((user,index) => (
-                                <tr key={user.user_id} className="text-white text-center">
-                                    <td className="px-2 py-4 whitespace-nowrap text-sm font-medium">{index+1}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{scoreList[index].user_id}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{scoreList[index].score}</td>
-                                </tr>
+                                {scoreList.map((user, index) => (
+                                    <tr key={user.user_id} className="text-white text-center">
+                                        <td className="px-2 py-4 whitespace-nowrap text-sm font-medium">{index + 1}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{scoreList[index].user_id}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{scoreList[index].score}</td>
+                                    </tr>
                                 ))}
                             </tbody>
                         </table>
