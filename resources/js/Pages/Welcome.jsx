@@ -72,7 +72,7 @@ export default function Welcome(props, { auth }) {
                         <div className='logo'>
                             <h1 className=' text-white text-xl lg:text-4xl'>QUIZ</h1>
                             <img src="img/logo.png" alt="Logo" />
-                            <h1 className=' text-white text-xl lg:text-4xl'>TRADE</h1>
+                            <h1 className=' text-white text-xl lg:text-4xl'>TRADER</h1>
                         </div>
                     </div>
 
