@@ -23,7 +23,8 @@ class User extends Authenticatable
         'email',
         'password',
         'score', 
-        'total_score'
+        'total_score',
+        'music_active'
     ];
 
     /**

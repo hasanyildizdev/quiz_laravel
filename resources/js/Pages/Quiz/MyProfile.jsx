@@ -58,21 +58,13 @@ export default class MyProfile extends Component {
                     </div>
 
                     <div className='answer_results'>
-                        <div className='buttonResultWrong text-center'>
+                        <div className='buttonResultCorrect text-center'>
                             Cozulen: { this.completed_question_count } 
                         </div>
                         <div className='buttonResultCorrect text-center'>
                             Kalan: { this.remaining_question_count } 
                         </div>
                     </div>
-                    
-                    {this.total_score ? (
-                        <div className='answer_results'>
-                            <div className='buttonResultCorrect'>
-                                <div className='text-xl lg:text-2xl text-center'> Total Score: {this.total_score} </div>
-                            </div>
-                        </div> 
-                    ) : null}
 
                     <div className='goMenuButtonDiv'>
                         <Link href={'/'} style={{ textDecoration: 'none' }}>

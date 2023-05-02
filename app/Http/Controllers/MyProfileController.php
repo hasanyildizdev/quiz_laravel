@@ -24,6 +24,10 @@ class MyProfileController extends Controller
             $completed_questions_count = AttemptModel::where('user_id', session('user_session_id'))->count() ?? 0;
         }
 
+        if( $completed_questions_count === $questionsCount ) {
+            return redirect('resutl');
+        }
+
         $total_score = 0;
         $record = ScoresModel::where('user_id', Auth::id())->first();
         if ($record) {

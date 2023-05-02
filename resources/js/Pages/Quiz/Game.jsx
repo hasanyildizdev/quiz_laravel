@@ -1,8 +1,12 @@
 import '../../../css/style.css'
 import React, { Component } from "react";
 import { Link, Head } from '@inertiajs/react';
-import music from './Music';
 import Addvertisement from './Addvertisement';
+
+const audio = new Audio('http://localhost:8000/media/music.mp3');
+const correct = new Audio('http://localhost:8000/media/true.mp3');
+const wrong = new Audio('http://localhost:8000/media/wrong.mp3');
+const time_up = new Audio('http://localhost:8000/media/time_up.mp3');
 
 export default class Game extends Component {
 
@@ -28,12 +32,24 @@ export default class Game extends Component {
       questions: this.props.questions.data,
       answers: this.props.answers.data,
       correctAnswers: this.props.correct.data,
+      soundStatus: true
     };
   }
+
   componentDidMount() {
     this.move();
-    music.playMusic();
+    this.playMusic();
+    this.state.music_active = this.props.music_active;
+    console.log(this.state.soundStatus);
   }
+
+  playMusic() { if (this.state.soundStatus) { audio.play(); } }
+  stopMusic() { if (this.state.soundStatus) { audio.pause(); audio.currentTime = 0; } }
+  playCorrect() { if (this.state.soundStatus) { correct.play(); } }
+  playWrong() { if (this.state.soundStatus) { wrong.play(); } }
+  playTimeUp() { if (this.state.soundStatus) { time_up.play(); } }
+  closeSound() { this.state.soundStatus = false; }
+  openSound() { this.state.soundStatus = true; }
 
   move() {
     if (this.i === 0) {
@@ -52,8 +68,8 @@ export default class Game extends Component {
           clearInterval(id);
           elem.style.width = "100%";
 
-          music.stopMusic();
-          music.playTimeUp();
+          this.stopMusic();
+          this.playTimeUp();
           this.setState({ timeisup_visible: true })
           setTimeout(() => {
             this.questionNr++;
@@ -66,7 +82,7 @@ export default class Game extends Component {
               this.setState({ timeisup_visible: false });
               this.setState({ selectedAnswer: null });
               this.move();
-              music.playMusic();
+              this.playMusic();
               this.buttonsActive = true;
             }
           }, 3000);
@@ -85,37 +101,37 @@ export default class Game extends Component {
 
   answered(answer) {
     let time = document.getElementById("timer").innerText;
-    let correctAnswer = this.state.correctAnswers.find((a) => a.question_id === this.props.questions.data[this.questionNr-1].question_id)['correct_answer_id'];
+    let correctAnswer = this.state.correctAnswers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id)['correct_answer_id'];
 
     this.buttonsActive = false;
-    music.stopMusic();
+    this.stopMusic();
     clearInterval(this.id);
     let answerStyle = document.getElementById(answer).style;
     let correctAnswerStyle = document.getElementById(correctAnswer).style;
 
     if (answer === correctAnswer) {
       this.correctCount++;
-      music.playCorrect();
+      this.playCorrect();
       this.setState({ correctCartVisible: true });
       answerStyle.backgroundColor = "rgba(0, 255, 0, 0.5)";
 
-      if (time >= 5) { this.score = this.score + 12; this.attempt( this.props.questions.data[this.questionNr-1].question_id, 12); }
-      else { this.score = this.score + 10; this.attempt( this.props.questions.data[this.questionNr-1].question_id , 10); }
+      if (time >= 5) { this.score = this.score + 12; this.attempt(this.props.questions.data[this.questionNr - 1].question_id, 12); }
+      else { this.score = this.score + 10; this.attempt(this.props.questions.data[this.questionNr - 1].question_id, 10); }
     }
     else {
       this.wrongCount++;
-      music.playWrong();
+      this.playWrong();
       this.setState({ wrongCartVisible: true });
       answerStyle.backgroundColor = "rgba(255, 0, 0, 0.5)";
       correctAnswerStyle.backgroundColor = "rgba(0, 255, 0, 0.5)";
-      this.attempt( this.props.questions.data[this.questionNr-1].question_id, 0);
+      this.attempt(this.props.questions.data[this.questionNr - 1].question_id, 0);
     }
 
     setTimeout(() => {
       this.questionNr++;
       if (this.questionNr === this.questionCount + 1) {
-          this.goResult();
-      }else {
+        this.goResult();
+      } else {
         this.i = 0;
         answerStyle.backgroundColor = "#212373";
         correctAnswerStyle.backgroundColor = "#212373";
@@ -123,66 +139,68 @@ export default class Game extends Component {
         this.setState({ correctCartVisible: false });
         this.setState({ selectedAnswer: null });
         this.move();
-        music.playMusic();
+        this.playMusic();
         this.buttonsActive = true;
       }
     }, 2500);
   }
 
   handleExitClick() {
-    music.stopMusic();
+    this.stopMusic();
     clearInterval(this.id);
     this.i = 0;
   }
 
   advertisementDiv = null;
 
-  async attempt(question_id, point){
+  async attempt(question_id, point) {
     try {
-      await axios.post('/quiz/attempt',{
-             question_id: question_id,
-             point: point
-       });
+      await axios.post('/quiz/attempt', {
+        question_id: question_id,
+        point: point
+      });
     } catch (error) {
       console.error(error);
       throw error;
     }
   }
 
-  goResult(){
+  goResult() {
     let data = { score: this.score, correct: this.correctCount, wrong: this.wrongCount, noanswer: this.noAnswerCount };
     let queryString = new URLSearchParams(data).toString();
-     window.location.href = "/result?" + queryString;
+    window.location.href = "/result?" + queryString;
+  }
+
+  mute() {
+    const muteIcon = document.querySelector('#muteIcon');
+    const unmuteIcon = document.querySelector('#unmuteIcon');
+    if (unmuteIcon.style.display !== 'none') {
+      muteIcon.style.display = 'block';
+      unmuteIcon.style.display = 'none';
+      this.stopMusic();
+      this.closeSound();
+    } else {
+      unmuteIcon.style.display = 'block';
+      muteIcon.style.display = 'none';
+      this.openSound();
+      this.playMusic();
+    }
   }
 
   render() {
     /* Soru yoksa result sayfasina gonder */
-    if(this.questionCount <= 0) {
+    if (this.questionCount <= 0) {
       this.goResult();
     }
 
     if (this.advertisement.data[0].active && this.questionNr === this.advertisement.data[0].question_id) {
       this.advertisementDiv = <Addvertisement />;
-    }else {
+    } else {
       this.advertisementDiv = null;
     }
 
 
-    function mute() {
-      const muteIcon = document.querySelector('#muteIcon');
-      const unmuteIcon = document.querySelector('#unmuteIcon');
-      if (unmuteIcon.style.display !== 'none') {
-        muteIcon.style.display = 'block';
-        unmuteIcon.style.display = 'none';
-        music.stopMusic();
-        music.closeSound();
-      } else {
-        unmuteIcon.style.display = 'block';
-        muteIcon.style.display = 'none';
-        music.openSound();
-        music.playMusic();
-      }
-    }
+
 
     return (
       <>
@@ -195,7 +213,7 @@ export default class Game extends Component {
         <div className="bg">
 
           {/* SOUND ON OFF BUTTON */}
-          <div onClick={mute} className=' absolute right-1 top-1 hover:scale-105 cursor-pointer'>
+          <div onClick={this.mute} className=' absolute right-1 top-1 hover:scale-105 cursor-pointer'>
             <svg id='unmuteIcon' fill="#000000" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"
               viewBox="0 0 512 512" enableBackground="new 0 0 512 512" xmlSpace="preserve"
               className='w-8 h-8 lg:w-12 lg:h-12 '>
@@ -238,7 +256,7 @@ export default class Game extends Component {
               </button>
             </Link>
           </div>
- 
+
           {/* QUESTION */}
           <div id='question_div' style={{ display: this.state.question_visible ? 'block' : 'none' }}>
             <div className='timer'>
@@ -250,49 +268,49 @@ export default class Game extends Component {
             </div>
 
             <div className='question flex flex-col'>
-              {this.props.questions.data[this.questionNr-1].image ? 
-                ( <div className='mt-2 w-full flex justify-center items-center '>
-                    <img src={this.props.questions.data[this.questionNr-1].image} alt="Question" className='max-h-52 object-cover' />
-                  </div> ) : null}
-              {this.state.questions.find((a) => a.question_id === this.props.questions.data[this.questionNr-1].question_id)?.text}
+              {this.props.questions.data[this.questionNr - 1].image ?
+                (<div className='mt-2 w-full flex justify-center items-center '>
+                  <img src={this.props.questions.data[this.questionNr - 1].image} alt="Question" className='max-h-52 object-cover' />
+                </div>) : null}
+              {this.state.questions.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id)?.text}
             </div>
 
             <div>
               <div className='answer_row'>
                 <button id='1' className={`flex flex-col answer ${this.state.selectedAnswer === 1 && 'selected'} ${!this.buttonsActive && 'no-hover'}`} onClick={() => { this.setState({ selectedAnswer: 1 }); this.answered(1); }} disabled={!this.buttonsActive}>
-                  {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr-1].question_id && a.option === 1)?.image ? 
-                  ( <div className='mt-2 w-full flex justify-center items-center '>
-                      <img src={this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr-1].question_id && a.option === 1)?.image} alt="Answer1" className='max-h-56  object-cover'/>
-                  </div>) : null }    
-                  {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr-1].question_id && a.option === 1)?.text}
+                  {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 1)?.image ?
+                    (<div className='mt-2 w-full flex justify-center items-center '>
+                      <img src={this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 1)?.image} alt="Answer1" className='max-h-56  object-cover' />
+                    </div>) : null}
+                  {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 1)?.text}
                 </button>
                 <button id='2' className={`flex flex-col answer ${this.state.selectedAnswer === 2 && 'selected'} ${!this.buttonsActive && 'no-hover'}`} onClick={() => { this.setState({ selectedAnswer: 2 }); this.answered(2); }} disabled={!this.buttonsActive}>
-                  {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr-1].question_id && a.option === 2)?.image ? 
-                  ( <div className='mt-2 w-full flex justify-center items-center '>
-                      <img src={this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr-1].question_id && a.option === 2)?.image} alt="Answer2" className='max-h-56  object-cover'/>
-                  </div>) : null }        
-                  {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr-1].question_id && a.option === 2)?.text}
+                  {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 2)?.image ?
+                    (<div className='mt-2 w-full flex justify-center items-center '>
+                      <img src={this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 2)?.image} alt="Answer2" className='max-h-56  object-cover' />
+                    </div>) : null}
+                  {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 2)?.text}
                 </button>
               </div>
               <div className='answer_row'>
                 <button id='3' className={`flex flex-col answer ${this.state.selectedAnswer === 3 && 'selected'} ${!this.buttonsActive && 'no-hover'}`} onClick={() => { this.setState({ selectedAnswer: 3 }); this.answered(3); }} disabled={!this.buttonsActive}>
-                  {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr-1].question_id && a.option === 3)?.image ? 
-                  ( <div className='mt-2 w-full flex justify-center items-center '>
-                      <img src={this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr-1].question_id && a.option === 3)?.image} alt="Answer3" className='max-h-56  object-cover'/>
-                  </div>) : null }             
-                  {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr-1].question_id && a.option === 3)?.text}
+                  {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 3)?.image ?
+                    (<div className='mt-2 w-full flex justify-center items-center '>
+                      <img src={this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 3)?.image} alt="Answer3" className='max-h-56  object-cover' />
+                    </div>) : null}
+                  {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 3)?.text}
                 </button>
                 <button id='4' className={`flex flex-col answer ${this.state.selectedAnswer === 4 && 'selected'} ${!this.buttonsActive && 'no-hover'}`} onClick={() => { this.setState({ selectedAnswer: 4 }); this.answered(4); }} disabled={!this.buttonsActive}>
-                  {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr-1].question_id && a.option === 4)?.image ? 
-                  ( <div className='mt-2 w-full flex justify-center items-center '>
-                      <img src={this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr-1].question_id && a.option === 4)?.image} alt="Answer4" className='max-h-56  object-cover'/>
-                  </div>) : null }
-                  {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr-1].question_id && a.option === 4)?.text}
+                  {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 4)?.image ?
+                    (<div className='mt-2 w-full flex justify-center items-center '>
+                      <img src={this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 4)?.image} alt="Answer4" className='max-h-56  object-cover' />
+                    </div>) : null}
+                  {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 4)?.text}
                 </button>
               </div>
             </div>
           </div>
-        </div>  
+        </div>
       </>
 
     )

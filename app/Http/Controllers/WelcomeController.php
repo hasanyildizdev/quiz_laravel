@@ -9,11 +9,15 @@ use App\Models\ScoresModel;
 use App\Http\Resources\ScoresResource;
 use App\Models\AttemptModel;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class WelcomeController extends Controller
 {
     public function index(Request $request)
     {
+
         if (Auth::check()) {
             AttemptModel::where('user_id', session('user_session_id'))->update(['user_id' => Auth::id()]);
         }

@@ -12,10 +12,10 @@ class DashboardController extends Controller
 {
     public function show(Request $request)
     {
-/*         $user = Auth::user();
+        $user = Auth::user();
         if (!$user || !$user->hasRole('admin')) {
             return redirect('/')->with('error', 'You do not have permission to access this page.');
-        } */
+        } 
 
         return Inertia::render('Dashboard');
     }

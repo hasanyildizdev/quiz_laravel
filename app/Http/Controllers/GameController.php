@@ -30,6 +30,12 @@ class GameController extends Controller
             return redirect()->route('congratulations.index')->with('success', 'You completed all quiz!');
         } 
 
+        if (Auth::check()) {
+            $music_active = User::where('id', Auth::id())->get('music_active');
+        }else{
+            $music_active = User::where('id', session('user_session_id'))->get('music_active');
+        }
+
         if( AttemptModel::where('user_id', Auth::id())->get()->count() > 0 ){
             $attempted_question_ids = AttemptModel::where('user_id', Auth::id())->get()->pluck('question_id')->toArray();
             $attempted_question_ids = array_map('intval', $attempted_question_ids);
@@ -46,6 +52,7 @@ class GameController extends Controller
             'answers' => $answers,
             'correct' => $correct,
             'advertisement' => $advertisement,
+            'music_active' => $music_active
         ]);
     }
     
@@ -103,6 +110,32 @@ class GameController extends Controller
         } 
   
         return response()->json(['message' => 'Attempt saved successfully']); 
+    }
+
+    public function music(Request $request){
+        
+        if (Auth::check()) {
+            $id_key = Auth::id();
+        } else {
+            $id_key = session()->get('user_session_id');
+            if (!$id_key) {
+                $id_key = Str::random(40);                
+                session()->put('user_session_id', $id_key);
+            }
+        } 
+            
+        $musicModel  = MusicModel::where('user_id', $id_key)->first();
+
+        if (!$musicModel ) {
+            MusicModel::create([
+                'user_id' => $id_key,
+                'active' => $request->music_active,
+            ]);
+        }else{
+            $musicModel->active = $request->music_active;
+            $musicModel->save();
+        }
+
     }
 }
 

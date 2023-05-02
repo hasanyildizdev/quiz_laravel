@@ -1,8 +1,6 @@
 import { Link, Head } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 import '../../css/style.css';
-import music from './Quiz/Music';
-import Dropdown from '@/Components/Dropdown';
 
 export default function Welcome(props, { auth }) {
 
@@ -11,11 +9,6 @@ export default function Welcome(props, { auth }) {
     const [showGuideAlert, setShowGuideAlert] = useState(false);
     const [showScoreAlert, setShowScoreAlert] = useState(false);
     const [showShareAlert, setShowShareAlert] = useState(false);
-
-    useEffect(() => {
-        music.openSound();
-        music.stopMusic();
-    }, []);
 
     const handleGuideAlertClick = () => {
         setShowGuideAlert(!showGuideAlert);

@@ -13,6 +13,7 @@ use App\Http\Controllers\CongratulationsController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MyProfileController;
+use App\Http\Controllers\MusicController;
 
 Route::get('/', [WelcomeController::class, 'index']);
 
@@ -36,6 +37,8 @@ Route::post('/questions/delete', [QuestionsController::class, 'delete'])->name('
 
 Route::get('/congratulations', [CongratulationsController::class, 'index'])->name('congratulations.index');
 Route::get('/myprofile', [MyProfileController::class, 'index'])->name('myprofile.index');
+
+Route::post('/quiz/music', [GameController::class, 'music'])->name('quiz.music');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
