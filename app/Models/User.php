@@ -24,7 +24,6 @@ class User extends Authenticatable
         'password',
         'score', 
         'total_score',
-        'music_active'
     ];
 
     /**

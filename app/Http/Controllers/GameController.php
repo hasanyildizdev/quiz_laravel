@@ -20,6 +20,8 @@ use App\Http\Resources\ScoresResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
+use App\Models\MusicModel;
+
 
 class GameController extends Controller
 {
@@ -31,9 +33,21 @@ class GameController extends Controller
         } 
 
         if (Auth::check()) {
-            $music_active = User::where('id', Auth::id())->get('music_active');
+            $id_key = MusicModel::where('id', Auth::id()); // ->get('music_active');
+            if (!$id_key) {
+                MusicModel::create([
+                    'user_id' => $result_key,
+                    'music_active' => 1,
+                ]);
+            }
+
         }else{
-            $music_active = User::where('id', session('user_session_id'))->get('music_active');
+            $id_key = session()->get('user_session_id');
+            if (!$id_key) {
+                $id_key = Str::random(40);                
+                session()->put('user_session_id', $id_key);
+            }
+            $music_active = User::where('id', session('user_session_id'))->get('music_active');            
         }
 
         if( AttemptModel::where('user_id', Auth::id())->get()->count() > 0 ){
