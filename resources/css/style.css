@@ -610,6 +610,12 @@ label {
   top: 1vh;
 }
 
+.logoutButtonDiv {
+  position: absolute;
+  left: 0.5vw;
+  top: 1vh;
+}
+
 .loginButton {
   font-size: 1.1vw;
   color: #fff;

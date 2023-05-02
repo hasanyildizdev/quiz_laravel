@@ -6,11 +6,24 @@ use Inertia\Inertia;
 use App\Models\ScoresModel;
 use App\Http\Resources\ScoresResource;
 use Illuminate\Support\Facades\Auth;
+use App\Models\QuestionsModel;
+use Illuminate\Support\Facades\Session;
+use App\Models\AttemptModel;
 
 class MyProfileController extends Controller
 {
     public function index()
     {   
+
+        $completed_questions_count = 0;
+        $questionsCount = QuestionsModel::count();
+        
+        if (Auth::check()) {
+            $completed_questions_count = AttemptModel::where('user_id', Auth::id())->count() ?? 0;
+        }else{
+            $completed_questions_count = AttemptModel::where('user_id', session('user_session_id'))->count() ?? 0;
+        }
+
         $total_score = 0;
         $record = ScoresModel::where('user_id', Auth::id())->first();
         if ($record) {
@@ -19,7 +32,9 @@ class MyProfileController extends Controller
 
         return Inertia::render('Quiz/MyProfile', [
             'total_score' => $total_score,
-            'user' => Auth::user()
+            'user' => Auth::user(),
+            'completed_question_count' => $completed_questions_count,
+            'remaining_question_count' => $questionsCount -  $completed_questions_count
         ]);
     }
 }

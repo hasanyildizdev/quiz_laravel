@@ -10,7 +10,6 @@ use App\Http\Resources\ScoresResource;
 use App\Models\AttemptModel;
 use Illuminate\Support\Facades\Auth;
 
-
 class WelcomeController extends Controller
 {
     public function index(Request $request)
