@@ -33,21 +33,27 @@ class GameController extends Controller
         } 
 
         if (Auth::check()) {
-            $id_key = MusicModel::where('id', Auth::id()); // ->get('music_active');
+            $id_key = MusicModel::where('user_id', Auth::id()); 
             if (!$id_key) {
                 MusicModel::create([
-                    'user_id' => $result_key,
+                    'user_id' => Auth::id(),
                     'music_active' => 1,
                 ]);
+            }else{
+                MusicModel::where('user_id', Auth::id());
             }
-
+            $music_active = MusicModel::where('user_id', Auth::id())->get('music_active');
         }else{
             $id_key = session()->get('user_session_id');
             if (!$id_key) {
                 $id_key = Str::random(40);                
                 session()->put('user_session_id', $id_key);
             }
-            $music_active = User::where('id', session('user_session_id'))->get('music_active');            
+            MusicModel::create([
+                'user_id' => $id_key,
+                'music_active' => 1
+            ]);
+            $music_active = MusicModel::where('user_id', session('user_session_id'))->get('music_active');            
         }
 
         if( AttemptModel::where('user_id', Auth::id())->get()->count() > 0 ){

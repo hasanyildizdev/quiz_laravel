@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('music', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
+            $table->string('user_id');
             $table->boolean('music_active');
             $table->timestamps();
         });

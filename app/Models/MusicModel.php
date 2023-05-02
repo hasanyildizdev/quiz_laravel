@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class MusicModel extends Model
 {
     use HasFactory;
-    protected $table = 'attempts';
+    protected $table = 'music';
     protected $primaryKey = 'id';
     protected $fillable = ['user_id', 'music_active'];
 }

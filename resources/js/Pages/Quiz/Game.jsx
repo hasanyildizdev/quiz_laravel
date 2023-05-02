@@ -32,15 +32,14 @@ export default class Game extends Component {
       questions: this.props.questions.data,
       answers: this.props.answers.data,
       correctAnswers: this.props.correct.data,
-      soundStatus: true
+      soundStatus: this.props.music_active
     };
   }
 
   componentDidMount() {
     this.move();
     this.playMusic();
-    this.state.music_active = this.props.music_active;
-    console.log(this.state.soundStatus);
+    console.log('soundStatus:',this.state.soundStatus);
   }
 
   playMusic() { if (this.state.soundStatus) { audio.play(); } }
