@@ -38,7 +38,8 @@ Route::post('/questions/delete', [QuestionsController::class, 'delete'])->name('
 Route::get('/congratulations', [CongratulationsController::class, 'index'])->name('congratulations.index');
 Route::get('/myprofile', [MyProfileController::class, 'index'])->name('myprofile.index');
 
-Route::post('/quiz/music', [GameController::class, 'music'])->name('quiz.music');
+Route::post('/quiz/set_music', [GameController::class, 'set_music'])->name('quiz.set_music');
+Route::get('/quiz/get_music', [GameController::class, 'get_music'])->name('quiz.get_music');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');

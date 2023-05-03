@@ -102,7 +102,7 @@ class QuestionsController extends Controller
                 'question_id' => $request->questionID, 
                 'correct_answer_id' => $request->correct,
             ]);  
-          // return Redirect::back();
+         return Redirect::back();
     }
     
     public function delete(Request $request) {

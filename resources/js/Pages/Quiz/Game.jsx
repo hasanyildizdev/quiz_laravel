@@ -23,6 +23,15 @@ export default class Game extends Component {
     this.noAnswerCount = 0;
     this.advertisement = props.advertisement;
 
+    this.playMusic = this.playMusic.bind(this);
+    this.stopMusic = this.stopMusic.bind(this);
+    this.playCorrect = this.playCorrect.bind(this);
+    this.playWrong = this.playWrong.bind(this);
+    this.playTimeUp = this.playTimeUp.bind(this);
+    this.closeSound = this.closeSound.bind(this);
+    this.openSound = this.openSound.bind(this);
+    this.mute = this.mute.bind(this);
+
     this.state = {
       correctCartVisible: false,
       wrongCartVisible: false,
@@ -32,28 +41,73 @@ export default class Game extends Component {
       questions: this.props.questions.data,
       answers: this.props.answers.data,
       correctAnswers: this.props.correct.data,
-      soundStatus: this.props.music_active
+      musicActive: this.props.music_active,
     };
   }
-
+  
   componentDidMount() {
     this.move();
-    this.playMusic();
-    console.log('soundStatus:',this.state.soundStatus);
+    axios.get('/quiz/get_music')
+    .then(response => {
+      console.log(response.data);
+      this.setState({ musicActive: response.data });
+      if(response.data) {this.playMusic();}
+    })
+    .catch(error => {
+      console.log(error);
+    });
   }
 
-  playMusic() { if (this.state.soundStatus) { audio.play(); } }
-  stopMusic() { if (this.state.soundStatus) { audio.pause(); audio.currentTime = 0; } }
-  playCorrect() { if (this.state.soundStatus) { correct.play(); } }
-  playWrong() { if (this.state.soundStatus) { wrong.play(); } }
-  playTimeUp() { if (this.state.soundStatus) { time_up.play(); } }
-  closeSound() { this.state.soundStatus = false; }
-  openSound() { this.state.soundStatus = true; }
+  componentWillUnmount() {
+    clearInterval(this.id);
+    this.i = 0;
+    audio.pause();
+    audio.currentTime = 0;
+  }
+
+  async closeSound() { 
+    axios.post('/quiz/set_music', { music_active: false })
+      .then(response => { console.log(response.data.message); })
+      .catch(error => { console.log(error); });
+      audio.pause(); audio.currentTime = 0;
+      correct.pause(); 
+      wrong.pause();
+      time_up.pause(); 
+  }
+
+  async openSound() { 
+    axios.post('/quiz/set_music', { music_active: true })
+      .then(response => { console.log(response.data.message); })
+      .catch(error => { console.log(error); });
+      audio.play(); 
+  }
+
+  playMusic () { if (this.state.musicActive) { audio.play(); } }
+  stopMusic () { if (this.state.musicActive) { audio.pause(); audio.currentTime = 0; } }
+  playCorrect () { if (this.state.musicActive) { correct.play(); } }
+  playWrong () { if (this.state.musicActive) { wrong.play(); } }
+  playTimeUp () { if (this.state.musicActive) { time_up.play(); } }
+
+  mute() {
+    const muteIcon = document.querySelector('#muteIcon');
+    const unmuteIcon = document.querySelector('#unmuteIcon');
+    if (unmuteIcon.style.display !== 'none') {
+      muteIcon.style.display = 'block';
+      unmuteIcon.style.display = 'none';
+      this.closeSound();
+    } else {
+      unmuteIcon.style.display = 'block';
+      muteIcon.style.display = 'none';
+      this.openSound();
+    }
+  }
+
 
   move() {
     if (this.i === 0) {
       this.i = 1;
       let elem = document.getElementById("myBar");
+      if(!elem) { return true; }
       let startTime = Date.now();
       let oldCountDown = 11;
       let id = setInterval(frame.bind(this), 10);
@@ -170,22 +224,6 @@ export default class Game extends Component {
     window.location.href = "/result?" + queryString;
   }
 
-  mute() {
-    const muteIcon = document.querySelector('#muteIcon');
-    const unmuteIcon = document.querySelector('#unmuteIcon');
-    if (unmuteIcon.style.display !== 'none') {
-      muteIcon.style.display = 'block';
-      unmuteIcon.style.display = 'none';
-      this.stopMusic();
-      this.closeSound();
-    } else {
-      unmuteIcon.style.display = 'block';
-      muteIcon.style.display = 'none';
-      this.openSound();
-      this.playMusic();
-    }
-  }
-
   render() {
     /* Soru yoksa result sayfasina gonder */
     if (this.questionCount <= 0) {
@@ -215,7 +253,7 @@ export default class Game extends Component {
           <div onClick={this.mute} className=' absolute right-1 top-1 hover:scale-105 cursor-pointer'>
             <svg id='unmuteIcon' fill="#000000" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"
               viewBox="0 0 512 512" enableBackground="new 0 0 512 512" xmlSpace="preserve"
-              className='w-8 h-8 lg:w-12 lg:h-12 '>
+              className='w-8 h-8 lg:w-12 lg:h-12 ' display={this.state.musicActive ? 'block' : 'none'}>
               <path fillRule="evenodd" clipRule="evenodd" d="M256,0C114.609,0,0,114.609,0,256s114.609,256,256,256s256-114.609,256-256
                       S397.391,0,256,0z M256,472c-119.297,0-216-96.703-216-216S136.703,40,256,40s216,96.703,216,216S375.297,472,256,472z"/>
               <path d="M331.141,148.297L232.156,208H168c-4.422,0-8,3.578-8,8v80c0,4.422,3.578,8,8,8h67.5l95.641,59.719
