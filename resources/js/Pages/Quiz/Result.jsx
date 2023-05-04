@@ -30,7 +30,8 @@ export default class Result extends Component {
         return (
             <>
                 <Head title="Result" />
-                <div className="bg">
+                <div className="bg flex items-center">
+                    <div className='w-full h-full pb-24'>
 
                     <div className='score'>
                         <h1> {this.state.score} </h1>
@@ -38,15 +39,15 @@ export default class Result extends Component {
                     </div>
 
                     <div className='answer_results'>
-                        <div className='buttonResultWrong'>
+                        <div className='buttonResultWrong text-center'>
                             <div> Yanlış: {this.state.wrongCount} </div>
                         </div>
-                        <div className='buttonResultCorrect'>
+                        <div className='buttonResultCorrect text-center'>
                             <div> Doğru: {this.state.correctCount}  </div>
                         </div>
                     </div>
 
-                    <div className='no_answer'>
+                    <div className='no_answer text-center'>
                         Cevapsız: {this.state.noAnswerCount}
                     </div>
 
@@ -57,6 +58,7 @@ export default class Result extends Component {
                             </button>
                         </Link>
                     </div>
+                </div>
                 </div>
             </>
         )

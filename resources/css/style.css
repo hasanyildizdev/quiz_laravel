@@ -394,11 +394,6 @@ canvas {
   font-size: 1.5vw;
 }
 
-.answer:hover {
-  transform: scale(1.01);
-  border: solid 0.2vw #00FF7F;
-}
-
 .no-hover {
   pointer-events: none;
 }
@@ -514,9 +509,9 @@ canvas {
 }
 
 .alert-message {
-  border: solid 0.2vw #1C8ADB;
-  background-color: #fff;
-  color: #000;
+  border: solid 0.2vw #ff0000;
+  background-color: #000;
+  color: #fff;
   padding: 10px;
   font-size: 1vw;
   font-weight: bold;
@@ -992,10 +987,15 @@ label {
   .answer_results {
     width: 100%;
     gap: 4vw;
-    margin-bottom: 15%;
+    margin-bottom: 5%;
   }
 
-
+  .no_answer {
+    width: 50%;
+    padding: 3% 5%;
+    font-size: 6vw;
+    margin-bottom: 15%;
+  }
 
   .buttonResultCorrect {
     width: 30%;
@@ -1299,6 +1299,11 @@ label {
   .answeredCart img {
     width: 10vw;
   }
+
+  .answer:hover {
+    transform: scale(1.01);
+    border: solid 0.2vw #00FF7F;
+  }
 }
 
 @media screen and (min-width: 1600px) and (max-width: 2200px) {
@@ -1315,6 +1320,11 @@ label {
   .answeredCart img {
     width: 10vw;
   }
+
+  .answer:hover {
+    transform: scale(1.01);
+    border: solid 0.2vw #00FF7F;
+  }
 }
 
 @media screen and (min-width: 2200px) and (max-width: 3600px) {
@@ -1323,4 +1333,8 @@ label {
     padding: 0.5vw 0;
   }
 
+  .answer:hover {
+    transform: scale(1.01);
+    border: solid 0.2vw #00FF7F;
+  }
 }
