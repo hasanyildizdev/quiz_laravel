@@ -29,7 +29,7 @@ export default class MyProfile extends Component {
 
         return (
             <>
-                <Head title="Congratulations" />
+                <Head title="Profile"/>
                 <div className="bg flex items-center">
                     <div className='w-full h-full pb-24'>
                         <div className='loginButtonDiv'>
@@ -43,33 +43,33 @@ export default class MyProfile extends Component {
                         </div>
 
                         <div className='logoutButtonDiv'>
-                            <button className='loginButton' onClick={logout}> Log Out </button>
+                            <button className='loginButton' onClick={logout}> خروج </button>
                         </div>
 
                         <div className="row">
                             <div className='logo'>
-                                <h1 className=' text-white text-xl lg:text-4xl'>QUIZ</h1>
+                                <h1 className=' text-white text-xl lg:text-4xl'>کوییز</h1>
                                 <img src="img/logo.png" alt="Logo" />
-                                <h1 className=' text-white text-xl lg:text-4xl'>TRADER</h1>
+                                <h1 className=' text-white text-xl lg:text-4xl'>تریدر</h1>
                             </div>
                         </div>
 
                         {!this.quiz_completed ? (
                             <div className='w-full flex justify-center text-green-400 text-2xl lg:text-3xl py-12 font-bold px-6 lg:px-0'>
-                                <h2 className='text-2xl lg:text-3xl text-center'> Wellcome {this.user.name} </h2>
+                                <h2 className='text-2xl lg:text-3xl text-center'> خوش آمدید {this.user.name} </h2>
                             </div>
                         ) : null}
 
                         {this.quiz_completed ? (
                             <div className='w-full flex justify-center text-green-400 text-2xl lg:text-3xl py-12 font-bold px-6 lg:px-0'>
-                                <h2 className='text-xl lg:text-2xl text-center'>Congratulations! You completed all questions</h2>
+                                <h2 className='text-xl lg:text-2xl text-center'>تبریک می گویم!شما تمام سوالات را تکمیل کردید</h2>
                             </div>
                         ) : null}
 
                         {this.quiz_completed ? (
                             <div className='answer_results'>
                                 <div className='buttonResultCorrect'>
-                                    <div className='text-xl lg:text-2xl text-center'> Total Score: {this.total_score} </div>
+                                    <div className='text-xl lg:text-2xl text-center'> مجموع امتیازات: {this.total_score} </div>
                                 </div>
                             </div>
                         ) : null}
@@ -77,10 +77,10 @@ export default class MyProfile extends Component {
                         {!this.quiz_completed ? (
                             <div className='answer_results'>
                                 <div className='buttonResultCorrect text-center'>
-                                    Cozulen: {this.completed_question_count}
+                                    حل شده: {this.completed_question_count}
                                 </div>
                                 <div className='buttonResultCorrect text-center'>
-                                    Kalan: {this.remaining_question_count}
+                                    باقی مانده: {this.remaining_question_count}
                                 </div>
                             </div>
                         ) : null}
@@ -88,7 +88,7 @@ export default class MyProfile extends Component {
                         <div className='goMenuButtonDiv'>
                             <Link href={'/'} style={{ textDecoration: 'none' }}>
                                 <button className='goMenuButton'>
-                                    بازگشت به پروفایل
+                                    بازگشت به منو
                                 </button>
                             </Link>
                         </div>

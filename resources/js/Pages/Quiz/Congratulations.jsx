@@ -19,28 +19,26 @@ export default class Result extends Component {
 
                         <div className="row">
                             <div className='logo'>
-                                <h1 className=' text-white text-xl lg:text-4xl'>QUIZ</h1>
+                                <h1 className=' text-white text-xl lg:text-4xl'>کوییز</h1>
                                 <img src="img/logo.png" alt="Logo" />
-                                <h1 className=' text-white text-xl lg:text-4xl'>TRADER</h1>
+                                <h1 className=' text-white text-xl lg:text-4xl'>تریدر</h1>
                             </div>
                         </div>
 
                         <div className='w-full flex justify-center text-green-400 text-2xl lg:text-3xl py-12 font-bold px-6 lg:px-0'>
-                            <h2 className='text-xl lg:text-2xl text-center'>Congratulations! You completed all questions</h2>
+                            <h2 className='text-xl lg:text-2xl text-center'>تبریک می گویم!شما تمام سوالات را تکمیل کردید</h2>
                         </div>
 
-                        {this.total_score ? (
-                            <div className='answer_results'>
-                                <div className='buttonResultCorrect'>
-                                    <div className='text-xl lg:text-2xl text-center'> Total Score: {this.total_score} </div>
-                                </div>
+                        <div className='answer_results'>
+                            <div className='buttonResultCorrect'>
+                                <div className='text-xl lg:text-2xl text-center'> مجموع امتیازات: {this.total_score} </div>
                             </div>
-                        ) : null}
+                        </div>
 
                         <div className='goMenuButtonDiv'>
                             <Link href={'/'} style={{ textDecoration: 'none' }}>
                                 <button className='goMenuButton'>
-                                    بازگشت به پروفایل
+                                    بازگشت به منو
                                 </button>
                             </Link>
                         </div>

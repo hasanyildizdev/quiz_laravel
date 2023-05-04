@@ -266,7 +266,7 @@ export default class Game extends Component {
         {/* ADVERTISEMENT */}
         {this.advertisementDiv}
 
-        <div className="bg flex items-center">
+        <div className="bg flex justify-center items-center">
           <div className='w-full h-full pb-24'>
 
             {/* SOUND ON OFF BUTTON */}
@@ -298,14 +298,16 @@ export default class Game extends Component {
             {/* TOP BAR : QUESTION NR - RESPONSE IMAGES - EXIT */}
             <div className='rowTop'>
               <div className='questionNr'> {this.questionNr} / {this.questionCount} </div>
-              <div id='timeisup' className='answeredCart' style={{ display: this.state.timeisup_visible ? 'block' : 'none' }}>
-                <img src="/img/timer.webp" alt="Logo" />
-              </div>
-              <div id='correct' className='answeredCart' style={{ display: this.state.correctCartVisible ? 'block' : 'none' }}>
-                <img src="/img/correct.webp" alt="Correct" />
-              </div>
-              <div id='wrong' className='answeredCart' style={{ display: this.state.wrongCartVisible ? 'block' : 'none' }}>
-                <img src="/img/wrong.webp" alt="Wrong" />
+              <div className='icons flex items-center justify-center'>
+                <div id='correct' className='answeredCart' style={{ display: this.state.correctCartVisible ? 'block' : 'none' }}>
+                  <img src="/img/correct.webp" alt="Correct" />
+                </div>
+                <div id='wrong' className='answeredCart' style={{ display: this.state.wrongCartVisible ? 'block' : 'none' }}>
+                  <img src="/img/wrong.webp" alt="Wrong" />
+                </div>
+                <div id='timeisup' className='answeredCart' style={{ display: this.state.timeisup_visible ? 'block' : 'none' }}>
+                  <img src="/img/timer.webp" alt="Logo" />
+                </div>
               </div>
               <Link href={'/'} style={{ textDecoration: 'none' }}>
                 <button id='exitButon' className='exitButton' onClick={() => { this.handleExitClick(); }}>

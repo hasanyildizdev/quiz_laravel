@@ -118,11 +118,11 @@ export default function Register() {
                         href={route('login')}
                         className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
-                        Already registered?
+                        قبلاً ثبت نام کرده اید؟
                     </Link>
 
                     <PrimaryButton className="ml-4" disabled={processing}>
-                        Register
+                        ثبت نام
                     </PrimaryButton>
                 </div>
             </form>

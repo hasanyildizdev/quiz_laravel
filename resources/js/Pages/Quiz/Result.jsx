@@ -35,26 +35,26 @@ export default class Result extends Component {
 
                     <div className='score'>
                         <h1> {this.state.score} </h1>
-                        <p>  سکه  </p>
+                        <p>  امتیاز  </p>
                     </div>
 
                     <div className='answer_results'>
                         <div className='buttonResultWrong text-center'>
-                            <div> Yanlış: {this.state.wrongCount} </div>
+                            <div> غلط: {this.state.wrongCount} </div>
                         </div>
                         <div className='buttonResultCorrect text-center'>
-                            <div> Doğru: {this.state.correctCount}  </div>
+                            <div> درست: {this.state.correctCount}  </div>
                         </div>
                     </div>
 
                     <div className='no_answer text-center'>
-                        Cevapsız: {this.state.noAnswerCount}
+                        بدون پاسخ: {this.state.noAnswerCount}
                     </div>
 
                     <div className='goMenuButtonDiv'>
                         <Link href={'/'} style={{ textDecoration: 'none' }}>
                             <button className='goMenuButton'>
-                                بازگشت به پروفایل
+                                بازگشت به منو
                             </button>
                         </Link>
                     </div>

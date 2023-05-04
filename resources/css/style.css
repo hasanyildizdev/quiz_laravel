@@ -266,7 +266,9 @@ canvas {
 }
 
 .shareDiv input:focus {
-  border: solid 0.2vw #0DCAF0;
+  color: #fff;
+  background-color: #000;
+  border: solid 0.2vw #ff0000;
   outline: none;
 }
 
@@ -283,14 +285,18 @@ canvas {
 }
 
 .rowTop {
-  display: flex;
-  justify-content: space-between;
   width: 80%;
   margin: auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2%;
+}
+
+.icons{
+  height: 8vh;
+  width: 10vw;
+  margin-left: 7vw;
 }
 
 .questionNr {
@@ -496,16 +502,14 @@ canvas {
 }
 
 .answeredCart {
-  margin: 0 20%;
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
+  display: flex;
+  margin-bottom: 1vh;
 }
 
 .answeredCart img {
-  max-width: 8vw;
-  margin: auto;
+  display: block;
+  height: 100%;
+  object-fit: contain;
 }
 
 .alert-message {
@@ -966,7 +970,7 @@ label {
   }
 
   .answeredCart img {
-    width: 20vw
+    width: 20vw;
   }
 
   .score {
@@ -1196,7 +1200,11 @@ label {
   }
 
   .timer{
-    height: 8vh;
+    height: 4vh;
+  }
+
+  .timer p {
+    font-size: 2.4vw;
   }
 
   .text {
@@ -1300,9 +1308,9 @@ label {
     width: 10vw;
   }
 
-  .answer:hover {
-    transform: scale(1.01);
-    border: solid 0.2vw #00FF7F;
+  .exitButton {
+    font-size: 16px;
+    padding: 0.6vw 1.6vw;
   }
 }
 

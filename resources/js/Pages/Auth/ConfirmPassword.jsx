@@ -32,7 +32,7 @@ export default function ConfirmPassword() {
             <Head title="Confirm Password" />
 
             <div className="mb-4 text-sm text-gray-600">
-                This is a secure area of the application. Please confirm your password before continuing.
+                لطفاً قبل از ادامه رمز عبور خود را تأیید کنید
             </div>
 
             <form onSubmit={submit}>
@@ -54,7 +54,7 @@ export default function ConfirmPassword() {
 
                 <div className="flex items-center justify-end mt-4">
                     <PrimaryButton className="ml-4" disabled={processing}>
-                        Confirm
+                        تایید
                     </PrimaryButton>
                 </div>
             </form>
