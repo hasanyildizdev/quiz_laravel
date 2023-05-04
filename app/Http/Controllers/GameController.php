@@ -32,7 +32,7 @@ class GameController extends Controller
         }
         
         // Music player
-        $music_session = session()->get('music_active');
+        $music_session = Session::has('music_active');
         if(!$music_session) {
             session()->put('music_active', true);
             $music_active = true;

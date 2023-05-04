@@ -25,7 +25,9 @@ class MyProfileController extends Controller
         }
 
         if( $completed_questions_count === $questionsCount ) {
-            return redirect('resutl');
+            $quiz_completed = true;
+        }else{
+            $quiz_completed = false;
         }
 
         $total_score = 0;
@@ -38,7 +40,8 @@ class MyProfileController extends Controller
             'total_score' => $total_score,
             'user' => Auth::user(),
             'completed_question_count' => $completed_questions_count,
-            'remaining_question_count' => $questionsCount -  $completed_questions_count
+            'remaining_question_count' => $questionsCount -  $completed_questions_count,
+            'quiz_completed' => $quiz_completed
         ]);
     }
 }

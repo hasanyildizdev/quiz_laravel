@@ -10,6 +10,7 @@ export default class MyProfile extends Component {
         this.total_score = this.props.total_score;
         this.completed_question_count = this.props.completed_question_count;
         this.remaining_question_count = this.props.remaining_question_count;
+        this.quiz_completed = this.props.quiz_completed;
     }
 
     
@@ -53,18 +54,36 @@ export default class MyProfile extends Component {
                         </div>
                     </div>
 
-                    <div className='w-full flex justify-center text-green-400 text-2xl lg:text-3xl py-12 font-bold px-6 lg:px-0'>
-                        <h2 className='text-2xl lg:text-3xl text-center'> Wellcome {this.user.name} </h2>
-                    </div>
+                    {!this.quiz_completed ? ( 
+                        <div className='w-full flex justify-center text-green-400 text-2xl lg:text-3xl py-12 font-bold px-6 lg:px-0'>
+                            <h2 className='text-2xl lg:text-3xl text-center'> Wellcome {this.user.name} </h2>
+                        </div>
+                    ) : null } 
 
-                    <div className='answer_results'>
-                        <div className='buttonResultCorrect text-center'>
-                            Cozulen: { this.completed_question_count } 
+                    {this.quiz_completed ? (
+                        <div className='w-full flex justify-center text-green-400 text-2xl lg:text-3xl py-12 font-bold px-6 lg:px-0'>
+                            <h2 className='text-xl lg:text-2xl text-center'>Congratulations! You completed all questions</h2>
                         </div>
-                        <div className='buttonResultCorrect text-center'>
-                            Kalan: { this.remaining_question_count } 
+                    ) : null}
+
+                    {this.quiz_completed ? (
+                        <div className='answer_results'>
+                            <div className='buttonResultCorrect'>
+                                <div className='text-xl lg:text-2xl text-center'> Total Score: {this.total_score} </div>
+                            </div>
+                        </div> 
+                    ) : null}
+
+                    {!this.quiz_completed ? (
+                        <div className='answer_results'>
+                            <div className='buttonResultCorrect text-center'>
+                                Cozulen: { this.completed_question_count } 
+                            </div>
+                            <div className='buttonResultCorrect text-center'>
+                                Kalan: { this.remaining_question_count } 
+                            </div>
                         </div>
-                    </div>
+                    ) : null } 
 
                     <div className='goMenuButtonDiv'>
                         <Link href={'/'} style={{ textDecoration: 'none' }}>

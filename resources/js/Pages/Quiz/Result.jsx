@@ -32,12 +32,6 @@ export default class Result extends Component {
                 <Head title="Result" />
                 <div className="bg">
 
-                    <div className='loginButtonDiv'>
-                        <Link href={route('login')} style={{ textDecoration: 'none' }}>
-                            <button className='loginButton'>Sign In</button>
-                        </Link>
-                    </div>
-
                     <div className='score'>
                         <h1> {this.state.score} </h1>
                         <p>  سکه  </p>

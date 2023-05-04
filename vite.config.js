@@ -10,4 +10,11 @@ export default defineConfig({
         }),
         react(),
     ],
+    server: {
+        hmr: {
+            host: '192.168.1.6',
+        },
+        port: '5173',
+        host: true
+    } 
 });

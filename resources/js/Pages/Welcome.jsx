@@ -47,7 +47,6 @@ export default function Welcome(props, { auth }) {
                 <div className="bg">
 
                     <div className='loginButtonDiv'>
-
                         {props.user ? (
                             <Link href={'/myprofile'} style={{ textDecoration: 'none' }}>
                                 <button className='loginButton text-center'>{props.user.name}</button>
