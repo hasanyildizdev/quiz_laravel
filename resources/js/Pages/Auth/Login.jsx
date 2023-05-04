@@ -6,6 +6,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -13,6 +14,7 @@ export default function Login({ status, canResetPassword }) {
         password: '',
         remember: '',
     });
+    const { t, tChoice } = useLaravelReactI18n();
 
     useEffect(() => {
         return () => {
@@ -47,7 +49,7 @@ export default function Login({ status, canResetPassword }) {
                         </Link>
                     </div>
 
-                    <InputLabel htmlFor="email" value="ایمیل" />
+                    <InputLabel htmlFor="email" value={t('email')} />
 
                     <TextInput
                         id="email"
@@ -64,7 +66,7 @@ export default function Login({ status, canResetPassword }) {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="رمز عبور" />
+                    <InputLabel htmlFor="password" value={t('password')} />
 
                     <TextInput
                         id="password"
@@ -82,7 +84,7 @@ export default function Login({ status, canResetPassword }) {
                 <div className="block mt-4">
                     <label className="flex items-center">
                         <Checkbox name="remember" value={data.remember} onChange={handleOnChange} />
-                        <span className="mr-2 text-sm text-gray-600">مرا به خاطر بسپار</span>
+                        <span className="mr-2 text-sm text-gray-600">{t('rememberme')}</span>
                     </label>
                 </div>
 
@@ -91,7 +93,7 @@ export default function Login({ status, canResetPassword }) {
                         href={route('register')}
                         className="ml-auto text-sm text-white hover:bg-gray-600 bg-gray-900 py-2 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
-                        ثبت نام
+                        {t('register')}
                     </Link>
 
                     {canResetPassword && (
@@ -99,11 +101,12 @@ export default function Login({ status, canResetPassword }) {
                             href={route('password.request')}
                             className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
-                            رمز عبور خود را فراموش کرده اید؟                       </Link>
+                            {t('forgetpassword')}                     
+                        </Link>
                     )}
 
                     <PrimaryButton className="mr-4" disabled={processing}>
-                        ورود به حساب
+                      {t('login')}
                     </PrimaryButton>
                 </div>
             

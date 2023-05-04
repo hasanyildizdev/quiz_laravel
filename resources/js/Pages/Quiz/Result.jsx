@@ -1,9 +1,17 @@
 import '../../../css/style.css'
 import React, { Component } from "react";
 import { Link, Head } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-export default class Result extends Component {
+function withLaravelReactI18n(Component) {
+  return function WrappedComponent(props) {
+    const { t, tChoice } = useLaravelReactI18n();
+    return <Component {...props} t={t} tChoice={tChoice} />;
+  };
+}
 
+class Result extends Component {
+    
     constructor(props) {
         super(props);
         this.state = {
@@ -26,7 +34,6 @@ export default class Result extends Component {
 
     
     render() {
-
         return (
             <>
                 <Head title="Result" />
@@ -35,26 +42,26 @@ export default class Result extends Component {
 
                     <div className='score'>
                         <h1> {this.state.score} </h1>
-                        <p>  امتیاز  </p>
+                        <p>  {this.props.t('score')}  </p>
                     </div>
 
                     <div className='answer_results'>
                         <div className='buttonResultWrong text-center'>
-                            <div> غلط: {this.state.wrongCount} </div>
+                            <div> {this.props.t('wrong')}: {this.state.wrongCount} </div>
                         </div>
                         <div className='buttonResultCorrect text-center'>
-                            <div> درست: {this.state.correctCount}  </div>
+                            <div> {this.props.t('correct')}: {this.state.correctCount}  </div>
                         </div>
                     </div>
 
                     <div className='no_answer text-center'>
-                        بدون پاسخ: {this.state.noAnswerCount}
+                        {this.props.t('unanswered')} : {this.state.noAnswerCount}
                     </div>
 
                     <div className='goMenuButtonDiv'>
                         <Link href={'/'} style={{ textDecoration: 'none' }}>
                             <button className='goMenuButton'>
-                                بازگشت به منو
+                                {this.props.t('backtomenu')}
                             </button>
                         </Link>
                     </div>
@@ -64,3 +71,5 @@ export default class Result extends Component {
         )
     }
 }
+
+export default withLaravelReactI18n(Result);

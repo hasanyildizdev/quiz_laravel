@@ -1,8 +1,16 @@
 import '../../../css/style.css'
 import React, { Component } from "react";
 import { Link, Head } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-export default class MyProfile extends Component {
+function withLaravelReactI18n(Component) {
+  return function WrappedComponent(props) {
+    const { t, tChoice } = useLaravelReactI18n();
+    return <Component {...props} t={t} tChoice={tChoice} />;
+  };
+}
+
+class MyProfile extends Component {
 
     constructor(props) {
         super(props);
@@ -43,33 +51,33 @@ export default class MyProfile extends Component {
                         </div>
 
                         <div className='logoutButtonDiv'>
-                            <button className='loginButton' onClick={logout}> خروج </button>
+                            <button className='loginButton' onClick={logout}> {this.props.t('logout')} </button>
                         </div>
 
                         <div className="row">
                             <div className='logo'>
-                                <h1 className=' text-white text-xl lg:text-4xl'>کوییز</h1>
+                                <h1 className=' text-white text-xl lg:text-4xl'>{this.props.t('quiz')}</h1>
                                 <img src="img/logo.png" alt="Logo" />
-                                <h1 className=' text-white text-xl lg:text-4xl'>تریدر</h1>
+                                <h1 className=' text-white text-xl lg:text-4xl'>{this.props.t('trader')}</h1>
                             </div>
                         </div>
 
                         {!this.quiz_completed ? (
                             <div className='w-full flex justify-center text-green-400 text-2xl lg:text-3xl py-12 font-bold px-6 lg:px-0'>
-                                <h2 className='text-2xl lg:text-3xl text-center'> خوش آمدید {this.user.name} </h2>
+                                <h2 className='text-2xl lg:text-3xl text-center'> {this.props.t('welcome')} {this.user.name} </h2>
                             </div>
                         ) : null}
 
                         {this.quiz_completed ? (
                             <div className='w-full flex justify-center text-green-400 text-2xl lg:text-3xl py-12 font-bold px-6 lg:px-0'>
-                                <h2 className='text-xl lg:text-2xl text-center'>تبریک می گویم!شما تمام سوالات را تکمیل کردید</h2>
+                                <h2 className='text-xl lg:text-2xl text-center'>{this.props.t('congratulations')}</h2>
                             </div>
                         ) : null}
 
-                        {this.quiz_completed ? (
+                        {this.quiz_completed || true ? (
                             <div className='answer_results'>
                                 <div className='buttonResultCorrect'>
-                                    <div className='text-xl lg:text-2xl text-center'> مجموع امتیازات: {this.total_score} </div>
+                                    <div className='text-xl lg:text-2xl text-center'>{this.props.t('totalpoints')} {this.total_score} </div>
                                 </div>
                             </div>
                         ) : null}
@@ -77,10 +85,10 @@ export default class MyProfile extends Component {
                         {!this.quiz_completed ? (
                             <div className='answer_results'>
                                 <div className='buttonResultCorrect text-center'>
-                                    حل شده: {this.completed_question_count}
+                                    {this.props.t('solved')} {this.completed_question_count}
                                 </div>
                                 <div className='buttonResultCorrect text-center'>
-                                    باقی مانده: {this.remaining_question_count}
+                                   {this.props.t('remain')} {this.remaining_question_count}
                                 </div>
                             </div>
                         ) : null}
@@ -88,7 +96,7 @@ export default class MyProfile extends Component {
                         <div className='goMenuButtonDiv'>
                             <Link href={'/'} style={{ textDecoration: 'none' }}>
                                 <button className='goMenuButton'>
-                                    بازگشت به منو
+                                    {this.props.t('backtomenu')}
                                 </button>
                             </Link>
                         </div>
@@ -98,3 +106,5 @@ export default class MyProfile extends Component {
         )
     }
 }
+
+export default withLaravelReactI18n(MyProfile);

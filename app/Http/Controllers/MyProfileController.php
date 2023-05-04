@@ -14,6 +14,10 @@ class MyProfileController extends Controller
 {
     public function index()
     {   
+        
+        if(!Auth::check()){
+            return redirect('login');
+        }
 
         $completed_questions_count = 0;
         $questionsCount = QuestionsModel::count();
