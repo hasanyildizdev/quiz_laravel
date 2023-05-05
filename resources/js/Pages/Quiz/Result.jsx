@@ -1,12 +1,15 @@
 import '../../../css/style.css'
-import React, { Component } from "react";
+import React, { useEffect, Component } from "react";
 import { Link, Head } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 function withLaravelReactI18n(Component) {
-  return function WrappedComponent(props) {
-    const { t, tChoice } = useLaravelReactI18n();
-    return <Component {...props} t={t} tChoice={tChoice} />;
+    return function WrappedComponent(props) {
+      const { t, setLang  } = useLaravelReactI18n();
+      useEffect(() => {
+            setLang(props.language);
+        },[]);
+    return <Component {...props} t={t}  />;
   };
 }
 
@@ -22,14 +25,19 @@ class Result extends Component {
     }
 
     async componentDidMount() {
-        const urlParams = new URLSearchParams(window.location.search);
-
-        this.setState({
+/*         const urlParams = new URLSearchParams(window.location.search);
+ */       /*  try {
+            const response = await axios.get('/api/data');
+            console.log(response.data);
+          } catch (error) {
+            console.error(error);
+          } */
+/*         this.setState({
             score: urlParams.get('score'),
             correctCount: urlParams.get('correct'),
             wrongCount: urlParams.get('wrong'),
             noAnswerCount: urlParams.get('noanswer'),
-        });
+        }); */
     }
 
     

@@ -25,11 +25,24 @@ class GameController extends Controller
 {
     public function index()
     {
-        // If Completed go to Congratulations
-        $record = ScoresModel::where('user_id', Auth::id())->first();
-        if ($record) {
+        // id atama
+        if (Auth::check()) {
+            $id_key = Auth::id();
+        } else {
+            $id_key = session()->get('user_session_id');
+            if (!$id_key) {
+                $id_key = Str::random(40);                
+                session()->put('user_session_id', $id_key);
+            }
+        } 
+        
+        /* Kullanici tum sorulari cozmusse go to Congratulations */
+        $userAttemptCount = AttemptModel::where('user_id', $id_key)->count();
+        $questionsCount = QuestionsModel::count();
+        if($userAttemptCount === $questionsCount){
             return redirect()->route('congratulations.index')->with('success', 'You completed all quiz!');
-        }
+        } 
+
         
         // Music player
         $music_session = Session::has('music_active');
@@ -90,29 +103,27 @@ class GameController extends Controller
             ]);
         }
 
+        /* Kullanici tum sorulari cozmusse total score olarak kaydet */
+        $totalScore = 0;
+        for($i = 1; $i <=  $questionsCount; $i++){
+            $attempt = AttemptModel::where('user_id', $id_key)->where('question_id', $i)->first();
+            if($attempt){
+                $totalScore += $attempt->point;
+            }
+        }
 
-      /* Kullanici tum sorulari cozmusse total score olarak kaydet */
-      $userAttemptCount = AttemptModel::where('user_id', $id_key)->count();
-        $questionsCount = QuestionsModel::count();
-        if($userAttemptCount === $questionsCount){
-            $totalScore = 0;
-            for($i = 1; $i <=  $questionsCount; $i++){
-                $attempt = AttemptModel::where('user_id', $id_key)->where('question_id', $i)->first();
-                if($attempt){
-                    $totalScore += $attempt->point;
-                }
-            }
-            $record = ScoresModel::where('user_id', $id_key)->first();
-            if ($record) {
-                $record->score =$totalScore;
-                $record->save();
-            } else {
-                ScoresModel::create([
-                    'user_id' => $id_key,
-                    'score' => $totalScore
-                ]);
-            }
-        } 
+        /* Score Atama */
+        $user_score = ScoresModel::where('user_id', $id_key)->first();
+        if ($user_score) {
+            $user_score->score =$totalScore;
+            $user_score->save();
+        } else {
+            ScoresModel::create([
+                'user_id' => $id_key,
+                'score' => $totalScore
+            ]);
+        }
+
   
         return response()->json(['message' => 'Attempt saved successfully']); 
     }
@@ -120,10 +131,6 @@ class GameController extends Controller
     public function set_music(Request $request){
         session()->put('music_active', $request->music_active);
         return response()->json(['message' => 'Music status saved successfully']); 
-    }
-
-    public function get_music() {
-        return response()->json(session()->get('music_active'));
     }
 }
 

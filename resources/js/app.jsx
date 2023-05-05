@@ -16,7 +16,7 @@ createInertiaApp({
 
         root.render(
             <LaravelReactI18nProvider
-                lang={'fa'}
+                lang={'en'}
                 fallbackLang={'en'}
                 resolve={async (lang) => {
                     const langs = import.meta.glob('../../lang/*.json')

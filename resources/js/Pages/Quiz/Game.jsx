@@ -237,10 +237,21 @@ export default class Game extends Component {
     }
   }
 
-  goResult() {
-    let data = { score: this.score, correct: this.correctCount, wrong: this.wrongCount, noanswer: this.noAnswerCount };
-    let queryString = new URLSearchParams(data).toString();
-    window.location.href = "/result?" + queryString;
+  async goResult() {
+    let data = { 
+      score: this.score, 
+      correct: this.correctCount, 
+      wrong: this.wrongCount, 
+      noanswer: this.noAnswerCount 
+    }; 
+    try {
+      const response = await axios.post('/api/data', { data });
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+   /*  let queryString = new URLSearchParams(data).toString(); */
+    window.location.href = "/result";// + queryString;
   }
 
   render() {

@@ -45,7 +45,8 @@ class MyProfileController extends Controller
             'user' => Auth::user(),
             'completed_question_count' => $completed_questions_count,
             'remaining_question_count' => $questionsCount -  $completed_questions_count,
-            'quiz_completed' => $quiz_completed
+            'quiz_completed' => $quiz_completed,
+            'language' => session()->get('language')
         ]);
     }
 }

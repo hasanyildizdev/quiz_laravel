@@ -12,11 +12,22 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Session;
 
 class WelcomeController extends Controller
 {
     public function index(Request $request)
     {
+
+        // Language
+        $language_session = Session::has('language');
+        if(!$language_session) {
+            session()->put('language', 'fa');
+            $language = 'fa';
+        }else{
+            $language = session()->get('language');
+        }
+
         if (Auth::check()) {
             $user_id = Auth::id();
             AttemptModel::where('user_id', session('user_session_id'))->update(['user_id' => $user_id]);
@@ -34,21 +45,20 @@ class WelcomeController extends Controller
 
         if(Auth::check()){
             return Inertia::render('Welcome', [
-                'canLogin' => Route::has('login'),
-                'canRegister' => Route::has('register'),
-                'laravelVersion' => Application::VERSION,
-                'phpVersion' => PHP_VERSION,
                 'scores' => $scores,
-                'user' => Auth::user()
+                'user' => Auth::user(),
+                'language' => $language
             ]);
         }else{
             return Inertia::render('Welcome', [
-                'canLogin' => Route::has('login'),
-                'canRegister' => Route::has('register'),
-                'laravelVersion' => Application::VERSION,
-                'phpVersion' => PHP_VERSION,
                 'scores' => $scores,
+                'language' => $language
             ]);
         }
+    }
+
+    public function set_language(Request $request) {
+        session()->put('language', $request->language);
+        return response()->json(['message' => 'Language changed successfully']); 
     }
 }

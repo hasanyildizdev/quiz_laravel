@@ -1,12 +1,15 @@
 import '../../../css/style.css'
-import React, { Component } from "react";
+import React, { useEffect,  Component } from "react";
 import { Link, Head } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 function withLaravelReactI18n(Component) {
   return function WrappedComponent(props) {
-    const { t, tChoice } = useLaravelReactI18n();
-    return <Component {...props} t={t} tChoice={tChoice} />;
+    const { t, setLang  } = useLaravelReactI18n();
+    useEffect(() => {
+          setLang(props.language);
+      },[]);
+    return <Component {...props} t={t} />;
   };
 }
 

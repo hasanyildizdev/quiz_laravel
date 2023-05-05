@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Models\ScoresModel;
 use App\Http\Resources\ScoresResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class CongratulationsController extends Controller
 {
@@ -17,7 +18,8 @@ class CongratulationsController extends Controller
         }         
 
         return Inertia::render('Quiz/Congratulations', [
-            'total_score' => $total_score
+            'total_score' => $total_score,
+            'language' => session()->get('language')
         ]);
     }
 }

@@ -16,6 +16,7 @@ use App\Http\Controllers\MyProfileController;
 use App\Http\Controllers\MusicController;
 
 Route::get('/', [WelcomeController::class, 'index']);
+Route::post('/set_language', [WelcomeController::class, 'set_language'])->name('set_language');
 
 Route::get('/quiz', [GameController::class, 'index'])->name('quiz.index');
 Route::post('/quiz/attempt', [GameController::class, 'attempt'])->name('quiz.attempt');
@@ -39,7 +40,6 @@ Route::get('/congratulations', [CongratulationsController::class, 'index'])->nam
 Route::get('/myprofile', [MyProfileController::class, 'index'])->name('myprofile.index');
 
 Route::post('/quiz/set_music', [GameController::class, 'set_music'])->name('quiz.set_music');
-Route::get('/quiz/get_music', [GameController::class, 'get_music'])->name('quiz.get_music');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');

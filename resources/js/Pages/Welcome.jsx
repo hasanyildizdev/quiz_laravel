@@ -4,9 +4,24 @@ import '../../css/style.css';
 import { useLaravelReactI18n } from 'laravel-react-i18n'
 
 export default function Welcome(props, { auth }) {
-    const { t, tChoice } = useLaravelReactI18n()
+    const { t, setLang  } = useLaravelReactI18n();
 
     let scoreList = props.scores.data;
+    let language = props.language;
+
+    useEffect(() => {
+        const persian_icon = document.querySelector('#persian_icon');
+        const english_icon = document.querySelector('#english_icon');
+        if(language === 'fa') {
+            setLang('fa');
+            english_icon.style.display = 'block';
+            persian_icon.style.display = 'none';
+        }else if(language === 'en') {
+            setLang('en');
+            persian_icon.style.display = 'block';
+            english_icon.style.display = 'none';
+        }
+    },[]);
 
     const [showGuideAlert, setShowGuideAlert] = useState(false);
     const [showScoreAlert, setShowScoreAlert] = useState(false);
@@ -40,6 +55,26 @@ export default function Welcome(props, { auth }) {
         }, 3000);
     }
 
+    const changeLanguage = async () =>{
+        const persian_icon = document.querySelector('#persian_icon');
+        const english_icon = document.querySelector('#english_icon');
+        if (english_icon.style.display !== 'none') {
+            persian_icon.style.display = 'block';
+            english_icon.style.display = 'none';
+            setLang('en');
+            await axios.post('/set_language', { language: 'en' })
+                .then(response => { console.log(response.data.message); })
+                .catch(error => { console.log(error); });
+        } else {
+            english_icon.style.display = 'block';
+            persian_icon.style.display = 'none';
+            setLang('fa');
+            await axios.post('/set_language', { language: 'fa' })
+                .then(response => { console.log(response.data.message); })
+                .catch(error => { console.log(error); });
+        } 
+    }
+
     return (
         <>
             <Head title="Welcome" />
@@ -48,6 +83,16 @@ export default function Welcome(props, { auth }) {
 
                 <div className="bg flex items-center">
                     <div className='w-full h-full pb-24'>
+
+                        <div className='absolute left-2 top-2'>
+                            <div id="english_icon" className='w-6 h-6 lg:w-10 lg:h-10 hover:scale-105 cursor-pointer' onClick={changeLanguage}>
+                                <img src="img/en.webp" alt='English' className=' object-contain'/>
+                            </div> 
+                            <div id="persian_icon" className='w-6 h-6 lg:w-10 lg:h-10 hover:scale-105 cursor-pointer hidden' onClick={changeLanguage}>
+                                <img src="img/fa.webp" alt='Persian' className=' object-contain'/>
+                            </div>
+                        </div>
+
                         <div className='loginButtonDiv'>
                             {props.user ? (
                                 <Link href={'/myprofile'} style={{ textDecoration: 'none' }}>
