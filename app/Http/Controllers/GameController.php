@@ -25,6 +25,16 @@ class GameController extends Controller
 {
     public function index()
     {
+
+        // Music player
+        $music_session = Session::has('music_active');
+        if(!$music_session) {
+            session()->put('music_active', true);
+            $music_active = true;
+        }else{
+            $music_active = session()->get('music_active');
+        }
+
         // id atama
         if (Auth::check()) {
             $id_key = Auth::id();
@@ -35,32 +45,43 @@ class GameController extends Controller
                 session()->put('user_session_id', $id_key);
             }
         } 
-        
+
         /* Kullanici tum sorulari cozmusse go to Congratulations */
         $userAttemptCount = AttemptModel::where('user_id', $id_key)->count();
         $questionsCount = QuestionsModel::count();
         if($userAttemptCount === $questionsCount){
-            return redirect()->route('congratulations.index')->with('success', 'You completed all quiz!');
+            return Redirect::route('congratulations.index')->with('success', 'You completed all quiz!');
         } 
 
-        
-        // Music player
-        $music_session = Session::has('music_active');
-        if(!$music_session) {
-            session()->put('music_active', true);
-            $music_active = true;
-        }else{
-            $music_active = session()->get('music_active');
+        // if 7 question per a day session not exist create
+        if(!Session::has('questions_answered_today')) {
+            session()->put('questions_answered_today', 0);
         }
-
+        
         // $questions atama
         if( AttemptModel::where('user_id', Auth::id())->get()->count() > 0 ){
             $attempted_question_ids = AttemptModel::where('user_id', Auth::id())->get()->pluck('question_id')->toArray();
             $attempted_question_ids = array_map('intval', $attempted_question_ids);
-            $questions = QuestionsResource::collection(QuestionsModel::whereNotIn('question_id', $attempted_question_ids)->inRandomOrder()->limit(7)->get());
+
+            if (session()->has('questions_answered_today')) {
+                $questions_answered_today = session()->get('questions_answered_today');
+                
+                if ($questions_answered_today >= 7) {
+                    return Redirect::route('result');
+                } else {
+                    $questions = QuestionsResource::collection(QuestionsModel::whereNotIn('question_id', $attempted_question_ids)->inRandomOrder()->limit(7 - $questions_answered_today)->get());
+                }
+            } else {
+                session()->put('questions_answered_today', 0);
+                $questions = QuestionsResource::collection(QuestionsModel::whereNotIn('question_id', $attempted_question_ids)->inRandomOrder()->limit(7)->get());
+            }
         }else{
             $questions = QuestionsResource::collection(QuestionsModel::inRandomOrder()->limit(7)->get());
         } 
+
+        // answered questions'i sifirla
+        if (date('H:i:s') === '00:00:00') { session()->forget('questions_answered_today'); }
+        
 
         $answers = AnswersResource::collection(AnswersModel::all());
         $correct = CorrectResource::collection(CorrectModel::all());
@@ -77,6 +98,9 @@ class GameController extends Controller
     
     public function attempt(Request $request)
     {
+/*         // questions answered'i 1 arttir
+        session()->put('questions_answered_today', session()->get('questions_answered_today') + 1 ); */
+
         $request->validate([ 
             'question_id' => ['required', 'integer'],
             'point' => ['required', 'integer'],
@@ -124,7 +148,6 @@ class GameController extends Controller
             ]);
         }
 
-  
         return response()->json(['message' => 'Attempt saved successfully']); 
     }
 
