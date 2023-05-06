@@ -20,6 +20,8 @@ use App\Http\Resources\ScoresResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
+use App\Models\DailyAttemptModel;
+
 
 class GameController extends Controller
 {
@@ -50,29 +52,27 @@ class GameController extends Controller
         $userAttemptCount = AttemptModel::where('user_id', $id_key)->count();
         $questionsCount = QuestionsModel::count();
         if($userAttemptCount === $questionsCount){
-            return Redirect::route('congratulations.index')->with('success', 'You completed all quiz!');
+            return redirect()->route('congratulations.index')->with('success', 'You completed all quiz!');
         } 
 
-        // if 7 question per a day session not exist create
-        if(!Session::has('questions_answered_today')) {
-            session()->put('questions_answered_today', 0);
-        }
-        
         // $questions atama
         if( AttemptModel::where('user_id', Auth::id())->get()->count() > 0 ){
             $attempted_question_ids = AttemptModel::where('user_id', Auth::id())->get()->pluck('question_id')->toArray();
             $attempted_question_ids = array_map('intval', $attempted_question_ids);
 
-            if (session()->has('questions_answered_today')) {
-                $questions_answered_today = session()->get('questions_answered_today');
+            if (DailyAttemptModel::where('user_id', $id_key)->exists) {
+                $questions_answered_today = DailyAttemptModel::where('user_id', $id_key)->value('attempt_count');
                 
-                if ($questions_answered_today >= 7) {
-                    return Redirect::route('result');
+                if ($questions_answered_today === 7) {
+                    return redirect()->route('result');
                 } else {
                     $questions = QuestionsResource::collection(QuestionsModel::whereNotIn('question_id', $attempted_question_ids)->inRandomOrder()->limit(7 - $questions_answered_today)->get());
                 }
             } else {
-                session()->put('questions_answered_today', 0);
+                DailyAttemptModel::create([
+                    'user_id' => $id_key,
+                    'attempt_count' => 0
+                ]);
                 $questions = QuestionsResource::collection(QuestionsModel::whereNotIn('question_id', $attempted_question_ids)->inRandomOrder()->limit(7)->get());
             }
         }else{
@@ -80,7 +80,11 @@ class GameController extends Controller
         } 
 
         // answered questions'i sifirla
-        if (date('H:i:s') === '00:00:00') { session()->forget('questions_answered_today'); }
+        if (date('H:i:s') === '00:00:00') {  
+            $dailyAttempt = DailyAttemptModel::where('user_id', $id_key)->first();
+            $dailyAttempt->attempt_count = 0;
+            $dailyAttempt->save();
+         }
         
 
         $answers = AnswersResource::collection(AnswersModel::all());
@@ -98,9 +102,7 @@ class GameController extends Controller
     
     public function attempt(Request $request)
     {
-/*         // questions answered'i 1 arttir
-        session()->put('questions_answered_today', session()->get('questions_answered_today') + 1 ); */
-
+        
         $request->validate([ 
             'question_id' => ['required', 'integer'],
             'point' => ['required', 'integer'],
@@ -117,6 +119,11 @@ class GameController extends Controller
             }
         } 
 
+        $today_attempt_count = DailyAttemptModel::where('user_id', $id_key)->value('attempt_count');
+
+        // questions answered'i 1 arttir
+        DailyAttemptModel::where('user_id', $id_key)->update(['attempt_count' => $today_attempt_count + 1 ]);
+ 
         // if question not saved before create attempt
         $exists = AttemptModel::where('user_id', $id_key)->where('question_id', $request->question_id)->exists();
         if (!$exists) {
@@ -128,25 +135,19 @@ class GameController extends Controller
         }
 
         /* Kullanici tum sorulari cozmusse total score olarak kaydet */
-        $totalScore = 0;
-        for($i = 1; $i <=  $questionsCount; $i++){
-            $attempt = AttemptModel::where('user_id', $id_key)->where('question_id', $i)->first();
-            if($attempt){
-                $totalScore += $attempt->point;
-            }
-        }
-
-        /* Score Atama */
-        $user_score = ScoresModel::where('user_id', $id_key)->first();
-        if ($user_score) {
-            $user_score->score =$totalScore;
-            $user_score->save();
-        } else {
-            ScoresModel::create([
-                'user_id' => $id_key,
-                'score' => $totalScore
-            ]);
-        }
+/*         if($today_attempt_count === 7) {
+            $attempts = AttemptModel::where('user_id', $id_key)->get();
+            $totalPoints = $attempts->sum('points');
+            $user_score = ScoresModel::where('user_id', $id_key)->first();
+            if ($user_score) {
+                $user_score->score =$totalPoints;
+                $user_score->save();
+            } else {
+                ScoresModel::create([
+                    'user_id' => $id_key,
+                    'score' => $totalPoints
+            ]);}
+        } */
 
         return response()->json(['message' => 'Attempt saved successfully']); 
     }
