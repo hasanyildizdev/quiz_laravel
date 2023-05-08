@@ -13,11 +13,40 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Session;
+use App\Models\DailyAttemptModel;
+use Illuminate\Support\Str;
 
 class WelcomeController extends Controller
 {
     public function index(Request $request)
     {
+
+        // id atama
+        if (Auth::check()) {
+            $id_key = Auth::id();
+        } else {
+            $id_key = session()->get('user_session_id');
+            if (!$id_key) {
+                $id_key = Str::random(40);                
+                session()->put('user_session_id', $id_key);
+            }
+        } 
+
+        // Gunluk sorulari yenile
+        $questions_answered_today = DailyAttemptModel::where('user_id', $id_key)->value('attempt_count');
+        if( $questions_answered_today >= 7) {
+            $last_attempt_creaeted_date = DailyAttemptModel::where('user_id', $id_key)->value('created_at')->format('Y-m-d'); 
+            $current_time = time();
+            $current_date = date("Y-m-d", $current_time);
+            if($current_date > $last_attempt_creaeted_date) {
+                DailyAttemptModel::where('user_id', $id_key)->update([
+                    'attempt_count' => 0,
+                    'correct' => 0,
+                    'wrong' => 0,
+                    'points' => 0
+                ]);
+            }
+        } 
 
         // Language
         $language_session = Session::has('language');
@@ -28,10 +57,12 @@ class WelcomeController extends Controller
             $language = session()->get('language');
         }
 
-        if (Auth::check()) {
+        // Kullanici oturum actiginda id'leri degistir(session varsa)
+        if (Auth::check() && Session::has('user_session_id')) {
             $user_id = Auth::id();
-            AttemptModel::where('user_id', session('user_session_id'))->update(['user_id' => $user_id]);
 
+            // Attempt id degistir ayni attemptler varsa eskisini sil 
+            AttemptModel::where('user_id', session('user_session_id'))->update(['user_id' => $user_id]);
             $attempts = AttemptModel::where('user_id', $user_id)->orderBy('created_at', 'desc')->get()->groupBy('question_id');
             foreach( $attempts as $questionId => $groupedAttempts){
                 $latestAttempt = $groupedAttempts->shift();
@@ -39,20 +70,30 @@ class WelcomeController extends Controller
                     $attempt->delete();
                 }
             }
+
+            // Score id degistir
+            ScoresModel::where('user_id', session('user_session_id'))->update(['user_id' => $user_id]);
+
+            // Daily Attempt id degistir
+            DailyAttemptModel::where('user_id', session('user_session_id'))->update(['user_id' => $user_id]);
         }
 
         $scores = ScoresResource::collection(ScoresModel::orderByDesc('score')->take(10)->get());
-
+        $questions_answered_today = DailyAttemptModel::where('user_id', $id_key)->value('attempt_count');
+        $remain_question_count =  7 - $questions_answered_today;
+        
         if(Auth::check()){
             return Inertia::render('Welcome', [
                 'scores' => $scores,
                 'user' => Auth::user(),
-                'language' => $language
+                'language' => $language,
+                'remain_question_count' => $remain_question_count 
             ]);
         }else{
             return Inertia::render('Welcome', [
                 'scores' => $scores,
-                'language' => $language
+                'language' => $language,
+                'remain_question_count' => $remain_question_count 
             ]);
         }
     }

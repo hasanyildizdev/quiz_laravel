@@ -22,6 +22,8 @@ Route::get('/quiz', [GameController::class, 'index'])->name('quiz.index');
 Route::post('/quiz/attempt', [GameController::class, 'attempt'])->name('quiz.attempt');
 
 Route::get('/result', [ResultController::class, 'index'])->name('result.index');
+Route::post('/result', [ResultController::class, 'index'])->name('result.index');
+
 Route::post('/result/store', [ResultController::class, 'store'])->name('result.store');
 Route::get('/results', [ResultsController::class, 'index'])->name('results.index');
 Route::post('/results/delete_score', [ResultsController::class, 'delete_score'])->name('results.delete_score'); 

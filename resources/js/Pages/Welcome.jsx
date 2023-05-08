@@ -8,7 +8,7 @@ export default function Welcome(props, { auth }) {
 
     let scoreList = props.scores.data;
     let language = props.language;
-
+    
     useEffect(() => {
         const persian_icon = document.querySelector('#persian_icon');
         const english_icon = document.querySelector('#english_icon');
@@ -22,7 +22,7 @@ export default function Welcome(props, { auth }) {
             english_icon.style.display = 'none';
         }
     },[]);
-
+    
     const [showGuideAlert, setShowGuideAlert] = useState(false);
     const [showScoreAlert, setShowScoreAlert] = useState(false);
     const [showShareAlert, setShowShareAlert] = useState(false);
@@ -158,8 +158,9 @@ export default function Welcome(props, { auth }) {
                                             <img src="img/game_controller.webp" alt="Play" />
                                             <p>{t('play')}</p>
                                         </div>
-                                        <div className='playArrow'>
-                                            <img src="img/play.webp" alt="Play" />
+                                        <div className='playArrow relative flex justify-center items-center'>
+                                            <img src="img/play.webp" alt="Play"  className='ml-5'/>
+                                            <span className='absolute text-white font-bold text-2xl'> { props.remain_question_count } </span>
                                         </div>
                                     </div>
                                 </Link>
@@ -169,7 +170,7 @@ export default function Welcome(props, { auth }) {
                         <div className={`purpleStyle alert ${showScoreAlert ? 'show' : ''}`}>
                             <h2>{t('scoreboard')}</h2>
 
-                            <table className="w-full mb-12 mb-12 md:mb-16 lg:mb-18">
+                            <table className="w-full mb-12 md:mb-16 lg:mb-18">
                                 <thead>
                                     <tr className="text-white text-center">
                                         <th className="px-2 py-3">#</th>

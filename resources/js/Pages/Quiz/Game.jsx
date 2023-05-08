@@ -22,6 +22,8 @@ export default class Game extends Component {
     this.wrongCount = 0;
     this.noAnswerCount = 0;
     this.advertisement = props.advertisement;
+    this.correctIncreased = false;
+    this.wrongIncreased = false;
 
     this.playMusic = this.playMusic.bind(this);
     this.stopMusic = this.stopMusic.bind(this);
@@ -146,6 +148,8 @@ export default class Game extends Component {
               this.move();
               this.playMusic();
               this.buttonsActive = true;
+              this.correctIncreased = false;
+              this.wrongIncreased = true;
             }
           }, 3000);
           this.setState({timeout_1: timeout1});
@@ -173,6 +177,8 @@ export default class Game extends Component {
     let correctAnswerStyle = document.getElementById(correctAnswer).style;
 
     if (answer === correctAnswer) {
+      this.correctIncreased = true;
+      this.wrongIncreased = false;
       this.correctCount++;
       this.playCorrect();
       this.setState({ correctCartVisible: true });
@@ -182,6 +188,8 @@ export default class Game extends Component {
       else { this.score = this.score + 10; this.attempt(this.props.questions.data[this.questionNr - 1].question_id, 10); }
     }
     else {
+      this.correctIncreased = false;
+      this.wrongIncreased = true;
       this.wrongCount++;
       this.playWrong();
       this.setState({ wrongCartVisible: true });
@@ -229,7 +237,10 @@ export default class Game extends Component {
     try {
       await axios.post('/quiz/attempt', {
         question_id: question_id,
-        point: point
+        point: point,
+        correct : this.correctIncreased,
+        wrong : this.wrongIncreased,
+        points : this.score
       });
     } catch (error) {
       console.error(error);
@@ -238,20 +249,14 @@ export default class Game extends Component {
   }
 
   async goResult() {
-    let data = { 
+    await axios.post('/result', { 
       score: this.score, 
       correct: this.correctCount, 
       wrong: this.wrongCount, 
       noanswer: this.noAnswerCount 
-    }; 
-    try {
-      const response = await axios.post('/api/data', { data });
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-   /*  let queryString = new URLSearchParams(data).toString(); */
-    window.location.href = "/result";// + queryString;
+     })
+    .then(response => { window.location.href = '/result'; })
+    .catch(error => { console.log(error); });
   }
 
   render() {

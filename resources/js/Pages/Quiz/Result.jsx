@@ -18,28 +18,13 @@ class Result extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            score: 0,
-            correctCount: 0,
-            wrongCount: 0
+            total_score: props.total_score,
+            correctCount: props.correct,
+            wrongCount: props.wrong,
+            noAnswerCount : props.noanswer,    
+            points : props.points        
         }
     }
-
-    async componentDidMount() {
-/*         const urlParams = new URLSearchParams(window.location.search);
- */       /*  try {
-            const response = await axios.get('/api/data');
-            console.log(response.data);
-          } catch (error) {
-            console.error(error);
-          } */
-/*         this.setState({
-            score: urlParams.get('score'),
-            correctCount: urlParams.get('correct'),
-            wrongCount: urlParams.get('wrong'),
-            noAnswerCount: urlParams.get('noanswer'),
-        }); */
-    }
-
     
     render() {
         return (
@@ -49,9 +34,16 @@ class Result extends Component {
                     <div className='w-full h-full pb-24'>
 
                     <div className='score'>
-                        <h1> {this.state.score} </h1>
+                        <h1> {this.state.total_score} </h1>
                         <p>  {this.props.t('score')}  </p>
                     </div>
+
+                    {this.state.noAnswerCount === 0 ? (
+                        <div className='flex justify-center items-center text-xl lg:text-2xl text-white mb-10 text-center px-4 lg:px-0'>
+                           Great! You completed 7 questions today <br/>
+                            You can see new questions tomorrow
+                        </div>
+                    ) : null}
 
                     <div className='answer_results'>
                         <div className='buttonResultWrong text-center'>
@@ -61,10 +53,15 @@ class Result extends Component {
                             <div> {this.props.t('correct')}: {this.state.correctCount}  </div>
                         </div>
                     </div>
-
-                    <div className='no_answer text-center'>
-                        {this.props.t('unanswered')} : {this.state.noAnswerCount}
+                    <div className='w-1/4 md:w-1/4 lg:w-1/7 mx-auto flex justify-center items-center text-center text:2xl lg:text-3xl py-6 bg-green-400 mb-10 rounded-xl'>
+                         <div> Puan : {this.state.points}  </div>
                     </div>
+
+                    {this.state.noAnswerCount > 0 ? (
+                        <div className='no_answer text-center'>
+                            {this.props.t('unanswered')} : {this.state.noAnswerCount}
+                        </div>
+                    ) : null}
 
                     <div className='goMenuButtonDiv'>
                         <Link href={'/'} style={{ textDecoration: 'none' }}>

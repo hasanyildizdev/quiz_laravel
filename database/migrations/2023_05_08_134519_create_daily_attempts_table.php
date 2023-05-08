@@ -16,6 +16,9 @@ return new class extends Migration
         Schema::create('daily_attempts', function (Blueprint $table) {
             $table->id();
             $table->text('user_id');
+            $table->integer('wrong');
+            $table->integer('correct');
+            $table->integer('points');
             $table->integer('attempt_count');
             $table->timestamps();
         });
