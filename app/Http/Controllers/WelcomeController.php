@@ -65,7 +65,7 @@ class WelcomeController extends Controller
             AttemptModel::where('user_id', session('user_session_id'))->update(['user_id' => $user_id]);
             $attempts = AttemptModel::where('user_id', $user_id)->orderBy('created_at', 'desc')->get()->groupBy('question_id');
             foreach( $attempts as $questionId => $groupedAttempts){
-                $latestAttempt = $groupedAttempts->shift();
+                $latestAttempt = $groupedAttempts->shift(); // revove and return first element of array
                 foreach ($groupedAttempts as $attempt) {
                     $attempt->delete();
                 }
@@ -74,10 +74,18 @@ class WelcomeController extends Controller
             // Score id degistir
             ScoresModel::where('user_id', session('user_session_id'))->update(['user_id' => $user_id]);
 
+            
             // Daily Attempt id degistir
             DailyAttemptModel::where('user_id', session('user_session_id'))->update(['user_id' => $user_id]);
+            $dailyAttempts = DailyAttemptModel::where('user_id', $user_id)->orderBy('created_at','desc')->get()->groupBy('user_id');
+            foreach( $dailyAttempts as $questionId => $groupedAttempts){
+                $latestAttempt = $groupedAttempts->shift(); // revove and return first element of array
+                foreach ($groupedAttempts as $attempt) {
+                    $attempt->delete();
+                }
+            }
         }
-
+        
         $scores = ScoresResource::collection(ScoresModel::orderByDesc('score')->take(10)->get());
         $questions_answered_today = DailyAttemptModel::where('user_id', $id_key)->value('attempt_count');
         $remain_question_count =  7 - $questions_answered_today;

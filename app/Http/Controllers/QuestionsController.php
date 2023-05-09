@@ -10,11 +10,17 @@ use App\Http\Resources\AnswersResource;
 use App\Models\CorrectModel;
 use App\Http\Resources\CorrectResource;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
 
 class QuestionsController extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
+        if (!$user || !$user->hasRole('admin')) {
+            return redirect('/')->with('error', 'You do not have permission to access this page.');
+        } 
+
         $questions = QuestionsResource::collection(QuestionsModel::all());
         $answers = AnswersResource::collection(AnswersModel::all());
         $corrects = CorrectResource::collection(CorrectModel::all());
@@ -68,42 +74,71 @@ class QuestionsController extends Controller
                 $imageUrls[$option] = $imageUrl;
             }
 
-            $newQuestion = QuestionsModel::create([ 
-                'text' => $request->question,
-                'image' => $imageUrlQuestion
-            ]); 
+            // Update or Create Question
+            if(  $request->is_update && $request->question_id  != null ) {
+                $question_id = $request->question_id;
+                QuestionsModel::where('id', $question_id)->update([ 
+                    'text' => $request->question,
+                    'image' => $imageUrlQuestion
+                ]); 
+                 AnswersModel::where('question_id', $question_id)->where('option', 1)->update([ 
+                    'text' => $request->answer1,
+                    'image' => $imageUrls['A']
+                ]);
+                AnswersModel::where('question_id', $question_id)->where('option', 2)->update([ 
+                    'text' => $request->answer2,
+                    'image' => $imageUrls['B']
+                ]);
+                AnswersModel::where('question_id', $question_id)->where('option', 3)->update([ 
+                    'text' => $request->answer3,
+                    'image' => $imageUrls['C']
+                ]);
+                AnswersModel::where('question_id', $question_id)->where('option', 4)->update([ 
+                    'text' => $request->answer4,
+                    'image' => $imageUrls['D']
+                ]);
+                
+                CorrectModel::where('question_id', $question_id)->update([ 
+                    'correct_answer_id' => $request->correct,
+                ]);  
+            }else{
+                $newQuestion = QuestionsModel::create([ 
+                    'text' => $request->question,
+                    'image' => $imageUrlQuestion
+                ]); 
+                $newQuestionId = $newQuestion->id;
+                AnswersModel::create([ 
+                    'question_id' => $newQuestionId, 
+                    'text' => $request->answer1,
+                    'option' => 1,
+                    'image' => $imageUrls['A']
+                ]);
+                AnswersModel::create([ 
+                    'question_id' => $newQuestionId, 
+                    'text' => $request->answer2,
+                    'option' => 2,
+                    'image' => $imageUrls['B']
+                ]);
+                AnswersModel::create([ 
+                    'question_id' => $newQuestionId, 
+                    'text' => $request->answer3,
+                    'option' => 3,
+                    'image' => $imageUrls['C']
+                ]);
+                AnswersModel::create([ 
+                    'question_id' => $newQuestionId, 
+                    'text' => $request->answer4,
+                    'option' => 4,
+                    'image' => $imageUrls['D']
+                ]);
+                
+                CorrectModel::create([ 
+                    'question_id' => $newQuestionId, 
+                    'correct_answer_id' => $request->correct,
+                ]);  
+            }
 
-            $newQuestionId = $newQuestion->id;
 
-            AnswersModel::create([ 
-                'question_id' => $newQuestionId, 
-                'text' => $request->answer1,
-                'option' => 1,
-                'image' => $imageUrls['A']
-            ]);
-            AnswersModel::create([ 
-                'question_id' => $newQuestionId, 
-                'text' => $request->answer2,
-                'option' => 2,
-                'image' => $imageUrls['B']
-            ]);
-            AnswersModel::create([ 
-                'question_id' => $newQuestionId, 
-                'text' => $request->answer3,
-                'option' => 3,
-                'image' => $imageUrls['C']
-            ]);
-            AnswersModel::create([ 
-                'question_id' => $newQuestionId, 
-                'text' => $request->answer4,
-                'option' => 4,
-                'image' => $imageUrls['D']
-            ]);
-            
-            CorrectModel::create([ 
-                'question_id' => $newQuestionId, 
-                'correct_answer_id' => $request->correct,
-            ]);  
          return Redirect::back();
     }
     

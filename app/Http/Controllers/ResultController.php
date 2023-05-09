@@ -33,14 +33,28 @@ class ResultController extends Controller
         $total_score = ScoresModel::where('user_id', $id_key)->value('score');
         
         $language = session()->get('language');
-        return Inertia::render('Quiz/Result', [
-            'language' => $language,
-            'total_score' =>  $total_score,
-            'correct' => $correct,
-            'wrong' => $wrong,
-            'noanswer' => $noanswer,
-            'points' => $points
-        ]);
+
+
+        if(Auth::check()){
+            return Inertia::render('Quiz/Result', [
+                'user' => Auth::user(),
+                'language' => $language,
+                'total_score' =>  $total_score,
+                'correct' => $correct,
+                'wrong' => $wrong,
+                'noanswer' => $noanswer,
+                'points' => $points
+            ]);
+        }else{
+            return Inertia::render('Quiz/Result', [
+                'language' => $language,
+                'total_score' =>  $total_score,
+                'correct' => $correct,
+                'wrong' => $wrong,
+                'noanswer' => $noanswer,
+                'points' => $points
+            ]);
+        }
     }
 
 }

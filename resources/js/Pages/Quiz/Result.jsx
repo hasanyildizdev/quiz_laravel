@@ -41,7 +41,7 @@ class Result extends Component {
                     {this.state.noAnswerCount === 0 ? (
                         <div className='flex justify-center items-center text-xl lg:text-2xl text-white mb-10 text-center px-4 lg:px-0'>
                            Great! You completed 7 questions today <br/>
-                            You can see new questions tomorrow
+                            You can see new questions tomorrow <br/>
                         </div>
                     ) : null}
 
@@ -53,9 +53,22 @@ class Result extends Component {
                             <div> {this.props.t('correct')}: {this.state.correctCount}  </div>
                         </div>
                     </div>
-                    <div className='w-1/4 md:w-1/4 lg:w-1/7 mx-auto flex justify-center items-center text-center text:2xl lg:text-3xl py-6 bg-green-400 mb-10 rounded-xl'>
-                         <div> Puan : {this.state.points}  </div>
-                    </div>
+
+                    {!this.props.user ? (
+                        <div className='flex justify-center items-center mb-10 text-white text-xl lg:text-2xl px-4 lg:px-0'>
+                             <p> Sign In to save your score </p>
+                            <Link href={route('login')} style={{ textDecoration: 'none' }} >
+                                <button className='loginButton mr-2'>{this.props.t('login')}</button>
+                            </Link>
+                        </div>
+                    ) : null}
+
+
+                    {this.state.noAnswerCount > 0 ? (
+                        <div className='w-1/4 md:w-1/4 lg:w-1/7 mx-auto flex justify-center items-center text-center text:2xl lg:text-3xl py-6 bg-green-400 mb-10 rounded-xl'>
+                            <div> Puan : {this.state.points}  </div>
+                        </div>
+                    ) : null}
 
                     {this.state.noAnswerCount > 0 ? (
                         <div className='no_answer text-center'>
