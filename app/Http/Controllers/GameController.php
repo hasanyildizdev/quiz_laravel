@@ -62,11 +62,11 @@ class GameController extends Controller
             $attempted_question_ids = array_map('intval', $attempted_question_ids);
             
             if ($questions_answered_today === 0) {
-                $questions = QuestionsResource::collection(QuestionsModel::whereNotIn('question_id', $attempted_question_ids)->inRandomOrder()->limit(7)->get());
+                $questions = QuestionsResource::collection(QuestionsModel::whereNotIn('id', $attempted_question_ids)->inRandomOrder()->limit(7)->get());
             } else if($questions_answered_today === 7){
                 return redirect()->route('result.index');
             } else {
-                $questions = QuestionsResource::collection(QuestionsModel::whereNotIn('question_id', $attempted_question_ids)->inRandomOrder()->limit(7 - $questions_answered_today)->get());
+                $questions = QuestionsResource::collection(QuestionsModel::whereNotIn('id', $attempted_question_ids)->inRandomOrder()->limit(7 - $questions_answered_today)->get());
             }  
         }else{
             DailyAttemptModel::create([

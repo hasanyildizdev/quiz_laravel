@@ -17,16 +17,17 @@ class QuestionsController extends Controller
     {
         $questions = QuestionsResource::collection(QuestionsModel::all());
         $answers = AnswersResource::collection(AnswersModel::all());
+        $corrects = CorrectResource::collection(CorrectModel::all());
         return Inertia::render('Admin/Questions', [
             'questions' => $questions,
             'answers' => $answers,
+            'corrects' => $corrects
         ]);
     }
 
     public function store(Request $request){
 
         $request->validate([ 
-            'questionID' => ['required', 'integer'],
             'correct' => ['required', 'integer', 'between:1,4'],
             'imageQuestion' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif','max:2048'],
             'imageA' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif','max:2048'],
@@ -67,39 +68,40 @@ class QuestionsController extends Controller
                 $imageUrls[$option] = $imageUrl;
             }
 
-            QuestionsModel::create([ 
-                'question_id' => $request->questionID, 
+            $newQuestion = QuestionsModel::create([ 
                 'text' => $request->question,
                 'image' => $imageUrlQuestion
             ]); 
 
+            $newQuestionId = $newQuestion->id;
+
             AnswersModel::create([ 
-                'question_id' => $request->questionID, 
+                'question_id' => $newQuestionId, 
                 'text' => $request->answer1,
                 'option' => 1,
                 'image' => $imageUrls['A']
             ]);
             AnswersModel::create([ 
-                'question_id' => $request->questionID, 
+                'question_id' => $newQuestionId, 
                 'text' => $request->answer2,
                 'option' => 2,
                 'image' => $imageUrls['B']
             ]);
             AnswersModel::create([ 
-                'question_id' => $request->questionID, 
+                'question_id' => $newQuestionId, 
                 'text' => $request->answer3,
                 'option' => 3,
                 'image' => $imageUrls['C']
             ]);
             AnswersModel::create([ 
-                'question_id' => $request->questionID, 
+                'question_id' => $newQuestionId, 
                 'text' => $request->answer4,
                 'option' => 4,
                 'image' => $imageUrls['D']
             ]);
             
             CorrectModel::create([ 
-                'question_id' => $request->questionID, 
+                'question_id' => $newQuestionId, 
                 'correct_answer_id' => $request->correct,
             ]);  
          return Redirect::back();
@@ -110,7 +112,7 @@ class QuestionsController extends Controller
 
         AnswersModel::where('question_id', $questionID)->delete();
         CorrectModel::where('question_id', $questionID)->delete();
-        QuestionsModel::where('question_id', $questionID)->delete();
+        QuestionsModel::where('id', $questionID)->delete();
     
         return Redirect::back();
     }

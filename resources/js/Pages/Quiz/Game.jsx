@@ -168,7 +168,7 @@ export default class Game extends Component {
 
   answered(answer) {
     let time = document.getElementById("timer").innerText;
-    let correctAnswer = this.state.correctAnswers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id)['correct_answer_id'];
+    let correctAnswer = this.state.correctAnswers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].id)['correct_answer_id'];
 
     this.buttonsActive = false;
     this.stopMusic();
@@ -184,8 +184,8 @@ export default class Game extends Component {
       this.setState({ correctCartVisible: true });
       answerStyle.backgroundColor = "rgba(0, 255, 0, 0.5)";
 
-      if (time >= 5) { this.score = this.score + 12; this.attempt(this.props.questions.data[this.questionNr - 1].question_id, 12); }
-      else { this.score = this.score + 10; this.attempt(this.props.questions.data[this.questionNr - 1].question_id, 10); }
+      if (time >= 5) { this.score = this.score + 12; this.attempt(this.props.questions.data[this.questionNr - 1].id, 12); }
+      else { this.score = this.score + 10; this.attempt(this.props.questions.data[this.questionNr - 1].id, 10); }
     }
     else {
       this.correctIncreased = false;
@@ -195,7 +195,7 @@ export default class Game extends Component {
       this.setState({ wrongCartVisible: true });
       answerStyle.backgroundColor = "rgba(255, 0, 0, 0.5)";
       correctAnswerStyle.backgroundColor = "rgba(0, 255, 0, 0.5)";
-      this.attempt(this.props.questions.data[this.questionNr - 1].question_id, 0);
+      this.attempt(this.props.questions.data[this.questionNr - 1].id, 0);
     }
 
     const timeout2 = setTimeout(() => {
@@ -347,40 +347,40 @@ export default class Game extends Component {
                   (<div className='mt-2 w-full flex justify-center items-center '>
                     <img src={this.props.questions.data[this.questionNr - 1].image} alt="Question" className='max-h-52 object-cover' />
                   </div>) : null}
-                {this.state.questions.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id)?.text}
+                {this.state.questions.find((a) => a.id === this.props.questions.data[this.questionNr - 1].id)?.text}
               </div>
 
               <div>
                 <div className='answer_row'>
                   <button id='1' className={`flex flex-col answer ${this.state.selectedAnswer === 1 && 'selected'} ${!this.buttonsActive && 'no-hover'}`} onClick={() => { this.setState({ selectedAnswer: 1 }); this.answered(1); }} disabled={!this.buttonsActive}>
-                    {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 1)?.image ?
+                    {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].id && a.option === 1)?.image ?
                       (<div className='mt-2 w-full flex justify-center items-center '>
-                        <img src={this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 1)?.image} alt="Answer1" className='max-h-56  object-cover' />
+                        <img src={this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].id && a.option === 1)?.image} alt="Answer1" className='max-h-56  object-cover' />
                       </div>) : null}
-                    {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 1)?.text}
+                    {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].id && a.option === 1)?.text}
                   </button>
                   <button id='2' className={`flex flex-col answer ${this.state.selectedAnswer === 2 && 'selected'} ${!this.buttonsActive && 'no-hover'}`} onClick={() => { this.setState({ selectedAnswer: 2 }); this.answered(2); }} disabled={!this.buttonsActive}>
-                    {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 2)?.image ?
+                    {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].id && a.option === 2)?.image ?
                       (<div className='mt-2 w-full flex justify-center items-center '>
-                        <img src={this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 2)?.image} alt="Answer2" className='max-h-56  object-cover' />
+                        <img src={this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].id && a.option === 2)?.image} alt="Answer2" className='max-h-56  object-cover' />
                       </div>) : null}
-                    {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 2)?.text}
+                    {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].id && a.option === 2)?.text}
                   </button>
                 </div>
                 <div className='answer_row'>
                   <button id='3' className={`flex flex-col answer ${this.state.selectedAnswer === 3 && 'selected'} ${!this.buttonsActive && 'no-hover'}`} onClick={() => { this.setState({ selectedAnswer: 3 }); this.answered(3); }} disabled={!this.buttonsActive}>
-                    {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 3)?.image ?
+                    {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].id && a.option === 3)?.image ?
                       (<div className='mt-2 w-full flex justify-center items-center '>
-                        <img src={this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 3)?.image} alt="Answer3" className='max-h-56  object-cover' />
+                        <img src={this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].id && a.option === 3)?.image} alt="Answer3" className='max-h-56  object-cover' />
                       </div>) : null}
-                    {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 3)?.text}
+                    {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].id && a.option === 3)?.text}
                   </button>
                   <button id='4' className={`flex flex-col answer ${this.state.selectedAnswer === 4 && 'selected'} ${!this.buttonsActive && 'no-hover'}`} onClick={() => { this.setState({ selectedAnswer: 4 }); this.answered(4); }} disabled={!this.buttonsActive}>
-                    {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 4)?.image ?
+                    {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].id && a.option === 4)?.image ?
                       (<div className='mt-2 w-full flex justify-center items-center '>
-                        <img src={this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 4)?.image} alt="Answer4" className='max-h-56  object-cover' />
+                        <img src={this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].id && a.option === 4)?.image} alt="Answer4" className='max-h-56  object-cover' />
                       </div>) : null}
-                    {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].question_id && a.option === 4)?.text}
+                    {this.state.answers.find((a) => a.question_id === this.props.questions.data[this.questionNr - 1].id && a.option === 4)?.text}
                   </button>
                 </div>
               </div>

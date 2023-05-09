@@ -666,7 +666,6 @@ label {
 
 .form-group-admin{
   width: 40%;
-  margin:auto;
   display: flex;
   margin-top: 2vh;
 }
@@ -748,12 +747,6 @@ label {
 
 .table tbody {
   border-top: 2px solid #dee2e6;
-}
-
-.deleteQestionButton {
-  padding: 0.3vw 0.6vw;
-  background-color: #FF0000;
-  cursor: pointer;
 }
 
 .advertisement {

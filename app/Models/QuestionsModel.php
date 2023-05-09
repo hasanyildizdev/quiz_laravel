@@ -10,5 +10,5 @@ class QuestionsModel extends Model
     use HasFactory;
     protected $table = 'questions';
     protected $primaryKey = 'id';
-    protected $fillable = ['question_id', 'text' , 'image'];
+    protected $fillable = ['text' , 'image'];
 }

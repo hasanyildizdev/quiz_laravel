@@ -53,7 +53,8 @@ export default function Users(props) {
                                     <td>{user.name}</td>
                                     <td>{user.email}</td>
                                     <td>{user.remember_token}</td>
-                                    <td><button className='deleteQestionButton' onClick={() => onDeleteUser(user.id)}> Delete </button></td>
+                                    <td><button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded' onClick={() => onDeleteUser(user.id)}> Delete </button></td>
+                                    <td><button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'> Update </button></td>
                                 </tr>
                             ))}
                         </tbody>

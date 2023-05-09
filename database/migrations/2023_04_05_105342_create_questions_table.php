@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('questions', function (Blueprint $table) {
-            $table->id('question_id');
+            $table->id();
             $table->string('text');
             $table->binary('image')->nullable();
             $table->timestamps();

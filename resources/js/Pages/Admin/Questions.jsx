@@ -1,30 +1,26 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import '../../../css/style.css'
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Inertia } from '@inertiajs/inertia';
-import { Link } from '@inertiajs/react';
 
 export default function Questions(props) {
 
-    let [questionID, setQuestionID] = useState('');
     let [question, setQuestion] = useState('');
     let [answer1, setAnswer1] = useState('');
     let [answer2, setAnswer2] = useState('');
     let [answer3, setAnswer3] = useState('');
     let [answer4, setAnswer4] = useState('');
     let [correct, setCorrect] = useState('');
-    let [imageQuestion,setImageQuestion] = useState(null);
-    let [imageA,setImageA] = useState(null);
-    let [imageB,setImageB] = useState(null);
-    let [imageC,setImageC] = useState(null);
-    let [imageD,setImageD] = useState(null);
+    let [imageQuestion, setImageQuestion] = useState(null);
+    let [imageA, setImageA] = useState(null);
+    let [imageB, setImageB] = useState(null);
+    let [imageC, setImageC] = useState(null);
+    let [imageD, setImageD] = useState(null);
 
     let questionsList = props.questions.data;
     let answerList = props.answers.data;
+    let correctList = props.corrects.data;
 
-    let onChangeQuestionID = (e) => {
-        setQuestionID(e.target.value);
-    };
     let onChangeQuestion = (e) => {
         setQuestion(e.target.value);
     };
@@ -63,22 +59,22 @@ export default function Questions(props) {
     let onSubmit = async (e) => {
         e.preventDefault();
         try {
-            await Inertia.post('/questions/store', { 
-                questionID: questionID,
-                question : question,
-                answer1 : answer1, 
-                answer2 : answer2, 
-                answer3 : answer3, 
-                answer4 : answer4,
-                correct : correct, 
-                imageQuestion : imageQuestion,
-                imageA : imageA,
-                imageB : imageB,
-                imageC : imageC,
-                imageD : imageD
-            });
-
-            window.alert('Question created successfully.');
+            await axios.post('/questions/store', {
+                question: question,
+                answer1: answer1,
+                answer2: answer2,
+                answer3: answer3,
+                answer4: answer4,
+                correct: correct,
+                imageQuestion: imageQuestion,
+                imageA: imageA,
+                imageB: imageB,
+                imageC: imageC,
+                imageD: imageD
+            })
+            .then(response => { window.alert('Question created successfully.'); })
+            .catch(error => { console.log(error); });
+        
         } catch (error) {
             alert("Something went wrong! Error: " + error);
         }
@@ -90,8 +86,8 @@ export default function Questions(props) {
     onChangeB = onChangeB.bind(this);
     onChangeC = onChangeC.bind(this);
     onChangeD = onChangeD.bind(this);
-    onChangeImageA= onChangeImageA.bind(this);
-    onChangeImageB= onChangeImageB.bind(this);
+    onChangeImageA = onChangeImageA.bind(this);
+    onChangeImageB = onChangeImageB.bind(this);
     onChangeImageC = onChangeImageC.bind(this);
     onChangeImageD = onChangeImageD.bind(this);
     onChangeCorrectAnswer = onChangeCorrectAnswer.bind(this);
@@ -108,97 +104,125 @@ export default function Questions(props) {
         }
     }
 
+    function addNewQuestion() {
+        let form = document.getElementById('question_form');
+        let svg = document.getElementById('add_svg');
+        if (form.style.display === "none") {
+            form.style.display = "block";
+            svg.style.display = "none";
+        } else {
+            form.style.display = "none";
+            svg.style.display = "block";
+        }
+    }
+
+    let onUpdateQuestion = async (question, answer1, answer2, answer3, answer4, correct) => {
+        let form = document.getElementById('question_form');
+        let svg = document.getElementById('add_svg');
+        form.style.display = "block";
+        svg.style.display = "none";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        onChangeQuestion({target:{value:question}});
+        onChangeA({target:{value : answer1}});
+        onChangeB({target:{value : answer2}});
+        onChangeC({target:{value : answer3}});
+        onChangeD({target:{value : answer4}});
+        onChangeCorrectAnswer({target:{value : correct}});
+    }
+
     return (
         <AuthenticatedLayout
             auth={props.auth}
             errors={props.errors}
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Questions</h2>}
-            >
-           <div className='admin_bg'>
-                <div className='adminPanel'>
-                    <Link href={'/'} style={{ textDecoration: 'none' }}>
-                        Quiz
-                    </Link>
-                </div>
-                <div className='admin_div'>
-                    <h3 className=''>Add New Question</h3>
-                    <form onSubmit={onSubmit}>
-                        <div className="form-group-admin">
-                            <input
-                                placeholder='ID'
-                                type="number"
-                                required
-                                value={questionID}
-                                onChange={onChangeQuestionID}
-                            />
-                        </div>
-                        <div className="form-group-admin">
+        >
+            <div className='admin_bg'>
+                <div className='flex flex-col'>
+                    <div className='flex  items-center'>
+                        <button className='flex justify-center items-center text-white w-1/6 font-bold' onClick={addNewQuestion}>
+                            ADD NEW QUESTION
+                            <svg id='add_svg' className='w-10 h-10' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path id="Vector" d="M8 12H12M12 12H16M12 12V16M12 12V8M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z" stroke="#00ff00" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </button>
+                    </div>
+                    <form id='question_form' onSubmit={onSubmit} style={{ display: 'none' }} className='w-full '>
+                        <div className="form-group-admin relative h-12 mr-4 " style={{ width: '80%' }}>
                             <input
                                 placeholder='Question'
                                 type="text"
                                 value={question}
                                 onChange={onChangeQuestion}
                             />
-                            <label htmlFor="imageQuestion" className='mr-2'>
+                            <label htmlFor="imageQuestion" className='absolute left-0 w-1/6'>
                                 <input id="imageQuestion" name="imageQuestion" type="file" onChange={onChangeImageQuestion} className="hidden" />
-                            </label>                            
+                            </label>
                         </div>
-                        <div className="form-group-admin">
-                            <input
-                                placeholder='Answer 1'
-                                type="text"
-                                value={answer1}
-                                onChange={onChangeA}
-                            />
-                            <label htmlFor="imageA" className='mr-2'>
-                                <input id="imageA" name="imageA" type="file" onChange={onChangeImageA} className="hidden" />
-                            </label>                            
+                        <div className='flex'>
+                            <div className="form-group-admin  relative h-12 mx-2">
+                            <div className=' w-6 h-6 bg-black text-white rounded-full text-center'>1</div>
+                                <input
+                                    placeholder='Answer 1'
+                                    type="text"
+                                    value={answer1}
+                                    onChange={onChangeA}
+                                />
+                                <label htmlFor="imageA" className='absolute left-0 w-1/3'>
+                                    <input id="imageA" name="imageA" type="file" onChange={onChangeImageA} className="hidden" />
+                                </label>
+                            </div>
+                            <div className="form-group-admin  relative h-12">
+                                <div className=' w-6 h-6 bg-black text-white rounded-full text-center'>2</div>
+                                <input
+                                    placeholder='Answer 2'
+                                    type="text"
+                                    value={answer2}
+                                    onChange={onChangeB}
+                                />
+                                <label htmlFor="imageB" className='absolute left-0 w-1/3'>
+                                    <input id="imageB" name="imageB" type="file" onChange={onChangeImageB} className="hidden" />
+                                </label>
+                            </div>
                         </div>
-                        <div className="form-group-admin">
-                            <input
-                                placeholder='Answer 2'
-                                type="text"
-                                value={answer2}
-                                onChange={onChangeB}
-                            />
-                            <label htmlFor="imageB" className='mr-2'>
-                                <input id="imageB" name="imageB" type="file" onChange={onChangeImageB} className="hidden" />
-                            </label>                                 
+                        <div className='flex'>
+                            <div className="form-group-admin relative h-12 mx-2">
+                                <div className=' w-6 h-6 bg-black text-white rounded-full text-center'>3</div>
+                                <input
+                                    placeholder='Answer 3'
+                                    type="text"
+                                    value={answer3}
+                                    onChange={onChangeC}
+                                />
+                                <label htmlFor="imageC" className='absolute left-0 w-1/3'>
+                                    <input id="imageC" name="imageC" type="file" onChange={onChangeImageC} className="hidden" />
+                                </label>
+                            </div>
+                            <div className="form-group-admin relative h-12">
+                                <div className=' w-6 h-6 bg-black text-white rounded-full text-center'>4</div>
+                                <input
+                                    placeholder='Answer 4'
+                                    type="text"
+                                    value={answer4}
+                                    onChange={onChangeD}
+                                />
+                                <label htmlFor="imageD" className='absolute left-0 w-1/3'>
+                                    <input id="imageD" name="imageD" type="file" onChange={onChangeImageD} className="hidden" />
+                                </label>
+                            </div>
                         </div>
-                        <div className="form-group-admin">
-                            <input
-                                placeholder='Answer 3'
-                                type="text"
-                                value={answer3}
-                                onChange={onChangeC}
-                            />
-                            <label htmlFor="imageC" className='mr-2'>
-                                <input id="imageC" name="imageC" type="file" onChange={onChangeImageC} className="hidden" />
-                            </label>     
-                        </div>
-                        <div className="form-group-admin">
-                            <input
-                                placeholder='Answer 4'
-                                type="text"
-                                value={answer4}
-                                onChange={onChangeD}
-                            />
-                            <label htmlFor="imageD" className='mr-2'>
-                                <input id="imageD" name="imageD" type="file" onChange={onChangeImageD} className="hidden" />
-                            </label>                                 
-                        </div>
-                        <div className="form-group-admin">
-                            <input
-                                placeholder='Correct Answer Number (1-4)'
-                                type="number"
-                                required
-                                value={correct}
-                                onChange={onChangeCorrectAnswer}
-                            />
-                        </div>
-
-                        <div className="form-admin-submit-button">
-                            <input type="submit" value="Add Question"/>
+                        <div className='flex'>
+                            <div className="form-admin-submit-button ml-2">
+                                <input type="submit" value="Submit" />
+                            </div>
+                            <div className="form-group-admin" style={{ width: '260px' }}>
+                                <input
+                                    placeholder='Correct Answer Number (1-4)'
+                                    type="number"
+                                    required
+                                    value={correct}
+                                    onChange={onChangeCorrectAnswer}
+                                />
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -208,24 +232,37 @@ export default function Questions(props) {
                     <table className='table'>
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Question</th>
-                                <th>Answer 1</th>
-                                <th>Answer 2</th>
-                                <th>Answer 3</th>
-                                <th>Answer 4</th>
+                                <th> NR </th>
+                                <th> ID </th>
+                                <th> Correct </th>
+                                <th> Question </th>
+                                <th> Answer 1 </th>
+                                <th> Answer 2 </th>
+                                <th> Answer 3 </th>
+                                <th> Answer 4 </th>
                             </tr>
                         </thead>
                         <tbody style={{ display: questionsList.length > 0 ? 'ruby' : 'none' }}>
-                            {questionsList.sort((a, b) => a.question_id - b.question_id).map((q, index) => (
+                            {questionsList.sort((a, b) => a.id - b.id).map((q, index) => (
                                 <tr key={index}>
-                                    <td>{questionsList[index].question_id}</td>
+                                    <td> {index + 1} </td>
+                                    <td>{questionsList[index].id}</td>
+                                    <td> {correctList.find((a) => a.question_id === questionsList[index].id)?.correct_answer_id} </td>
                                     <td>{questionsList[index].text}</td>
-                                    <td>{answerList.find((a) => a.question_id === index + 1 && a.option === 1)?.text}</td>
-                                    <td>{answerList.find((a) => a.question_id === index + 1 && a.option === 2)?.text}</td>
-                                    <td>{answerList.find((a) => a.question_id === index + 1 && a.option === 3)?.text}</td>
-                                    <td>{answerList.find((a) => a.question_id === index + 1 && a.option === 4)?.text}</td>
-                                    <td><button className='deleteQestionButton' onClick={() => onDeleteQuestion(questionsList[index].question_id)}> Delete </button></td>
+                                    <td>{answerList.find((a) => a.question_id === questionsList[index].id && a.option === 1)?.text}</td>
+                                    <td>{answerList.find((a) => a.question_id === questionsList[index].id && a.option === 2)?.text}</td>
+                                    <td>{answerList.find((a) => a.question_id === questionsList[index].id && a.option === 3)?.text}</td>
+                                    <td>{answerList.find((a) => a.question_id === questionsList[index].id && a.option === 4)?.text}</td>
+                                    <td><button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2' onClick={() => onDeleteQuestion(questionsList[index].id)}> Delete </button></td>
+                                    <td><button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' 
+                                        onClick={() => onUpdateQuestion(
+                                            questionsList[index].text, 
+                                            answerList.find((a) => a.question_id === questionsList[index].id && a.option === 1)?.text,
+                                            answerList.find((a) => a.question_id === questionsList[index].id && a.option === 2)?.text,
+                                            answerList.find((a) => a.question_id === questionsList[index].id && a.option === 3)?.text,
+                                            answerList.find((a) => a.question_id === questionsList[index].id && a.option === 4)?.text,
+                                            correctList.find((a) => a.question_id === questionsList[index].id)?.correct_answer_id
+                                        )}> Update </button></td>
                                 </tr>
                             ))}
                         </tbody>
