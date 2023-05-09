@@ -20,7 +20,6 @@ class WelcomeController extends Controller
 {
     public function index(Request $request)
     {
-
         // id atama
         if (Auth::check()) {
             $id_key = Auth::id();
@@ -31,6 +30,8 @@ class WelcomeController extends Controller
                 session()->put('user_session_id', $id_key);
             }
         } 
+
+     /*    dd(session()->get('user_session_id')); */
 
         // Gunluk sorulari yenile
         $questions_answered_today = DailyAttemptModel::where('user_id', $id_key)->value('attempt_count');
@@ -73,7 +74,6 @@ class WelcomeController extends Controller
 
             // Score id degistir
             ScoresModel::where('user_id', session('user_session_id'))->update(['user_id' => $user_id]);
-
             
             // Daily Attempt id degistir
             DailyAttemptModel::where('user_id', session('user_session_id'))->update(['user_id' => $user_id]);
