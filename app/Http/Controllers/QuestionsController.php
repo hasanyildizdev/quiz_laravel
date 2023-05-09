@@ -145,9 +145,9 @@ class QuestionsController extends Controller
     public function delete(Request $request) {
         $questionID = $request->questionID;
 
+        QuestionsModel::where('id', $questionID)->delete();
         AnswersModel::where('question_id', $questionID)->delete();
         CorrectModel::where('question_id', $questionID)->delete();
-        QuestionsModel::where('id', $questionID)->delete();
     
         return Redirect::back();
     }

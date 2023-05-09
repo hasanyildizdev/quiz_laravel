@@ -108,8 +108,9 @@ export default function Questions(props) {
     let onDeleteQuestion = async (questionID) => {
         if (window.confirm("Are you sure to delete this question?")) {
             try {
-                await Inertia.post('/questions/delete', { questionID: questionID })
-                alert("Deleted Successfully");
+                await axios.post('/questions/delete', { questionID: questionID })
+                .then(response => { window.alert('Deleted Successfully'); window.location.reload();})
+                .catch(error => { console.log(error); });
             } catch (error) {
                 alert("Something went wrong! Error: " + error);
             }
@@ -157,13 +158,13 @@ export default function Questions(props) {
             <div className='admin_bg'>
                 <div className='flex flex-col'>
                     <div className='flex  items-center'>
-                        <button className='flex justify-center items-center text-white w-1/6 font-bold' onClick={addNewQuestion}>
-                            <p id='add_question_text'> {title} </p> 
-                            <svg id='add_svg' className='w-10 h-10' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <button className='flex justify-center items-center text-white py-2 px-4 font-bold bg-blue-500 hover:bg-blue-700 rounded' onClick={addNewQuestion}>
+                            <p id='add_question_text' className='text-white'> {title} </p> 
+                            <svg id='add_svg' className='w-10 h-10  pr-2' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path id="Vector" d="M8 12H12M12 12H16M12 12V16M12 12V8M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z" stroke="#00ff00" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
                         </button>
-                        <button id='new_question_add_button' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={() => {window.location.href='/questions'}} style={{display:'none'}}> Add New Question </button>
+                        <button id='new_question_add_button' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4' onClick={() => {window.location.href='/questions'}} style={{display:'none'}}> Add New Question </button>
                     </div>
                     <form id='question_form' onSubmit={onSubmit} style={{ display: 'none' }} className='w-full '>
                         <div className="form-group-admin relative h-12 mr-4 " style={{ width: '80%' }}>
@@ -252,26 +253,24 @@ export default function Questions(props) {
                         <thead>
                             <tr>
                                 <th> NR </th>
-                                <th> ID </th>
-                                <th> Correct </th>
                                 <th> Question </th>
                                 <th> Answer 1 </th>
                                 <th> Answer 2 </th>
                                 <th> Answer 3 </th>
                                 <th> Answer 4 </th>
+                                <th> Correct </th>
                             </tr>
                         </thead>
                         <tbody style={{ display: questionsList.length > 0 ? 'ruby' : 'none' }}>
                             {questionsList.sort((a, b) => a.id - b.id).map((q, index) => (
                                 <tr key={index}>
                                     <td> {index + 1} </td>
-                                    <td>{questionsList[index].id}</td>
-                                    <td> {correctList.find((a) => a.question_id === questionsList[index].id)?.correct_answer_id} </td>
                                     <td>{questionsList[index].text}</td>
                                     <td>{answerList.find((a) => a.question_id === questionsList[index].id && a.option === 1)?.text}</td>
                                     <td>{answerList.find((a) => a.question_id === questionsList[index].id && a.option === 2)?.text}</td>
                                     <td>{answerList.find((a) => a.question_id === questionsList[index].id && a.option === 3)?.text}</td>
                                     <td>{answerList.find((a) => a.question_id === questionsList[index].id && a.option === 4)?.text}</td>
+                                    <td> {correctList.find((a) => a.question_id === questionsList[index].id)?.correct_answer_id} </td>
                                     <td><button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2' onClick={() => onDeleteQuestion(questionsList[index].id)}> Delete </button></td>
                                     <td><button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' 
                                         onClick={() => onUpdateQuestion(

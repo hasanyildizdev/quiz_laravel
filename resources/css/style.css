@@ -652,11 +652,11 @@ label {
 
 .admin_bg {
   padding: 2vw;
-  background-color: #a0a0a0;
+  background-color: #EBECF0;
 }
 
 .admin_bg h3 {
-  color: #fff;
+  color: #000;
   width: 10%;
   margin: auto;
   text-align: center;
@@ -712,7 +712,7 @@ label {
 }
 
 .questionList h3{
-  color: #fff;
+  color: #000;
 }
 
 .adminAdvertisement {
