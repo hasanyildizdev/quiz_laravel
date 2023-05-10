@@ -29,8 +29,12 @@ class ResultController extends Controller
         $wrong = DailyAttemptModel::where('user_id', $id_key)->value('wrong');
         $correct = DailyAttemptModel::where('user_id', $id_key)->value('correct');
         $points =  DailyAttemptModel::where('user_id', $id_key)->value('points');
-        $noanswer = 7 - ($correct + $wrong);         
-        $total_score = ScoresModel::where('user_id', $id_key)->value('score');
+        $noanswer = 7 - ($correct + $wrong);       
+        if(Auth::check()){
+            $total_score = ScoresModel::where('user_id', $id_key)->value('score');
+        } else{
+           $total_score = session()->get('total_score');  
+        }
         
         $language = session()->get('language');
 

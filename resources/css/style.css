@@ -599,8 +599,7 @@ label {
 .purpleStyle {
   color: #fff;
   background-color: #212373;
- /*  border: solid 0.2vw #CCAAF0; */
- border: none;
+  border: none;
 }
 
 .loginButtonDiv {
@@ -795,7 +794,6 @@ label {
     border: solid 0.3vw #16076E;
   }
 
-
   .text {
     height: auto;
     width: 80%;
@@ -974,11 +972,11 @@ label {
 
   .score h1{
     margin: 0;
-    font-size: 8vw;
+    font-size: 7vw;
   }
 
   .score p {
-    font-size: 8vw;
+    font-size: 7vw;
   }
 
   .answer_results {
@@ -1083,7 +1081,7 @@ label {
   }
 
   .alert {
-    width: 80%;
+    width: 50%;
     height: auto;
     border-radius: 10px;
     padding: 4vw;
@@ -1180,6 +1178,31 @@ label {
   .timer svg{
     height: 80%;
   }
+
+  
+  .buttonResultWrong {
+    width: 30%;
+    font-size: 3vw;
+  }
+
+  .buttonResultCorrect {
+    width: 30%;
+    font-size: 3vw;
+  }
+
+  .score {
+    width: 20vw;
+    height: 20vw;
+    margin-bottom: 5%;
+  }
+
+  .score h1{
+    font-size: 4vw;
+  }
+
+  .score p {
+    font-size: 4vw;
+  }
 }
 
 @media screen and (min-width: 1000px) and (max-width: 1600px) {
@@ -1251,7 +1274,7 @@ label {
   }
 
   .alert {
-    width: 70%;
+    width: 50%;
     height: auto;
     border-radius: 10px;
     padding: 4vw;

@@ -10,5 +10,5 @@ class ScoresModel extends Model
     use HasFactory;
     protected $table = 'scores';
     protected $primaryKey = 'id';
-    protected $fillable = ['user_id', 'score'];
+    protected $fillable = ['user_id', 'user_name', 'score' ];
 }

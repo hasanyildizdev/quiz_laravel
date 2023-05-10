@@ -69,12 +69,16 @@ class GameController extends Controller
                 $questions = QuestionsResource::collection(QuestionsModel::whereNotIn('id', $attempted_question_ids)->inRandomOrder()->limit(7 - $questions_answered_today)->get());
             }  
         }else{
-            DailyAttemptModel::create([
-                'user_id' => $id_key,
-                'attempt_count' => 0,
-                'correct' => 0,
-                'wrong' => 0
-            ]);
+            $daily_attempt = DailyAttemptModel::where('user_id', $id_key);
+            if(!$daily_attempt) {
+                DailyAttemptModel::create([
+                    'user_id' => $id_key,
+                    'attempt_count' => 0,
+                    'correct' => 0,
+                    'wrong' => 0,
+                    'points' => 0
+                ]);
+            }
             $questions = QuestionsResource::collection(QuestionsModel::inRandomOrder()->limit(7)->get());
         } 
 
@@ -122,6 +126,7 @@ class GameController extends Controller
         }
         
         $today_attempt_count = DailyAttemptModel::where('user_id', $id_key)->value('attempt_count');
+        $old_points = DailyAttemptModel::where('user_id', $id_key)->value('points');
         $correct = DailyAttemptModel::where('user_id', $id_key)->value('correct');
         $wrong = DailyAttemptModel::where('user_id', $id_key)->value('wrong');
         
@@ -130,22 +135,27 @@ class GameController extends Controller
             'attempt_count' => $today_attempt_count + 1,
             'correct' => $request->correct ? $correct + 1 : $correct,
             'wrong' => $request->wrong ? $wrong + 1 : $wrong,
-            'points' => $request->points
+            'points' => $request->point + $old_points
         ]);
- 
 
         /* Score kaydet */
         $attempts = AttemptModel::where('user_id', $id_key)->get();
         $totalPoints = $attempts->sum('point');
-        $user_score = ScoresModel::where('user_id', $id_key)->first();
-        if ($user_score) {
-            $user_score->score =$totalPoints;
-            $user_score->save();
+        if ( Auth::check() ) {
+            $user_name = Auth::user()->name;
+            $user_score = ScoresModel::where('user_id', $id_key)->first();
+            if ($user_score) {
+                $user_score->score =$totalPoints;
+                $user_score->save();
+            } else {
+                ScoresModel::create([
+                    'user_id' => $id_key,
+                    'user_name' => $user_name,
+                    'score' => $totalPoints
+                ]);
+            }
         } else {
-            ScoresModel::create([
-                'user_id' => $id_key,
-                'score' => $totalPoints
-            ]);
+            $user_score = session()->put('total_score', $totalPoints);
         }
     
         return response()->json(['message' => 'Attempt saved successfully']); 

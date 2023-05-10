@@ -168,8 +168,7 @@ export default function Welcome(props, { auth }) {
                         </div>
 
                         <div className={`purpleStyle alert ${showScoreAlert ? 'show' : ''}`}>
-                            <h2>{t('scoreboard')}</h2>
-
+                            <h2> {t('scoreboard')} </h2>
                             <table className="w-full mb-12 md:mb-16 lg:mb-18">
                                 <thead>
                                     <tr className="text-white">
@@ -181,16 +180,15 @@ export default function Welcome(props, { auth }) {
                                 <tbody style={{ display: scoreList.length > 0 ? 'ruby' : 'none' }}>
                                     {scoreList.map((user, index) => (
                                         <tr key={user.user_id} className="text-white ">
-                                            <td className="px-2 py-4 whitespace-nowrap text-sm font-medium  text-center">{index + 1}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium  text-center">{scoreList[index].user_id}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium  text-center">{scoreList[index].score}</td>
+                                            <td className="px-2 py-4 text-sm font-medium text-center">{index + 1}</td>
+                                            <td className="px-6 py-4 text-sm font-medium text-center">{scoreList[index].user_name}</td>
+                                            <td className="px-6 py-4 text-sm font-medium text-center">{scoreList[index].score}</td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
                             <button className='alertSubButton' onClick={handleScoreAlertClick}>{t('okay')}</button>
                         </div>
-
 
                         <div className={`purpleStyle alert ${showGuideAlert ? 'show' : ''}`}>
                             <h2> {t('game_guide')} </h2>
