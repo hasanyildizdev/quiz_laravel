@@ -176,17 +176,17 @@ export default function Welcome(props, { auth }) {
                             <table className="w-full mb-12 md:mb-16 lg:mb-18">
                                 <thead>
                                     <tr className="text-white">
-                                        <th className="px-2 py-3  text-center">#</th>
-                                        <th className="px-6 py-3 text-left text-lg font-medium uppercase tracking-wider  text-center"> {t('userid')} </th>
-                                        <th className="px-6 py-3 text-left text-lg font-medium uppercase tracking-wider  text-center">{t('score')}</th>
+                                        <th className="lg:px-2 py-3  text-center">#</th>
+                                        <th className="lg:px-6 py-3 lg:text-lg font-bold uppercase text-center"> {t('userid')} </th>
+                                        <th className="lg:px-6 py-3 lg:text-lg font-bold uppercase text-center">{t('score')}</th>
                                     </tr>
                                 </thead>
                                 <tbody style={{ display: scoreList.length > 0 ? 'ruby' : 'none' }}>
                                     {scoreList.map((user, index) => (
-                                        <tr key={user.user_id} className="text-white ">
-                                            <td className="px-2 py-4 text-sm font-medium text-center">{index + 1}</td>
-                                            <td className="px-6 py-4 text-sm font-medium text-center">{scoreList[index].user_name}</td>
-                                            <td className="px-6 py-4 text-sm font-medium text-center">{scoreList[index].score}</td>
+                                        <tr key={user.user_id} className="text-white">
+                                            <td className="lg:px-2 py-4 text-sm  text-center">{index + 1}</td>
+                                            <td className="lg:px-6 py-4 text-sm  text-center">{scoreList[index].user_name}</td>
+                                            <td className="lg:px-6 py-4 text-sm  text-center">{scoreList[index].score}</td>
                                         </tr>
                                     ))}
                                 </tbody>
