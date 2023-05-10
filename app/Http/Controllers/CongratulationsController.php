@@ -28,7 +28,7 @@ class CongratulationsController extends Controller
         /* Kullanici tum sorulari cozmusse go to Congratulations */
         $userAttemptCount = AttemptModel::where('user_id', $id_key)->count();
         $questionsCount = QuestionsModel::count();
-        if($userAttemptCount != $questionsCount && false){
+        if($userAttemptCount != $questionsCount){
             return redirect('/');
         } 
 

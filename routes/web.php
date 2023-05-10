@@ -17,12 +17,13 @@ use App\Http\Controllers\MusicController;
 
 Route::get('/', [WelcomeController::class, 'index']);
 Route::post('/set_language', [WelcomeController::class, 'set_language'])->name('set_language');
+Route::get('/get_language', [WelcomeController::class, 'get_language'])->name('get_language');
 
 Route::get('/quiz', [GameController::class, 'index'])->name('quiz.index');
 Route::post('/quiz/attempt', [GameController::class, 'attempt'])->name('quiz.attempt');
 
 Route::get('/result', [ResultController::class, 'index'])->name('result.index');
-Route::post('/result', [ResultController::class, 'index'])->name('result.index');
+Route::post('/result', [ResultController::class, 'index'])->name('result.post');
 
 Route::post('/result/store', [ResultController::class, 'store'])->name('result.store');
 Route::get('/results', [ResultsController::class, 'index'])->name('results.index');

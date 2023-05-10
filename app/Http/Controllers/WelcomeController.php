@@ -135,4 +135,9 @@ class WelcomeController extends Controller
         session()->put('language', $request->language);
         return response()->json(['message' => 'Language changed successfully']); 
     }
+
+    public function get_language() {
+
+        return response()->json(session()->get('language')); 
+    }
 }

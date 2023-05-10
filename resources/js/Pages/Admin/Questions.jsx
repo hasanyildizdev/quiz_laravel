@@ -1,11 +1,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import '../../../css/style.css'
 import React, { useEffect, useState } from "react";
-import { Inertia } from '@inertiajs/inertia';
+import { useLaravelReactI18n } from 'laravel-react-i18n'
 
 export default function Questions(props) {
-
-
+    const { t } = useLaravelReactI18n();
 
     let [questionID, setQuestionID] = useState(null);
     let [question, setQuestion] = useState('');
@@ -19,8 +18,8 @@ export default function Questions(props) {
     let [imageB, setImageB] = useState(null);
     let [imageC, setImageC] = useState(null);
     let [imageD, setImageD] = useState(null);
-    let [submit, setSubmit] = useState('Submit');
-    let [title, setTitle] = useState('ADD NEW QUESTION');
+    let [submit, setSubmit] = useState( 'Submit' );
+    let [title, setTitle] = useState( 'Add New Question');
     let [isUpdate, setIsUpdate] = useState(false);
     
     useEffect(() =>{
@@ -153,7 +152,7 @@ export default function Questions(props) {
         <AuthenticatedLayout
             auth={props.auth}
             errors={props.errors}
-            header={ <h2 className="font-semibold text-xl text-gray-800 leading-tight"> Questions </h2> }>
+            header={ <h2 className="font-semibold text-xl text-gray-800 leading-tight"> { t('questions') } </h2> }>
 
             <div className='admin_bg'>
                 <div className='flex flex-col'>
@@ -164,12 +163,12 @@ export default function Questions(props) {
                                 <path id="Vector" d="M8 12H12M12 12H16M12 12V16M12 12V8M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z" stroke="#00ff00" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
                         </button>
-                        <button id='new_question_add_button' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4' onClick={() => {window.location.href='/questions'}} style={{display:'none'}}> Add New Question </button>
+                        <button id='new_question_add_button' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4' onClick={() => {window.location.href='/questions'}} style={{display:'none'}}> {t('add_new_question')} </button>
                     </div>
                     <form id='question_form' onSubmit={onSubmit} style={{ display: 'none' }} className='w-full '>
                         <div className="form-group-admin relative h-12 mr-4 " style={{ width: '80%' }}>
                             <input
-                                placeholder='Question'
+                                placeholder= { t('question') }
                                 type="text"
                                 value={question}
                                 onChange={onChangeQuestion}
@@ -182,7 +181,7 @@ export default function Questions(props) {
                             <div className="form-group-admin  relative h-12 mx-2">
                             <div className=' w-6 h-6 bg-black text-white rounded-full text-center'>1</div>
                                 <input
-                                    placeholder='Answer 1'
+                                    placeholder= { t('answer') + ' 1'}
                                     type="text"
                                     value={answer1}
                                     onChange={onChangeA}
@@ -194,7 +193,7 @@ export default function Questions(props) {
                             <div className="form-group-admin  relative h-12">
                                 <div className=' w-6 h-6 bg-black text-white rounded-full text-center'>2</div>
                                 <input
-                                    placeholder='Answer 2'
+                                    placeholder= { t('answer') + ' 2'}
                                     type="text"
                                     value={answer2}
                                     onChange={onChangeB}
@@ -208,7 +207,7 @@ export default function Questions(props) {
                             <div className="form-group-admin relative h-12 mx-2">
                                 <div className=' w-6 h-6 bg-black text-white rounded-full text-center'>3</div>
                                 <input
-                                    placeholder='Answer 3'
+                                    placeholder= { t('answer') + ' 3'}
                                     type="text"
                                     value={answer3}
                                     onChange={onChangeC}
@@ -220,7 +219,7 @@ export default function Questions(props) {
                             <div className="form-group-admin relative h-12">
                                 <div className=' w-6 h-6 bg-black text-white rounded-full text-center'>4</div>
                                 <input
-                                    placeholder='Answer 4'
+                                    placeholder= { t('answer') + ' 4'}
                                     type="text"
                                     value={answer4}
                                     onChange={onChangeD}
@@ -236,7 +235,7 @@ export default function Questions(props) {
                             </div>
                             <div className="form-group-admin" style={{ width: '260px' }}>
                                 <input
-                                    placeholder='Correct Answer Number (1-4)'
+                                    placeholder={ t('correct_answer_nr') + ' (1-4)'}
                                     type="number"
                                     required
                                     value={correct}
@@ -248,17 +247,17 @@ export default function Questions(props) {
                 </div>
 
                 <div className="questionList">
-                    <h3>Question List</h3>
+                    <h3> {t('questions_list')} </h3>
                     <table className='table'>
                         <thead>
                             <tr>
                                 <th> NR </th>
-                                <th> Question </th>
-                                <th> Answer 1 </th>
-                                <th> Answer 2 </th>
-                                <th> Answer 3 </th>
-                                <th> Answer 4 </th>
-                                <th> Correct </th>
+                                <th> { t('questions') } </th>
+                                <th> { t('answer') } 1 </th>
+                                <th> { t('answer') } 2 </th>
+                                <th> { t('answer') } 3 </th>
+                                <th> { t('answer') } 4 </th>
+                                <th> { t('correct') } </th>
                             </tr>
                         </thead>
                         <tbody style={{ display: questionsList.length > 0 ? 'ruby' : 'none' }}>
@@ -271,7 +270,7 @@ export default function Questions(props) {
                                     <td>{answerList.find((a) => a.question_id === questionsList[index].id && a.option === 3)?.text}</td>
                                     <td>{answerList.find((a) => a.question_id === questionsList[index].id && a.option === 4)?.text}</td>
                                     <td> {correctList.find((a) => a.question_id === questionsList[index].id)?.correct_answer_id} </td>
-                                    <td><button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2' onClick={() => onDeleteQuestion(questionsList[index].id)}> Delete </button></td>
+                                    <td><button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2' onClick={() => onDeleteQuestion(questionsList[index].id)}> { t('delete') } </button></td>
                                     <td><button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' 
                                         onClick={() => onUpdateQuestion(
                                             questionsList[index].id,
@@ -281,7 +280,7 @@ export default function Questions(props) {
                                             answerList.find((a) => a.question_id === questionsList[index].id && a.option === 3)?.text,
                                             answerList.find((a) => a.question_id === questionsList[index].id && a.option === 4)?.text,
                                             correctList.find((a) => a.question_id === questionsList[index].id)?.correct_answer_id
-                                        )}> Update </button></td>
+                                        )}>  { t('update') }  </button></td>
                                 </tr>
                             ))}
                         </tbody>

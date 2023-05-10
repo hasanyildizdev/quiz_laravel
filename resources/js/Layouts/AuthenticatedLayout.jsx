@@ -1,12 +1,53 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n'
 
 export default function Authenticated({ auth, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const { t, setLang  } = useLaravelReactI18n();
+    
+    useEffect(() => {
+        async function getLanguage() {
+            await axios.get('/get_language').then((response) =>{
+            const persian_icon = document.querySelector('#persian_icon');
+            const english_icon = document.querySelector('#english_icon');
+            if(response.data === 'fa') {
+                setLang('fa');
+                english_icon.style.display = 'block';
+                persian_icon.style.display = 'none';
+            }else if(response.data === 'en') {
+                setLang('en');
+                persian_icon.style.display = 'block';
+                english_icon.style.display = 'none';
+            }
+            }).catch(error => { console.log(error); });
+        }
+        getLanguage();
+    },[]);
+
+    const changeLanguage = async () =>{
+        const persian_icon = document.querySelector('#persian_icon');
+        const english_icon = document.querySelector('#english_icon');
+        if (english_icon.style.display !== 'none') {
+            persian_icon.style.display = 'block';
+            english_icon.style.display = 'none';
+            setLang('en');
+            await axios.post('/set_language', { language: 'en' })
+                .then(response => { console.log(response.data.message); })
+                .catch(error => { console.log(error); });
+        } else {
+            english_icon.style.display = 'block';
+            persian_icon.style.display = 'none';
+            setLang('fa');
+            await axios.post('/set_language', { language: 'fa' })
+                .then(response => { console.log(response.data.message); })
+                .catch(error => { console.log(error); });
+        } 
+    }
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -20,21 +61,30 @@ export default function Authenticated({ auth, header, children }) {
                                 </Link>
                             </div>
 
+                            <div className='absolute left-2 top-2'>
+                                <div id="english_icon" className='w-6 h-6 lg:w-10 lg:h-10 hover:scale-105 cursor-pointer' onClick={changeLanguage}>
+                                    <img src="img/en.webp" alt='English' className=' object-contain'/>
+                                </div> 
+                                <div id="persian_icon" className='w-6 h-6 lg:w-10 lg:h-10 hover:scale-105 cursor-pointer hidden' onClick={changeLanguage}>
+                                    <img src="img/fa.webp" alt='Persian' className=' object-contain'/>
+                                </div>
+                            </div>
+
                             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex gap-2">
                                 <NavLink href={route('dashboard')} active={route().current('dashboard')}>
-                                    Dashboard
+                                    {t('dashboard')}
                                 </NavLink>
                                 <NavLink href={route('questions.index')} active={route().current('questions.index')}>
-                                    Questions
+                                    {t('questions')}
                                 </NavLink>
                                 <NavLink href={route('users.index')} active={route().current('users.index')}>
-                                    Users
+                                    {t('users')}
                                 </NavLink>
                                 <NavLink href={route('results.index')} active={route().current('results.index')}>
-                                    Results
+                                    {t('scores')}
                                 </NavLink>
                                 <NavLink href={route('ad.index')} active={route().current('ad.index')}>
-                                    Addvertisement
+                                    {t('advertisement')}
                                 </NavLink>
                             </div>
                         </div>
@@ -67,9 +117,9 @@ export default function Authenticated({ auth, header, children }) {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
+                                        <Dropdown.Link href={route('profile.edit')}> {t('profile')} </Dropdown.Link>
                                         <Dropdown.Link href={route('logout')} method="post" as="button">
-                                            Log Out
+                                            {t('logout')}
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
@@ -105,7 +155,7 @@ export default function Authenticated({ auth, header, children }) {
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
-                            Dashboard
+                            {t('dashboard')}
                         </ResponsiveNavLink>
                     </div>
 
@@ -120,7 +170,7 @@ export default function Authenticated({ auth, header, children }) {
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink>
                             <ResponsiveNavLink method="post" href={route('logout')} as="button">
-                                Log Out
+                                {t('logout')}
                             </ResponsiveNavLink>
                         </div>
                     </div>
