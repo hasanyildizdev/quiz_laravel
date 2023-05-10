@@ -12,7 +12,6 @@
 
 canvas {
   display: block;
-  vertical-align: bottom;
 }
 
 #tsparticles {
@@ -58,7 +57,6 @@ canvas {
 }
 
 .buttonTwo { 
-  font-size: 1.5vw;
   border-radius: 25px;
   width: 30%;
   cursor:pointer;
@@ -209,13 +207,11 @@ canvas {
 }
 
 .alert h2 {
-  font-size: 2vw;
   text-align: right;
   font-weight: bold;
 }
 
 .alert p {
-  font-size: 1.2vw;
   text-align: right;
   margin-bottom: 5vw;
 }
@@ -239,11 +235,11 @@ canvas {
   border-radius: 10px;
   width: 80%;
   margin: auto;
-  margin-bottom: 12%;
+  margin-bottom: 15%;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 45px;
+  height: 2vw;
   border: none;
 }
 
@@ -778,6 +774,7 @@ label {
   margin: 10px;
 } 
 
+ /* #FF0000 */
 @media screen and (max-width: 600px) {
   
   .row {
@@ -808,7 +805,6 @@ label {
   }
 
   .buttonTwo {
-    font-size: 14px;
     padding: 1vw 2vh;
     gap: 4px;
     width: 35%;
@@ -823,7 +819,9 @@ label {
   .loginButton {
     margin-top: 1vw;
     margin-right: 1vw;
-    font-size: 4vw;
+    margin-left: 1vw;
+    font-size: 5vw;
+    padding: 1vw 2vw;
   }
 
   .friends {
@@ -874,12 +872,7 @@ label {
     padding: 4vw;
   }
 
-  .alert h2{
-    font-size: 18px;
-  }
-
   .alert p{
-    font-size: 16px;
     margin-bottom: 10vw;
   }
 
@@ -889,8 +882,12 @@ label {
     height: auto;
     border-radius: 5px;
     bottom: 2vw;
+    padding: 0 1vw;
   }
 
+  .shareDiv{
+    height: 8vw;
+  }
 
   .shareDiv input {
     font-size: 10px;
@@ -1014,6 +1011,7 @@ label {
   }
 }
 
+ /* #FF0000 */
 @media screen and (min-width: 600px) and (max-width: 1000px) {
   .row{
     height: 8vw;
@@ -1087,20 +1085,20 @@ label {
     padding: 4vw;
   }
 
-  .alert h2{
-    font-size: 3.5vw;
-  }
-
   .alert p{
-    font-size: 3vw;
     margin-bottom: 5vw;
   }
 
   .alertSubButton {
-    font-size: 4vw;
+    font-size: 3vw;
     width: auto;
     height: auto;
     bottom: 3vw;
+    padding: 0 1vw;
+  }
+
+  .shareDiv{
+    height: 4vw;
   }
 
   .shareDiv input {
@@ -1203,8 +1201,13 @@ label {
   .score p {
     font-size: 4vw;
   }
-}
 
+  .goMenuButton {
+    font-size: 3vw;
+    padding: 1vh 4vw;
+  }
+}
+ /* #FF0000 */
 @media screen and (min-width: 1000px) and (max-width: 1600px) {
   .row {
     height: 8vw;
@@ -1280,25 +1283,22 @@ label {
     padding: 4vw;
   }
 
-  .alert h2{
-    font-size: 2.5vw;
-  }
-
   .alert p{
-    font-size: 2vw;
     margin-bottom: 3vw;
   }
 
   .shareDiv {
+    height: 3vw;
     width: 60%;
     margin-bottom:6%;
   }
 
   .alertSubButton {
-    font-size: 3vw;
+    font-size: 2vw;
     width: auto;
     height: auto;
     bottom: 2vw;
+    padding: 0 1vw;
   }
 
   .shareDiv input {
@@ -1328,8 +1328,22 @@ label {
     font-size: 16px;
     padding: 0.6vw 1.6vw;
   }
+
+  .buttonResultCorrect {
+    width: 20%;
+    font-size: 2vw;
+    padding: 1% 4%;
+  }
+
+  .buttonResultWrong {
+    width: 20%;
+    font-size: 2vw;
+    padding: 1% 4%;
+  }
+
 }
 
+ /* #FF0000 */
 @media screen and (min-width: 1600px) and (max-width: 2200px) {
   .logo img {
     top: 20%;

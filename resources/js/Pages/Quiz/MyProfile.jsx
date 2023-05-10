@@ -59,9 +59,9 @@ class MyProfile extends Component {
 
                         <div className="row">
                             <div className='logo'>
-                                <h1 className=' text-white text-xl lg:text-4xl'>{this.props.t('quiz')}</h1>
+                                <h1 className=' text-white text-lg md:text-xl lg:text-4xl'>{this.props.t('trader')}</h1>
                                 <img src="img/logo.png" alt="Logo" />
-                                <h1 className=' text-white text-xl lg:text-4xl'>{this.props.t('trader')}</h1>
+                                <h1 className=' text-white text-lg md:text-xl lg:text-4xl'>{this.props.t('quiz')}</h1>
                             </div>
                         </div>
 
@@ -80,7 +80,7 @@ class MyProfile extends Component {
                         {this.quiz_completed || true ? (
                             <div className='answer_results'>
                                 <div className='buttonResultCorrect'>
-                                    <div className='text-xl lg:text-2xl text-center'>{this.props.t('totalpoints')} {this.total_score} </div>
+                                    <div className='md:text-xl lg:text-2xl text-center'>{this.props.t('totalpoints')} {this.total_score} </div>
                                 </div>
                             </div>
                         ) : null}

@@ -42,11 +42,11 @@ class Congratulations extends Component {
 
                         <div className='answer_results'>
                             <div className='buttonResultCorrect'>
-                                <div className='text-xl lg:text-2xl text-center'> {this.props.t('totalpoints')} {this.total_score} </div>
+                                <div className='text-xl lg:text-2xl text-center'> {this.props.t('score')} : {this.total_score} </div>
                             </div>
                         </div>
 
-                        <div className='goMenuButtonDiv'>
+                        <div className='goMenuButtonDiv mt-10'>
                             <Link href={'/'} style={{ textDecoration: 'none' }}>
                                 <button className='goMenuButton'>
                                    {this.props.t('backtomenu')}
