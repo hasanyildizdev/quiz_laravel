@@ -11,6 +11,7 @@
     "userid" : "User ID",
     "user_list" : "User List",
     "register" : "Register",
+    "already_registered" : "Already Registered",
     "forgetpassword" : "Forget your password?",
     "login" : "Sign In",
     "logout" : "Log Out",

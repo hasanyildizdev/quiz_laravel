@@ -11,6 +11,7 @@
     "userid" : "آیدی کاربر",
     "user_list" : "فهرست کاربران",
     "register" : "ثبت نام",
+    "already_registered" : "قبلاً ثبت نام کرده اید؟",
     "forgetpassword" : " رمز عبور خود را فراموش کرده اید؟  ",
     "login" : "ورود",
     "logout" : "خروج",

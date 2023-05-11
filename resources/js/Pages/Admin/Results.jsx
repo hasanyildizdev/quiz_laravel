@@ -34,7 +34,7 @@ export default function scores(props) {
             >
             <div className='admin_bg'>
                 <div className='scoresList'>
-                    <h3> { t('score_list') } </h3>
+                    <p> { t('score_list') } </p>
                     <table className='table'>
                         <thead>
                             <tr>

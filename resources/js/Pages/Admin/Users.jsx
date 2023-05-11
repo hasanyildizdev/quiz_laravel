@@ -35,7 +35,7 @@ export default function Users(props) {
             <div className='admin_bg'>
 
                 <div className='userList'>
-                    <h3>{t('user_list')}</h3>
+                    <p>{t('user_list')}</p>
                     <table className='table'>
                         <thead>
                             <tr>

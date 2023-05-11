@@ -247,7 +247,7 @@ export default function Questions(props) {
                 </div>
 
                 <div className="questionList">
-                    <h3> {t('questions_list')} </h3>
+                    <p> {t('questions_list')} </p>
                     <table className='table'>
                         <thead>
                             <tr>

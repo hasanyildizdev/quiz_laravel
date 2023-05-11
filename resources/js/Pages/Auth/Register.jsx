@@ -5,8 +5,11 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function Register() {
+    const { t, tChoice } = useLaravelReactI18n();
+
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
@@ -116,13 +119,13 @@ export default function Register() {
                 <div className="flex items-center justify-end mt-4">
                     <Link
                         href={route('login')}
-                        className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="ml-2 underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
-                        قبلاً ثبت نام کرده اید؟
+                       {t('already_registered')}
                     </Link>
 
                     <PrimaryButton className="ml-4" disabled={processing}>
-                        ثبت نام
+                        {t('register')}
                     </PrimaryButton>
                 </div>
             </form>

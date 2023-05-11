@@ -42,8 +42,8 @@ export default function Ad(props) {
             >
             <div className='admin_bg'>
                 <div className='flex justify-center mt-10'>
-                    <div className=' bg-gray-500 w-1/3 py-4 rounded-lg text-white'>
-                        <h3 className='pb-4 flex justify-center text-white' style={{color:'#fff'}}> {t('advertisement')} </h3>
+                    <div className=' bg-gray-500 p-4 rounded-lg text-white'>
+                        <p className='pb-4 flex justify-center text-white ' style={{color:'#fff'}}> {t('advertisement')} </p>
 
                         <form className='flex flex-row justify-center items-center' onSubmit={onSubmitAd}>
                             
