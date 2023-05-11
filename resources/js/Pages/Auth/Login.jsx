@@ -84,7 +84,7 @@ export default function Login({ status, canResetPassword }) {
                 <div className="block mt-4">
                     <label className="flex items-center">
                         <Checkbox name="remember" value={data.remember} onChange={handleOnChange} />
-                        <span className="mr-2 text-sm text-gray-600">{t('rememberme')}</span>
+                        <span className="mr-2 text-sm text-gray-600"> {t('rememberme')} </span>
                     </label>
                 </div>
 

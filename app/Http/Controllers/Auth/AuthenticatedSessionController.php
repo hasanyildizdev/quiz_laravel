@@ -14,6 +14,7 @@ use Inertia\Response;
 use Illuminate\Support\Facades\Session;
 use App\Models\DailyAttemptModel;
 use App\Models\AttemptModel;
+use App\Models\ScoresModel;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -34,8 +35,54 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
+        
+        // Kullanici oturum actiginda id'leri degistir(session varsa)
+        if (Auth::check() && Session::has('user_session_id')) {
+            $user_id = Auth::id();
+                    
+                    // Attempt id degistir ayni attemptler varsa eskisini sil 
+            AttemptModel::where('user_id', session()->get('user_session_id'))->update(['user_id' => $user_id]);
+            $attempts = AttemptModel::where('user_id', $user_id)->orderBy('created_at', 'desc')->get()->groupBy('question_id');
+            foreach( $attempts as $questionId => $groupedAttempts){
+                $latestAttempt = $groupedAttempts->shift(); // revove and return first element of array
+                foreach ($groupedAttempts as $attempt) {
+                    $attempt->delete();
+                }
+            }
+
+            // Score id degistir
+            ScoresModel::where('user_id', session()->get('user_session_id'))->update(['user_id' => $user_id]);
+
+            /* Score kaydet */
+            $attempts = AttemptModel::where('user_id', $user_id)->get();
+            $totalPoints = $attempts->sum('point');
+            $user_name = Auth::user()->name;
+            $user_score = ScoresModel::where('user_id', $user_id)->first();
+            if ($user_score) {
+                $user_score->score =$totalPoints;
+                $user_score->save();
+            } else {
+                ScoresModel::create([
+                    'user_id' => $user_id,
+                    'user_name' => $user_name,
+                    'score' => $totalPoints
+                ]);
+            }
+            
+            // Daily Attempt id degistir
+            DailyAttemptModel::where('user_id', session()->get('user_session_id'))->update(['user_id' => $user_id]);
+            $dailyAttempts = DailyAttemptModel::where('user_id', $user_id)->orderBy('created_at','desc')->get()->groupBy('user_id');
+            foreach( $dailyAttempts as $questionId => $groupedAttempts){
+                $latestAttempt = $groupedAttempts->shift(); // revove and return first element of array
+                foreach ($groupedAttempts as $attempt) {
+                    $attempt->delete();
+                }
+            }
+        }
 
         $request->session()->regenerate();
+
+
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }
@@ -47,7 +94,7 @@ class AuthenticatedSessionController extends Controller
     {
 
         // Kullanici oturum kapattiginda dailyAttemp id'leri degistir(session varsa)
-        if (Auth::check() && Session::has('user_session_id')) {
+        if (Auth::check() && session()->get('user_session_id')) {
             $user_id = Auth::id();
 
             // Attempt id degistir ayni attemptler varsa eskisini sil 
@@ -72,8 +119,6 @@ class AuthenticatedSessionController extends Controller
         }
     
         $user_session_id = session()->get('user_session_id');
-        $music_status = session()->get('music_active');
-        $language = session()->get('language');
 
         Auth::guard('web')->logout();
         $request->session()->invalidate();
@@ -81,12 +126,6 @@ class AuthenticatedSessionController extends Controller
 
         if($user_session_id){
             session()->put('user_session_id',$user_session_id);
-        }
-        if($music_status) {
-            session()->put('music_active', $music_status);
-        }
-        if($language) {
-            session()->put('language', $language);
         }
 
         return redirect('/');

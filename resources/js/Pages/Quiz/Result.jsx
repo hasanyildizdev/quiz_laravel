@@ -40,8 +40,8 @@ class Result extends Component {
 
                     {this.state.noAnswerCount === 0 ? (
                         <div className='flex justify-center items-center text-xl lg:text-2xl text-white mb-10 text-center px-4 lg:px-0'>
-                           Great! You completed 7 questions today <br/>
-                            You can see new questions tomorrow <br/>
+                           {this.props.t('great_completed_today')} <br/>
+                            {this.props.t('new_questions_tomorrow')} <br/>
                         </div>
                     ) : null}
 
@@ -57,7 +57,7 @@ class Result extends Component {
 
                     {this.state.noAnswerCount === 0 ? (
                         <div className='w-1/4 md:w-1/4 lg:w-1/7 mx-auto flex justify-center items-center text-center text:2xl lg:text-3xl py-2 lg:py-6 bg-green-400 mb-10 rounded-xl'>
-                            <div className='text-sm md:text-xl lg:text-2xl'> Today Score : {this.state.points}  </div>
+                            <div className='text-sm md:text-xl lg:text-2xl'> {this.props.t('todayscore')} : {this.state.points}  </div>
                         </div>
                     ) : null}
 
@@ -69,7 +69,7 @@ class Result extends Component {
                     
                     {!this.props.user ? (
                         <div className='flex justify-center items-center mb-10 text-white text-xl lg:text-2xl px-4 lg:px-0'>
-                             <p className='text-lg lg:text-2xl text-center'> Sign In to see your score on ScoreBoard </p>
+                             <p className='text-lg lg:text-2xl text-center'> {this.props.t('sign_to_scoreboard')} </p>
                             <Link href={route('login')} style={{ textDecoration: 'none' }} >
                                 <button className='loginButton mr-2 truncate'>{this.props.t('login')}</button>
                             </Link>

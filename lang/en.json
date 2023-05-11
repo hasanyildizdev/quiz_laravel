@@ -32,6 +32,7 @@
     "unanswered" : "Unanswered",
     "backtomenu": "Back to Menu",
     "totalpoints" : "Total Points :", 
+    "todayscore" : "Today Score",
     "game_rules" : "Game Rules",
     "clicktostart" : "Click on the start game button",
     "answercorrectly" : "Answer the questions correctly",
@@ -62,5 +63,8 @@
     "passive" : "Passive",
     "dashboard" : "Dashboard",
     "welcome_admin" : "Welcome to Admin Panel",
-    "profile" : "Profile"
+    "profile" : "Profile",
+    "sign_to_scoreboard" : "Sign In to see your score on Scoreboard",
+    "great_completed_today" : "Great! You completed 7 questions today",
+    "new_questions_tomorrow" : "You can see new questions tomorrow"
 }
