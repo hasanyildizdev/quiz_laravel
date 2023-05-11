@@ -26,9 +26,12 @@ class ResultController extends Controller
             }
         } 
 
-        $wrong = DailyAttemptModel::where('user_id', $id_key)->value('wrong');
+/*         $wrong = DailyAttemptModel::where('user_id', $id_key)->value('wrong');
         $correct = DailyAttemptModel::where('user_id', $id_key)->value('correct');
-        $points =  DailyAttemptModel::where('user_id', $id_key)->value('points');
+        $points =  DailyAttemptModel::where('user_id', $id_key)->value('points'); */
+        $wrong = session()->get('wrong');
+        $correct = session()->get('correct');
+        $points = session()->get('points');
         $noanswer = 7 - ($correct + $wrong);       
         if(Auth::check()){
             $total_score = ScoresModel::where('user_id', $id_key)->value('score');

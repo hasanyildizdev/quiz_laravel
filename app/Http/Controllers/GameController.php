@@ -39,37 +39,69 @@ class GameController extends Controller
 
         // id atama
         if (Auth::check()) {
-            $id_key = Auth::id();
-        } else {
-            $id_key = session()->get('user_session_id');
-            if (!$id_key) {
-                $id_key = Str::random(40);                
-                session()->put('user_session_id', $id_key);
-            }
-        } 
-
-        /* Kullanici tum sorulari cozmusse go to Congratulations */
-        $userAttemptCount = AttemptModel::where('user_id', '=',  (string) $id_key)->count();
-        $questionsCount = QuestionsModel::count();
-        if($userAttemptCount === $questionsCount){
-            return redirect()->route('congratulations.index')->with('success', 'You completed all quiz!');
-        } 
-
-        $questions_answered_today = DailyAttemptModel::where('user_id', '=',  (string) $id_key)->value('attempt_count');
-        // $questions atama
-        if( AttemptModel::where('user_id', '=',  (string) $id_key)->get()->count() > 0 ){
-            $attempted_question_ids = AttemptModel::where('user_id', '=',  (string) $id_key)->get()->pluck('question_id')->toArray();
-            $attempted_question_ids = array_map('intval', $attempted_question_ids);
+            $user_id = Auth::id();
             
-            if ($questions_answered_today === 0) {
-                $questions = QuestionsResource::collection(QuestionsModel::whereNotIn('id', $attempted_question_ids)->inRandomOrder()->limit(7)->get());
-            } else if($questions_answered_today === 7){
-                return redirect()->route('result.index');
+            /* Kullanici tum sorulari cozmusse go to Congratulations */
+            $userAttemptCount = AttemptModel::where('user_id', $user_id)->count();
+            $questionsCount = QuestionsModel::count();
+            if($userAttemptCount === $questionsCount){
+                return redirect()->route('congratulations.index')->with('success', 'You completed all quiz!');
+            } 
+
+            // Today attempt count
+            $daily_attempt = DailyAttemptModel::where('user_id', $user_id );
+            if($daily_attempt) {
+                $attempt_count_today = DailyAttemptModel::where('user_id', $user_id)->value('attempt_count');
             } else {
-                $questions = QuestionsResource::collection(QuestionsModel::whereNotIn('id', $attempted_question_ids)->inRandomOrder()->limit(7 - $questions_answered_today)->get());
-            }  
-        }else{
-            $questions = QuestionsResource::collection(QuestionsModel::inRandomOrder()->limit(7)->get());
+                $attempt_count_today = 0;
+            }
+            
+            // $questions atama
+            if( AttemptModel::where('user_id', $user_id)->get()->count() > 0 ){
+                $attempted_question_ids = AttemptModel::where('user_id',  $user_id)->get()->pluck('question_id')->toArray();
+                $attempted_question_ids = array_map('intval', $attempted_question_ids);
+                
+                if ($attempt_count_today === 0) {
+                    $questions = QuestionsResource::collection(QuestionsModel::whereNotIn('id', $attempted_question_ids)->inRandomOrder()->limit(7)->get());
+                } else if($attempt_count_today === 7){
+                    return redirect()->route('result.index');
+                } else {
+                    $questions = QuestionsResource::collection(QuestionsModel::whereNotIn('id', $attempted_question_ids)->inRandomOrder()->limit(7 - $attempt_count_today)->get());
+                }  
+            }else{
+                $questions = QuestionsResource::collection(QuestionsModel::inRandomOrder()->limit(7)->get());
+            } 
+
+        } else {
+            /* Kullanici tum sorulari cozmusse go to Congratulations */
+            $attempts = count(session()->get('attempts', []));
+            $questionsCount = QuestionsModel::count();
+            if( $attempts === $questionsCount) {
+                return redirect()->route('congratulations.index')->with('success', 'You completed all quiz!');
+            }
+
+            // Today attempt count
+            $attempt_count_today = session()->get('attempt_count');
+            
+            // $questions atama
+            if( $attempts > 0) {
+                $attempts = session()->get('attempts', []);
+                $attempted_question_ids = [];
+                foreach ($attempts as $attempt) {
+                    $attempted_question_ids[] = $attempt['question_id'];
+                }
+                $attempted_question_ids = array_map('intval', $attempted_question_ids);
+
+                if($attempt_count_today  === 0){
+                    $questions = QuestionsResource::collection(QuestionsModel::whereNotIn('id', $attempted_question_ids)->inRandomOrder()->limit(7)->get());
+                } else if($attempt_count_today === 7 ) {
+                    return redirect()->route('result.index');
+                } else {
+                    $questions = QuestionsResource::collection(QuestionsModel::whereNotIn('id', $attempted_question_ids)->inRandomOrder()->limit(7 - $attempt_count_today)->get());
+                }
+            }else {
+                $questions = QuestionsResource::collection(QuestionsModel::inRandomOrder()->limit(7)->get());
+            }
         } 
 
         $answers = AnswersResource::collection(AnswersModel::all());
@@ -87,67 +119,108 @@ class GameController extends Controller
     
     public function attempt(Request $request)
     {
-        
         $request->validate([ 
             'question_id' => ['required', 'integer'],
             'point' => ['required', 'integer'],
         ]); 
-        
-        // id atama
-        if (Auth::check()) {
-            $id_key = Auth::id();
-        } else {
-            $id_key = session()->get('user_session_id');
-            if (!$id_key) {
-                $id_key = Str::random(40);                
-                session()->put('user_session_id', $id_key);
-            }
-        } 
 
-        // if question not saved before create attempt
-        $exists = AttemptModel::where('user_id', '=',  (string) $id_key)->where('question_id', $request->question_id)->exists();
-        if (!$exists) {
-            AttemptModel::create([
-                'user_id' => $id_key,
-                'question_id' => $request->question_id,
-                'point' => $request->point,
+        // Question Attempt
+        if( Auth::check() ) {
+            $user_id = Auth::id();
+            $exists = AttemptModel::where('user_id', $user_id)->where('question_id', $request->question_id)->exists();
+            // if question not saved before create attempt
+            if ( !$exists ) {
+                AttemptModel::create([
+                    'user_id' => $user_id,
+                    'question_id' => $request->question_id,
+                    'point' => $request->point
+                ]);
+            } 
+        } else {
+            $attempts = session()->get('attempts', []);
+            if(!$attempts) {
+                $attempt = [
+                    'question_id' => $request->question_id,
+                    'point' => $request->point
+                ];
+                array_push($attempts, $attempt);
+                session()->put('attempts', $attempts);
+            } else {
+                $isExist = false;
+                foreach ($attempts as $attempt) {
+                    if ($attempt['question_id'] === $request->question_id) {
+                        $isExist = true;  
+                        break;    
+                    }
+                }
+                if(!$isExist) {
+                    $attempt = [
+                        'question_id' => $request->question_id,
+                        'point' => $request->point
+                    ];
+                    array_push($attempts, $attempt);
+                    session()->put('attempts', $attempts);   
+                }
+            }
+        }
+
+        // Daily Attempt
+        if( Auth::check() ) {
+            $user_id = Auth::id();
+            $today_attempt_count = DailyAttemptModel::where('user_id', $user_id)->value('attempt_count');
+            $old_points = DailyAttemptModel::where('user_id', $user_id)->value('points');
+            $correct = DailyAttemptModel::where('user_id', $user_id)->value('correct');
+            $wrong = DailyAttemptModel::where('user_id', $user_id)->value('wrong'); 
+            DailyAttemptModel::where('user_id', $user_id)->update([
+                'attempt_count' => $today_attempt_count + 1,
+                'correct' => $request->correct ? $correct + 1 : $correct,
+                'wrong' => $request->wrong ? $wrong + 1 : $wrong,
+                'points' => $request->point + $old_points
             ]);
+        } else {
+            // Daily Attempt Session
+            $today_attempt_count = Session::has('attempt_count') ? session()->get('attempt_count') : 0;
+            $old_points = Session::has('old_points') ? session()->get('old_points') : 0;
+            $correct = Session::has('correct') ? session()->get('correct') : 0;
+            $wrong = Session::has('wrong') ? session()->get('wrong') : 0;
+            session()->put('attempt_count', $today_attempt_count + 1 );
+            session()->put('wrong',  $request->correct ? $correct + 1 : $correct);
+            session()->put('correct',$request->wrong ? $wrong + 1 : $wrong);
+            session()->put('points', $request->point + $old_points);
+            session()->put('updated_at', date("Y-m-d", time()));
         }
         
-        $today_attempt_count = DailyAttemptModel::where('user_id', '=',  (string) $id_key)->value('attempt_count');
-        $old_points = DailyAttemptModel::where('user_id', '=',  (string) $id_key)->value('points');
-        $correct = DailyAttemptModel::where('user_id', '=',  (string) $id_key)->value('correct');
-        $wrong = DailyAttemptModel::where('user_id', '=',  (string) $id_key)->value('wrong');
-                
-        // questions answered'i 1 arttir
-        DailyAttemptModel::where('user_id', '=',  (string) $id_key)->update([
-            'attempt_count' => $today_attempt_count + 1,
-            'correct' => $request->correct ? $correct + 1 : $correct,
-            'wrong' => $request->wrong ? $wrong + 1 : $wrong,
-            'points' => $request->point + $old_points
-        ]);
 
-        /* Score kaydet */
-        $attempts = AttemptModel::where('user_id', '=',  (string) $id_key)->get();
-        $totalPoints = $attempts->sum('point');
+
         if ( Auth::check() ) {
+            $user_id = Auth::id();
+            $attempts = AttemptModel::where('user_id', $user_id)->get();
+            $totalPoints = $attempts->sum('point');
+
             $user_name = Auth::user()->name;
-            $user_score = ScoresModel::where('user_id', '=',  (string) $id_key)->first();
+            $user_score = ScoresModel::where('user_id', $user_id)->first();
             if ($user_score) {
                 $user_score->score =$totalPoints;
                 $user_score->save();
             } else {
                 ScoresModel::create([
-                    'user_id' => $id_key,
+                    'user_id' => $user_id,
                     'user_name' => $user_name,
                     'score' => $totalPoints
                 ]);
             }
-        } 
+        } else {
+            $totalPoints = 0;
+            $attempts = session()->get('attempts',[]);
+            if(count($attempts)>0){
+                foreach($attempts as $attempt) {
+                    $totalPoints += $attempt['point'];
+                }
+            } 
+            session()->put('total_score', $totalPoints);
+        }
 
         // Total scoru session'a kaydet
-        session()->put('total_score', $totalPoints);
-    
         return response()->json(['message' => 'Attempt saved successfully']); 
     }
 

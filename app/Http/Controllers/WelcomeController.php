@@ -18,34 +18,13 @@ use Illuminate\Support\Str;
 
 class WelcomeController extends Controller
 {
+
+
     public function index(Request $request)
-    {
-        // id atama
-        if (Auth::check()) {
-            $id_key = Auth::id();
-        } else {
-            $id_key = session()->get('user_session_id');
-            if (!$id_key) {
-                $id_key = Str::random(40);                
-                session()->put('user_session_id', $id_key);
-            }
-        } 
-
-
-        // Gunluk sorulari yenile
-        $last_attempt_creaeted_date = DailyAttemptModel::where('user_id', '=',  (string) $id_key)->value('created_at')->format('Y-m-d'); 
-        $current_time = time();
-        $current_date = date("Y-m-d", $current_time);
-        if($current_date > $last_attempt_creaeted_date) {
-            DailyAttemptModel::where('user_id', '=',  (string) $id_key)->update([
-                'attempt_count' => 0,
-                'correct' => 0,
-                'wrong' => 0,
-                'points' => 0
-            ]);
-        }
+    {     
         
-
+/*         $attempts = count(session()->get('attempts', []));*/
+        /* dd(session()->get('updated_at'));  */ 
         // Language
         $language_session = Session::has('language');
         if(!$language_session) {
@@ -55,19 +34,47 @@ class WelcomeController extends Controller
             $language = session()->get('language'); 
         }
 
+
+        // Gunluk sorulari yenile
+        if( Auth::check() ) {
+            $user_id = Auth::id();
+            $daily_attempt = DailyAttemptModel::where('user_id', $user_id);
+            if($daily_attempt){
+                $last_attempt_updated_date = $daily_attempt->value('updated_at')->format('Y-m-d'); 
+                $current_date = date("Y-m-d", time());
+                if($current_date > $last_attempt_updated_date) {
+                    DailyAttemptModel::where('user_id', $user_id)->update([
+                        'attempt_count' => 0,
+                        'correct' => 0,
+                        'wrong' => 0,
+                        'points' => 0
+                    ]);
+                }
+            }
+        } else{
+            $last_attempt_updated_date = session()->get('updated_at');
+            $current_date = date("Y-m-d", time());
+            if($current_date > $last_attempt_updated_date ){
+                session()->put('attempt_count',0);
+                session()->put('correct',0);
+                session()->put('wrong',0);
+                session()->put('points',0);
+            }
+        } 
+        
         // question answered today 
-        $daily_attempt = DailyAttemptModel::where('user_id', '=',  (string) $id_key);
-        if(!$daily_attempt->exists()) {
-            DailyAttemptModel::create([
-                'user_id' => $id_key,
-                'attempt_count' => 0,
-                'correct' => 0,
-                'wrong' => 0,
-                'points' => 0
-            ]);
-            $questions_answered_today = 0;
+        if( Auth::check() ) {
+            $user_id = Auth::id();
+            $daily_attempt = DailyAttemptModel::where('user_id', $user_id);
+            if( $daily_attempt->exists()) {
+                $questions_answered_today = $daily_attempt->value('attempt_count');
+            } else{
+                $questions_answered_today = 0;
+            }
+        } else if(session()->get('attempt_count')) {
+            $questions_answered_today = session()->get('attempt_count');
         } else {
-            $questions_answered_today = DailyAttemptModel::where('user_id', '=',  (string) $id_key)->value('attempt_count');
+            $questions_answered_today = 0;
         }
 
         
@@ -81,13 +88,14 @@ class WelcomeController extends Controller
         ]);
     }
 
+
+
     public function set_language(Request $request) {
         session()->put('language', $request->language);
         return response()->json(['message' => 'Language changed successfully']); 
     }
 
     public function get_language() {
-
         return response()->json(session()->get('language')); 
     }
 }
