@@ -37,27 +37,24 @@ class GameController extends Controller
             $music_active = session()->get('music_active');
         }
 
-        // id atama
         if (Auth::check()) {
             $user_id = Auth::id();
             
-            /* Kullanici tum sorulari cozmusse go to Congratulations */
-            $userAttemptCount = AttemptModel::where('user_id', $user_id)->count();
-            $questionsCount = QuestionsModel::count();
-            if($userAttemptCount === $questionsCount){
-                return redirect()->route('congratulations.index')->with('success', 'You completed all quiz!');
-            } 
-
-            // Today attempt count
-            $daily_attempt = DailyAttemptModel::where('user_id', $user_id );
-            if($daily_attempt) {
-                $attempt_count_today = DailyAttemptModel::where('user_id', $user_id)->value('attempt_count');
-            } else {
-                $attempt_count_today = 0;
+            /* Tum sorular cozulduyse go to Congratulations */
+            $userAttempt = AttemptModel::where('user_id', $user_id)->get();
+            if($userAttempt) {
+                $userAttemptCount = $userAttempt->count();
+                $questionsCount = QuestionsModel::count();
+                if($userAttemptCount === $questionsCount){
+                    return redirect()->route('congratulations.index')->with('success', 'You completed all quiz!');
+                } 
             }
             
             // $questions atama
-            if( AttemptModel::where('user_id', $user_id)->get()->count() > 0 ){
+            if($userAttempt) {
+                // Today attempt count
+                $daily_attempt = DailyAttemptModel::where('user_id', $user_id );
+                $attempt_count_today = $daily_attempt ? $daily_attempt->value('attempt_count') : 0;
                 $attempted_question_ids = AttemptModel::where('user_id',  $user_id)->get()->pluck('question_id')->toArray();
                 $attempted_question_ids = array_map('intval', $attempted_question_ids);
                 
@@ -68,30 +65,30 @@ class GameController extends Controller
                 } else {
                     $questions = QuestionsResource::collection(QuestionsModel::whereNotIn('id', $attempted_question_ids)->inRandomOrder()->limit(7 - $attempt_count_today)->get());
                 }  
-            }else{
+            } else{
                 $questions = QuestionsResource::collection(QuestionsModel::inRandomOrder()->limit(7)->get());
-            } 
+            }
 
         } else {
             /* Kullanici tum sorulari cozmusse go to Congratulations */
-            $attempts = count(session()->get('attempts', []));
-            $questionsCount = QuestionsModel::count();
-            if( $attempts === $questionsCount) {
-                return redirect()->route('congratulations.index')->with('success', 'You completed all quiz!');
+            $userAttempt = session()->get('attempts', []);
+            if($userAttempt) {
+                $userAttemptCount = count($userAttempt);
+                $questionsCount = QuestionsModel::count();
+                if( $userAttemptCount === $questionsCount) {
+                    return redirect()->route('congratulations.index')->with('success', 'You completed all quiz!');
+                }
             }
 
-            // Today attempt count
-            $attempt_count_today = session()->get('attempt_count');
-            
             // $questions atama
-            if( $attempts > 0) {
-                $attempts = session()->get('attempts', []);
+            if($userAttempt) {
+                // Today attempt count
+                $attempt_count_today = session()->get('attempt_count') ?? 0;
                 $attempted_question_ids = [];
-                foreach ($attempts as $attempt) {
-                    $attempted_question_ids[] = $attempt['question_id'];
+                foreach ($userAttempt as $attempt) {
+                    array_push($attempted_question_ids, $attempt['question_id']);
                 }
                 $attempted_question_ids = array_map('intval', $attempted_question_ids);
-
                 if($attempt_count_today  === 0){
                     $questions = QuestionsResource::collection(QuestionsModel::whereNotIn('id', $attempted_question_ids)->inRandomOrder()->limit(7)->get());
                 } else if($attempt_count_today === 7 ) {
@@ -99,7 +96,7 @@ class GameController extends Controller
                 } else {
                     $questions = QuestionsResource::collection(QuestionsModel::whereNotIn('id', $attempted_question_ids)->inRandomOrder()->limit(7 - $attempt_count_today)->get());
                 }
-            }else {
+            } else {
                 $questions = QuestionsResource::collection(QuestionsModel::inRandomOrder()->limit(7)->get());
             }
         } 
@@ -138,6 +135,7 @@ class GameController extends Controller
             } 
         } else {
             $attempts = session()->get('attempts', []);
+            // hic attempt yoksa
             if(!$attempts) {
                 $attempt = [
                     'question_id' => $request->question_id,
@@ -147,6 +145,7 @@ class GameController extends Controller
                 session()->put('attempts', $attempts);
             } else {
                 $isExist = false;
+                // sorunun kaydi yoksa kaydet
                 foreach ($attempts as $attempt) {
                     if ($attempt['question_id'] === $request->question_id) {
                         $isExist = true;  
@@ -167,60 +166,72 @@ class GameController extends Controller
         // Daily Attempt
         if( Auth::check() ) {
             $user_id = Auth::id();
-            $today_attempt_count = DailyAttemptModel::where('user_id', $user_id)->value('attempt_count');
-            $old_points = DailyAttemptModel::where('user_id', $user_id)->value('points');
-            $correct = DailyAttemptModel::where('user_id', $user_id)->value('correct');
-            $wrong = DailyAttemptModel::where('user_id', $user_id)->value('wrong'); 
-            DailyAttemptModel::where('user_id', $user_id)->update([
-                'attempt_count' => $today_attempt_count + 1,
-                'correct' => $request->correct ? $correct + 1 : $correct,
-                'wrong' => $request->wrong ? $wrong + 1 : $wrong,
-                'points' => $request->point + $old_points
-            ]);
+            $daily_attempt = DailyAttemptModel::where('user_id', $user_id);
+            if( $daily_attempt ) {
+                $today_attempt_count = $daily_attempt->value('attempt_count') ? $daily_attempt->value('attempt_count') : 0;
+                $old_points = $daily_attempt->value('points') ? $daily_attempt->value('points') : 0;
+                $correct = $daily_attempt->value('correct') ? $daily_attempt->value('correct') : 0;
+                $wrong = $daily_attempt->value('wrong') ? $daily_attempt->value('wrong') : 0; 
+                $daily_attempt->update([
+                    'attempt_count' => $today_attempt_count + 1,
+                    'correct' => $request->correct ? $correct + 1 : $correct,
+                    'wrong' => $request->wrong ? $wrong + 1 : $wrong,
+                    'points' => $request->point + $old_points
+                ]);
+            } else {
+                DailyAttemptModel::create([
+                    'user_id' => $user_id,
+                    'attempt_count' => 1,
+                    'correct' =>$request->correct ? 1 : 0,
+                    'wrong' =>$request->wrong ? 1 : 0,
+                    'points' => $request->point ? $request->point : 0
+                ]);
+            }
         } else {
             // Daily Attempt Session
-            $today_attempt_count = Session::has('attempt_count') ? session()->get('attempt_count') : 0;
-            $old_points = Session::has('old_points') ? session()->get('old_points') : 0;
-            $correct = Session::has('correct') ? session()->get('correct') : 0;
-            $wrong = Session::has('wrong') ? session()->get('wrong') : 0;
+            $today_attempt_count = session()->get('attempt_count') ? session()->get('attempt_count') : 0;
+            $old_points = session()->get('points') ? session()->get('points') : 0;
+            $correct = session()->get('correct') ? session()->get('correct') : 0;
+            $wrong = session()->get('wrong') ? session()->get('wrong') : 0;
             session()->put('attempt_count', $today_attempt_count + 1 );
-            session()->put('wrong',  $request->correct ? $correct + 1 : $correct);
-            session()->put('correct',$request->wrong ? $wrong + 1 : $wrong);
+            session()->put('correct',  $request->correct ? $correct + 1 : $correct);
+            session()->put('wrong',$request->wrong ? $wrong + 1 : $wrong);
             session()->put('points', $request->point + $old_points);
             session()->put('updated_at', date("Y-m-d", time()));
         }
         
 
-
+        
+        // Total scoru session'a kaydet
         if ( Auth::check() ) {
             $user_id = Auth::id();
-            $attempts = AttemptModel::where('user_id', $user_id)->get();
-            $totalPoints = $attempts->sum('point');
-
             $user_name = Auth::user()->name;
-            $user_score = ScoresModel::where('user_id', $user_id)->first();
-            if ($user_score) {
-                $user_score->score =$totalPoints;
-                $user_score->save();
-            } else {
-                ScoresModel::create([
-                    'user_id' => $user_id,
-                    'user_name' => $user_name,
-                    'score' => $totalPoints
-                ]);
+            $attempts = AttemptModel::where('user_id', $user_id)->get();
+            if($attempts) {
+                $totalPoints = $attempts->sum('point');
+                $user_score = ScoresModel::where('user_id', $user_id)->first();
+                if ($user_score) {
+                    $user_score->score =$totalPoints;
+                    $user_score->save();
+                } else {
+                    ScoresModel::create([
+                        'user_id' => $user_id,
+                        'user_name' => $user_name,
+                        'score' => $totalPoints
+                    ]);
+                }
             }
         } else {
             $totalPoints = 0;
             $attempts = session()->get('attempts',[]);
             if(count($attempts)>0){
                 foreach($attempts as $attempt) {
-                    $totalPoints += $attempt['point'];
+                    $totalPoints =  $totalPoints + $attempt['point'];
                 }
+                session()->put('total_score', $totalPoints);
             } 
-            session()->put('total_score', $totalPoints);
         }
 
-        // Total scoru session'a kaydet
         return response()->json(['message' => 'Attempt saved successfully']); 
     }
 

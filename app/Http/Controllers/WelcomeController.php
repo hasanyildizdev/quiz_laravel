@@ -18,13 +18,9 @@ use Illuminate\Support\Str;
 
 class WelcomeController extends Controller
 {
-
-
     public function index(Request $request)
-    {     
-        
-/*         $attempts = count(session()->get('attempts', []));*/
-        /* dd(session()->get('updated_at'));  */ 
+    {              
+    
         // Language
         $language_session = Session::has('language');
         if(!$language_session) {
@@ -40,12 +36,15 @@ class WelcomeController extends Controller
             $user_id = Auth::id();
             $daily_attempt = DailyAttemptModel::where('user_id', $user_id);
             if($daily_attempt){
-                $last_attempt_updated_date = $daily_attempt->value('updated_at')->format('Y-m-d'); 
+                $last_attempt_updated_date = $daily_attempt->value('updated_at'); 
+                if($last_attempt_updated_date){
+                    $last_attempt_updated_date = $last_attempt_updated_date->format('Y-m-d'); 
+                }
                 $current_date = date("Y-m-d", time());
                 if($current_date > $last_attempt_updated_date) {
                     DailyAttemptModel::where('user_id', $user_id)->update([
                         'attempt_count' => 0,
-                        'correct' => 0,
+                        'correct' => 10,
                         'wrong' => 0,
                         'points' => 0
                     ]);

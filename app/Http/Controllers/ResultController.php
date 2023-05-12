@@ -18,30 +18,22 @@ class ResultController extends Controller
         // id atama
         if (Auth::check()) {
             $id_key = Auth::id();
-        } else {
-            $id_key = session()->get('user_session_id');
-            if (!$id_key) {
-                $id_key = Str::random(40);                
-                session()->put('user_session_id', $id_key);
-            }
-        } 
-
-/*         $wrong = DailyAttemptModel::where('user_id', $id_key)->value('wrong');
-        $correct = DailyAttemptModel::where('user_id', $id_key)->value('correct');
-        $points =  DailyAttemptModel::where('user_id', $id_key)->value('points'); */
-        $wrong = session()->get('wrong');
-        $correct = session()->get('correct');
-        $points = session()->get('points');
-        $noanswer = 7 - ($correct + $wrong);       
-        if(Auth::check()){
+            $daily_attempt = DailyAttemptModel::where('user_id', $id_key);
+            $wrong = $daily_attempt->value('wrong');
+            $correct = $daily_attempt->value('correct');
+            $points =  $daily_attempt->value('points'); 
             $total_score = ScoresModel::where('user_id', $id_key)->value('score');
-        } else{
-           $total_score = session()->get('total_score');  
-        }
-        
-        
-        $language = session()->get('language');
-
+        } else {
+            $wrong = session()->get('wrong');
+            $correct = session()->get('correct');
+            $points = session()->get('points');
+            $total_score = session()->get('total_score');  
+        } 
+/*      $attempts = AttemptModel::where('user_id', $user_id)->get();
+        if($attempts) { $totalPoints = $attempts->sum('point'); }  */
+         
+        $noanswer = 7 - ($correct + $wrong);       
+        $language = session()->get('language') ? session()->get('language') : 'fa';
 
         return Inertia::render('Quiz/Result', [
             'user' => Auth::user() ? Auth::user() : null,
