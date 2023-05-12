@@ -81,7 +81,7 @@ class WelcomeController extends Controller
         $scores = ScoresResource::collection(ScoresModel::orderByDesc('score')->take(10)->get());
         return Inertia::render('Welcome', [
             'scores' => $scores,
-            'user' => Auth::user() ? Auth::user() : null,
+            'user' => Auth::user() ?? null,
             'language' => $language,
             'remain_question_count' => $remain_question_count 
         ]);

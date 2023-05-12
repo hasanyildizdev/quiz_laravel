@@ -27,7 +27,7 @@ class MyProfileController extends Controller
         $language = session()->get('language') ? session()->get('language') : 'fa';
 
         return Inertia::render('Quiz/MyProfile', [
-            'total_score' => $score->score,
+            'total_score' => $score->score ?? 0,
             'user' => Auth::user(),
             'completed_question_count' => $completed_questions_count,
             'remaining_question_count' => $questionsCount -  $completed_questions_count,
