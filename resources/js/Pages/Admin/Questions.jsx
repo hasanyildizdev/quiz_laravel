@@ -280,7 +280,7 @@ export default function Questions(props) {
                                             answerList.find((a) => a.question_id === questionsList[index].id && a.option === 3)?.text,
                                             answerList.find((a) => a.question_id === questionsList[index].id && a.option === 4)?.text,
                                             correctList.find((a) => a.question_id === questionsList[index].id)?.correct_answer_id
-                                        )}>  { t('update') }  </button></td>
+                                        )}>  { t('edit') }  </button></td>
                                 </tr>
                             ))}
                         </tbody>
