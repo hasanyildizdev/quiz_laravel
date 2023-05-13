@@ -68,6 +68,13 @@ class WelcomeController extends Controller
             if( $daily_attempt->exists()) {
                 $questions_answered_today = $daily_attempt->value('attempt_count');
             } else{
+                DailyAttemptModel::create([
+                    'user_id' => $user_id,
+                    'wrong' => 0,
+                    'correct' => 0,
+                    'attempt_count' => 0,
+                    'points' => 0
+                ]);
                 $questions_answered_today = 0;
             }
         } else if(session()->get('attempt_count')) {

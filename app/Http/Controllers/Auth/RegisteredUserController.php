@@ -52,9 +52,10 @@ class RegisteredUserController extends Controller
         $user->update(['invite_code' => $user->id + 100000]);
 
         if($request->invite_code > 99999 ) {
-            $userByCode = User::where('invite_code', 100033);
+            $userByCode = User::where('invite_code', $request->invite_code);
             if($userByCode->exists()) {
                 $user_id = $userByCode->get()->value('id') ;
+                $user_name = $userByCode->get()->value('name') ;
                 if($user_id != null) {
                     $score = ScoresModel::where('user_id', $user_id);
                     if($score->exists()) {
@@ -63,7 +64,8 @@ class RegisteredUserController extends Controller
                     } else {
                         ScoresModel::create([
                            'user_id' => $user_id, 
-                           'score'=> 100
+                           'score'=> 100,
+                           'user_name' => $user_name
                         ]); 
                     }
                 }
