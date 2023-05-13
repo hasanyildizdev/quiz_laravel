@@ -19,8 +19,8 @@ use Illuminate\Support\Str;
 class WelcomeController extends Controller
 {
     public function index(Request $request)
-    {              
-    
+
+    {    
         // Language
         $language_session = Session::has('language');
         if(!$language_session) {
@@ -76,6 +76,7 @@ class WelcomeController extends Controller
             $questions_answered_today = 0;
         }
 
+        $invite_code = Auth::check() ? Auth::user()->invite_code : null;
         
         $remain_question_count =  7 - $questions_answered_today;
         $scores = ScoresResource::collection(ScoresModel::orderByDesc('score')->take(10)->get());
@@ -83,7 +84,8 @@ class WelcomeController extends Controller
             'scores' => $scores,
             'user' => Auth::user() ?? null,
             'language' => $language,
-            'remain_question_count' => $remain_question_count 
+            'remain_question_count' => $remain_question_count, 
+            'invite_code' => $invite_code
         ]);
     }
 

@@ -13,15 +13,20 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\ScoresModel;
 
 class RegisteredUserController extends Controller
 {
     /**
      * Display the registration view.
      */
-    public function create(): Response
+    public function create(Request $request): Response
     {
-        return Inertia::render('Auth/Register');
+
+        $invite_code = $request->invite_code;
+        return Inertia::render('Auth/Register',[
+            'invite_code' => $invite_code
+        ]);
     }
 
     /**
@@ -35,6 +40,7 @@ class RegisteredUserController extends Controller
             'name' => 'required|string|max:255|min:3',
             'email' => 'required|string|email|max:255|min:3|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'invite_code' =>  'nullable|int|max:1000000|min:100000',
         ]);
 
         $user = User::create([
@@ -42,6 +48,27 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        $user->update(['invite_code' => $user->id + 100000]);
+
+        if($request->invite_code > 99999 ) {
+            $userByCode = User::where('invite_code', 100033);
+            if($userByCode->exists()) {
+                $user_id = $userByCode->get()->value('id') ;
+                if($user_id != null) {
+                    $score = ScoresModel::where('user_id', $user_id);
+                    if($score->exists()) {
+                        $score_old = $score->get()->value('score');
+                        $score->update(['score' => $score_old + 100]);
+                    } else {
+                        ScoresModel::create([
+                           'user_id' => $user_id, 
+                           'score'=> 100
+                        ]); 
+                    }
+                }
+            }
+        }
 
         event(new Registered($user));
 

@@ -68,5 +68,7 @@
     "profile" : "مشخصات",
     "sign_to_scoreboard" : "برای مشاهده امتیاز خود در جدول امتیازات وارد شوید",
     "great_completed_today" : "عالی! شما امروز 7 سوال را تکمیل کردید",
-    "new_questions_tomorrow" : "فردا می توانید سوالات جدید را ببینید"
+    "new_questions_tomorrow" : "فردا می توانید سوالات جدید را ببینید",
+    "invite_code" : "کد دعوت شما",
+    "please_signin" : "لطفا وارد شوید"
 }

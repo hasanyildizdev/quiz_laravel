@@ -68,5 +68,7 @@
     "profile" : "Profile",
     "sign_to_scoreboard" : "Sign In to see your score on Scoreboard",
     "great_completed_today" : "Great! You completed 7 questions today",
-    "new_questions_tomorrow" : "You can see new questions tomorrow"
+    "new_questions_tomorrow" : "You can see new questions tomorrow",
+    "invite_code" : "Your invitation code",
+    "please_signin" : "Please Sign In"
 }

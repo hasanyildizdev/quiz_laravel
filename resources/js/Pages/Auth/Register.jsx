@@ -7,17 +7,19 @@ import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-export default function Register() {
+export default function Register(props) {
     const { t, tChoice } = useLaravelReactI18n();
 
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
         password: '',
+        invite_code: '',
         password_confirmation: '',
     });
 
     useEffect(() => {
+        data.invite_code = props.invite_code ? props.invite_code : '';
         return () => {
             reset('password', 'password_confirmation');
         };
@@ -114,6 +116,19 @@ export default function Register() {
                     />
 
                     <InputError message={errors.password_confirmation} className="mt-2" />
+                </div>
+
+                <div className="mt-4">
+                    <InputLabel htmlFor="invite_code" value="Invite Code" />
+                    <TextInput
+                        id="invite_code"
+                        name="invite_code"
+                        value={data.invite_code}
+                        className="mt-1 block w-full"
+                        autoComplete="invite_code"
+                        onChange={handleOnChange}
+                    />
+                    <InputError message={errors.invite_code} className="mt-2" />
                 </div>
 
                 <div className="flex items-center justify-end mt-4">

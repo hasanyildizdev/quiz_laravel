@@ -24,6 +24,7 @@ class User extends Authenticatable
         'password',
         'score', 
         'total_score',
+        'invite_code'
     ];
 
     /**

@@ -184,8 +184,8 @@ export default class Game extends Component {
       this.setState({ correctCartVisible: true });
       answerStyle.backgroundColor = "rgba(0, 255, 0, 0.5)";
 
-      if (time >= 5) { this.score = this.score + 12; this.attempt(this.props.questions.data[this.questionNr - 1].id, 12); }
-      else { this.score = this.score + 10; this.attempt(this.props.questions.data[this.questionNr - 1].id, 10); }
+      if (time >= 5) { this.score = this.score + 10; this.attempt(this.props.questions.data[this.questionNr - 1].id, 10); }
+      else { this.score = this.score + 8; this.attempt(this.props.questions.data[this.questionNr - 1].id, 8); }
     }
     else {
       this.correctIncreased = false;
